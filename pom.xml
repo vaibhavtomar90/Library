@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>flipkart.pricing.apps</groupId>
+  <artifactId>kaizen</artifactId>
+  <version>1.0</version>
+  <packaging>pom</packaging>
+  <name>Pricing Kaizen</name>
+
+  <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <sourceJavaVersion>1.8</sourceJavaVersion>
+      <targetJavaVersion>1.8</targetJavaVersion>
+      <spring.version>4.1.2.RELEASE</spring.version>
+      <hibernate.version>4.3.1.Final</hibernate.version>
+      <dropwizard.version>0.8.1</dropwizard.version>
+  </properties>
+
+  <developers>
+    <developer>
+      <name>Pricing Team</name>
+      <id>pricing-dev</id>
+      <email>pricing-dev@flipkart.com</email>
+      <organization>Flipkart</organization>
+    </developer>
+  </developers>
+
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>central</id>
+            <name>Maven Repository Switchboard</name>
+            <url>http://repo1.maven.org/maven2</url>
+        </repository>
+
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>fk</id>
+            <name>libs-releases</name>
+            <url>http://artifactory.nm.flipkart.com:8081/artifactory/libs-releases</url>
+        </repository>
+
+        <repository>
+            <snapshots/>
+            <id>snapshots</id>
+            <name>libs-snapshots</name>
+            <url>http://artifactory.nm.flipkart.com:8081/artifactory/libs-snapshots</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>central</id>
+            <name>plugins-releases</name>
+            <url>http://artifactory.nm.flipkart.com:8081/artifactory/plugins-releases</url>
+        </pluginRepository>
+        <pluginRepository>
+            <snapshots/>
+            <id>snapshots</id>
+            <name>plugins-snapshots</name>
+            <url>http://artifactory.nm.flipkart.com:8081/artifactory/plugins-snapshots</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+  <build>
+
+      <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <version>2.8</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.2</version>
+          <configuration>
+            <source>${sourceJavaVersion}</source>
+            <target>${targetJavaVersion}</target>
+          </configuration>
+        </plugin>
+      </plugins>
+  </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>1.9.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <version>1.3</version>
+        </dependency>
+
+    </dependencies>
+
+
+  <modules>
+    <module>service</module>
+  </modules>
+</project>
