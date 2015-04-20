@@ -13,7 +13,7 @@
       <sourceJavaVersion>1.8</sourceJavaVersion>
       <targetJavaVersion>1.8</targetJavaVersion>
       <spring.version>4.1.2.RELEASE</spring.version>
-      <hibernate.version>4.3.1.Final</hibernate.version>
+      <hibernate.version>4.3.5.Final</hibernate.version>
       <dropwizard.version>0.8.1</dropwizard.version>
   </properties>
 
@@ -94,7 +94,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
 
