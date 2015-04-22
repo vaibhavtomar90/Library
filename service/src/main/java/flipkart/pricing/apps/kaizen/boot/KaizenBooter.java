@@ -1,6 +1,7 @@
 package flipkart.pricing.apps.kaizen.boot;
 
 import flipkart.pricing.apps.kaizen.boot.config.KaizenConfiguration;
+import flipkart.pricing.apps.kaizen.boot.healthcheck.RotationStatusHealthCheck;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Environment;
 
@@ -15,6 +16,6 @@ public class KaizenBooter extends Application<KaizenConfiguration>
 
     @Override
     public void run(KaizenConfiguration kaizenConfiguration, Environment environment) throws Exception {
-
+        environment.healthChecks().register("Rotation Status",new RotationStatusHealthCheck());
     }
 }
