@@ -1,0 +1,7 @@
+server:
+  applicationConnectors:
+    - type: http
+      port: 37040
+  adminConnectors:
+    - type: http
+      port: 37041
