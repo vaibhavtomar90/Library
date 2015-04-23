@@ -1,0 +1,111 @@
+#!/bin/bash
+
+export USER=$PACKAGE
+export GROUP=fk-pricing
+export PRICING_UID=$PAC_UID
+export PRICING_GID=10000
+export LB_STATUS_DIR=$LB_STATUS_DIR
+
+export PATH=/bin:/usr/bin:/sbin:/usr/sbin
+export NAME=_PACKAGE_
+export ENV=_EN_
+export USER=$NAME
+export DESC="Pricing service $NAME"
+export JVM_TMP=/tmp/${NAME}-tmp
+export PATH=$PATH:$PRICING_HOME/scripts
+
+export PRICING_HOME=/usr/share/$NAME
+export DEFAULT=/etc/default/$NAME
+
+
+if [ `id -u` -ne 0 ]; then
+    echo "You need root privileges to run this script"
+    exit 1
+fi
+
+. /lib/lsb/init-functions
+[ -f $PRICING_HOME/depvars.sh ] && . $PRICING_HOME/depvars.sh
+[ -f "$DEFAULT" ] && . "$DEFAULT"
+
+ROTATION_STATUS_FILE=/var/lib/$NAME/rotation_status.txt
+OOR_FOR_STOP_MARKER=/var/tmp/fk-pricing-kaizen/oor_for_stop
+
+#function to call $PRICING_HOME dir scripts
+function start() {
+    . $PRICING_HOME/startup.sh
+    if [ -f $OOR_FOR_STOP_MARKER ]; then
+        $PRICING_HOME/wait_for_server_start.sh
+        rotation_add
+        rm $OOR_FOR_STOP_MARKER
+    fi
+}
+
+function stop() {
+    log_daemon_msg "Stopping $DESC" "$NAME"
+    [ -f $ROTATION_STATUS_FILE ] && touch $OOR_FOR_STOP_MARKER
+    rotation_remove || echo "Could not make it OOR!!. Service may be unresponsive. Proceeeding with Shutdown" && rm -f $ROTATION_STATUS_FILE
+    . $PRICING_HOME/shutdown.sh
+}
+
+function status() {
+	  . $PRICING_HOME/status.sh
+}
+
+function cleanup() {
+	  log_daemon_msg "Cleaning up" "$NAME"
+	  . $PRICING_HOME/cleanup.sh
+}
+
+function force_into_rotation() {
+    log_daemon_msg "Forcing into rotation"
+    rm -f $LB_STATUS_DIR/*
+}
+
+function force_into_clean_shutdown() {
+    log_daemon_msg "Forcing into clean shutdown like state"
+    touch $OOR_FOR_STOP_MARKER
+}
+
+
+function rotation_add() {
+    curl -X POST "http://localhost:37301/tasks/rotation_status?state=bir"
+}
+
+function rotation_remove() {
+    curl -X POST "http://localhost:37301/tasks/rotation_status?state=oor"
+}
+
+function force_kill() {
+    for pid in `pgrep -u $NAME`; do
+        kill -9 $pid
+    done
+}
+
+function migrate(){
+    . $PRICING_HOME/migrate.sh
+}
+
+cmd_opts="$2"
+
+# Define other required variables
+case "$1" in
+    start) start ;;
+    stop) stop ;;
+    status) status;;
+    restart|force-reload)
+	      stop
+	      start
+        ;;
+    cleanup) cleanup;;
+    kill) force_kill ;;
+    healthon) rotation_add ;;
+    healthoff) rotation_remove ;;
+    hc) curl -v "http://localhost:37301/healthcheck" ;;
+    force_into_clean_shutdown) force_into_clean_shutdown ;;
+    force_into_rotation) force_into_rotation ;;
+    migrate) migrate ;;
+    *)
+        log_success_msg "Usage: $0 {start|stop|restart|status|kill|cleanup|healthon|healthoff|hc|enable_bigfoot_log_save_to_dfs|disable_bigfoot_log_save_to_dfs}"
+        exit 1
+        ;;
+esac
