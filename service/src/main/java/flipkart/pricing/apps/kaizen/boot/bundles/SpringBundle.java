@@ -17,7 +17,6 @@ import java.util.Map;
 public class SpringBundle implements ConfiguredBundle<KaizenConfiguration> {
     @Override
     public void run(KaizenConfiguration configuration, Environment environment) throws Exception {
-        // TODO : Use the DB config in spring.
         final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(KaizenContextConfiguration.class);
         final Map<String, Object> resources = context.getBeansWithAnnotation(Path.class);
         resources.forEach((name, res) -> environment.jersey().register(res));
