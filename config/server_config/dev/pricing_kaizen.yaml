@@ -24,3 +24,13 @@ logging:
             archivedLogFilenamePattern: /var/log/flipkart/pricing/fk-pricing-kaizen/kaizen-%d.log.gz
             archivedFileCount: 20
             timeZone: IST
+
+database:
+  driverClass: com.mysql.jdbc.Driver
+  user: root
+  password:
+  url: jdbc:mysql://localhost/pricing_kaizen
+  maxWaitForConnection: 1s
+  minSize: 2
+  maxSize: 10
+  checkConnectionWhileIdle: false
