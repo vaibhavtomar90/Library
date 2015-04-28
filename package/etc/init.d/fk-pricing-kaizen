@@ -105,7 +105,7 @@ case "$1" in
     force_into_rotation) force_into_rotation ;;
     migrate) migrate ;;
     *)
-        log_success_msg "Usage: $0 {start|stop|restart|status|kill|cleanup|healthon|healthoff|hc|enable_bigfoot_log_save_to_dfs|disable_bigfoot_log_save_to_dfs}"
+        log_success_msg "Usage: $0 {start|stop|restart|status|kill|cleanup|healthon|healthoff|hc}"
         exit 1
         ;;
 esac
