@@ -6,6 +6,7 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.Path;
@@ -16,6 +17,7 @@ import java.util.Map;
  * @understands : Wrapper around Dw's ResourceTestRule, Used for adding spring autowired resources
  */
 @Component
+@Profile("test")
 public class SpringAwareResourceTestRule implements TestRule {
     private ResourceTestRule resourceTestRule;
 
