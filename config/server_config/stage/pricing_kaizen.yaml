@@ -1,0 +1,36 @@
+server:
+  applicationConnectors:
+    - type: http
+      port: 37300
+  adminConnectors:
+    - type: http
+      port: 37301
+
+  requestLog:
+      appenders:
+        - type: file
+          currentLogFilename: /var/log/flipkart/pricing/fk-pricing-kaizen/request.log
+          archivedLogFilenamePattern: /var/log/flipkart/pricing/fk-pricing-kaizen/request-%d.log.gz
+          timeZone: IST
+
+logging:
+    level: INFO
+    loggers:
+      flipkart.apps: INFO
+    appenders:
+        - type: file
+          currentLogFilename: /var/log/flipkart/pricing/fk-pricing-kaizen/kaizen.log
+          archive: true
+          archivedLogFilenamePattern: /var/log/flipkart/pricing/fk-pricing-kaizen/kaizen-%d.log.gz
+          archivedFileCount: 20
+          timeZone: IST
+
+database:
+  driverClass: com.mysql.jdbc.Driver
+  user: root
+  password:
+  url: jdbc:mysql://stage-pricing-db.ch.flipkart.com/pricing_kaizen
+  maxWaitForConnection: 1s
+  minSize: 2
+  maxSize: 10
+  checkConnectionWhileIdle: false

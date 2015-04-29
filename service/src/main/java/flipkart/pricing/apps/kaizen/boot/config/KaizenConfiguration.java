@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  */
 public class KaizenConfiguration extends Configuration {
     // This is the only point of coupling between debian scripts that start the App passing this config to DW & the spring components that read this config
-    public static final String YML_CONFIG_FILE = "kaizen-configuration.yml";
+    public static final String YML_CONFIG_FILE = "pricing_kaizen.yaml";
 
     @Valid
     @NotNull

@@ -1,0 +1,61 @@
+#! /bin/bash -e
+set -x
+PAC=_PACKAGE_
+USER=_PACKAGE_
+GROUP=fk-pricing
+PRICING_UID=_UID_
+ENV=_ENV_
+PRICING_GID=30000
+STATSD_URL=_STATSDURL_
+STATSD_PORT=8125
+
+variant=base
+CMD="$1"
+
+die () {
+  echo "$PAC postinst error: $*"
+  echo -e "\033[31m ================================\033[0m"
+  echo -e "\033[31m Deployment FAILED on $HOSTNAME\033[0m"
+  echo -e "\033[31m ================================\033[0m"
+  exit 2
+}
+
+if [ "$CMD" == "configure" ]; then
+    #creating user if it doesnt exist
+    if ! getent group fk-pricing > /dev/null; then
+		    groupadd -g $PRICING_GID fk-pricing
+    fi
+
+    if ! getent passwd $PRICING_UID > /dev/null; then
+        adduser --system --uid $PRICING_UID --home /usr/share/$PAC --no-create-home \
+        --ingroup $GROUP --disabled-password --shell /bin/false \
+        $USER
+    fi
+
+    chown -R $PRICING_UID:$PRICING_GID /usr/share/$PAC
+    chown -R $PRICING_UID:$PRICING_GID /var/lib/$PAC
+    chown    $PRICING_UID:$PRICING_GID /var/cache/$PAC
+    chown -R $PRICING_UID:$PRICING_GID /etc/$PAC
+
+
+    CRON_PKG_DIR="/usr/share/$PAC/cron.d"
+		[ -d $CRON_PKG_DIR ] && chown -Rv root:root $CRON_PKG_DIR
+
+    for i in $(ls $CRON_PKG_DIR 2>/dev/null);do
+        cp -av $CRON_PKG_DIR/$i /etc/cron.d
+        stat /etc/cron.d/$i
+    done
+		
+    chown -R $PRICING_UID:$PRICING_GID /var/log/flipkart/pricing/$PAC
+
+    case "$PAC" in 
+        *) if [ -x "/etc/init.d/$PAC" ]; then
+                /etc/init.d/$PAC start
+                echo "deploys.$ENV.$PAC:1|c" | nc -w 1 -u $STATSD_URL $STATSD_PORT
+           fi;;
+    esac
+fi
+echo -e "\033[32m ================================\033[0m"
+echo -e "\033[32m INSTALL Completed on $HOSTNAME\033[0m"
+echo -e "\033[32m ================================\033[0m"
+exit 0

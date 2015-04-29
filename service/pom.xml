@@ -39,7 +39,7 @@
                 </executions>
                 <configuration>
                     <mainClass>flipkart.pricing.apps.kaizen.boot.KaizenBooter</mainClass>
-                    <commandlineArgs>server config/dev/kaizen-configuration.yml</commandlineArgs>
+                    <commandlineArgs>server config/server_config/dev/pricing_kaizen.yaml</commandlineArgs>
                     <classpathScope>test</classpathScope>
                 </configuration>
             </plugin>
