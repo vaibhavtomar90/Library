@@ -3,4 +3,5 @@
 *iws
 target/*
 service/target/*
+data_service/target*
 .idea/*
