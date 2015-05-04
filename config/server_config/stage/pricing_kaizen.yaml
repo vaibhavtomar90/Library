@@ -26,11 +26,15 @@ logging:
           timeZone: IST
 
 database:
-  driverClass: com.mysql.jdbc.Driver
-  user: root
+  driverClass: "com.mysql.jdbc.Driver"
+  user: "root"
   password:
-  url: jdbc:mysql://stage-pricing-db.ch.flipkart.com/pricing_kaizen
+  url: "jdbc:mysql://stage-pricing-db.ch.flipkart.com/pricing_kaizen"
   maxWaitForConnection: 1s
   minSize: 2
   maxSize: 10
   checkConnectionWhileIdle: false
+  properties:
+          "hibernate.dialect": "org.hibernate.dialect.MySQL5Dialect"
+          "hibernate.hbm2ddl.auto": "validate"
+          "hibernate.connection.isolation": "4"
