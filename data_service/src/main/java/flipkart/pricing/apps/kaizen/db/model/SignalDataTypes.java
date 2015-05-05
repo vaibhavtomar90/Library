@@ -1,4 +1,4 @@
-package flipkart.pricing.apps.kaizen.db.domain;
+package flipkart.pricing.apps.kaizen.db.model;
 
 public enum SignalDataTypes {
 

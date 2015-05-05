@@ -1,4 +1,4 @@
-package flipkart.pricing.apps.kaizen.db.domain;
+package flipkart.pricing.apps.kaizen.db.model;
 
 
 import flipkart.pricing.apps.kaizen.db.DomainEntity;
@@ -24,6 +24,8 @@ public class Signal implements Comparable<Signal>, DomainEntity {
 
     @Column(name = "server_timestamp", nullable = false)
     private Timestamp serverTimestamp;
+
+    public Signal() {}
 
     public Signal(SignalId id, String value, long version, Timestamp expiry, Timestamp serverTimestamp) {
         this(id.getListingId(), id.getSignalTypeId(), value, version, expiry, serverTimestamp);

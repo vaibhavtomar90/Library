@@ -1,4 +1,4 @@
-package flipkart.pricing.apps.kaizen.db.domain;
+package flipkart.pricing.apps.kaizen.db.model;
 
 import javax.persistence.*;
 
@@ -16,6 +16,7 @@ public class ListingInfo {
     @Column(nullable = false)
     private long version;
 
+    public ListingInfo() {}
 
     public ListingInfo(String listing, long version) {
         this.listing = listing;

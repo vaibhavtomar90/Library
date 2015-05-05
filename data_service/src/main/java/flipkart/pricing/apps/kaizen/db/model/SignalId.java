@@ -1,11 +1,10 @@
-package flipkart.pricing.apps.kaizen.db.domain;
+package flipkart.pricing.apps.kaizen.db.model;
 
 
 import flipkart.pricing.apps.kaizen.db.DomainEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import java.io.Serializable;
 
 @Embeddable
 public class SignalId implements Comparable<SignalId>, DomainEntity {
@@ -15,6 +14,8 @@ public class SignalId implements Comparable<SignalId>, DomainEntity {
 
     @Column(name = "signal_type_id", nullable = false)
     private Long signalTypeId;
+
+    public SignalId() {}
 
     public SignalId(Long listingId, Long signalTypeId) {
         this.listingId = listingId;

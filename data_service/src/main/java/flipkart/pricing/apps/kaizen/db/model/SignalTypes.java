@@ -1,4 +1,4 @@
-package flipkart.pricing.apps.kaizen.db.domain;
+package flipkart.pricing.apps.kaizen.db.model;
 
 
 import javax.persistence.*;
@@ -20,6 +20,7 @@ public class SignalTypes {
     @Column(name = "default_value")
     private String defaultValue;
 
+    public SignalTypes() {}
 
     public SignalTypes(String name, SignalDataTypes type, String defaultValue) {
         this.name = name;
