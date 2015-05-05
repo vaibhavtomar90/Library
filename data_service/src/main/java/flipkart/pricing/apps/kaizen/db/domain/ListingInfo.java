@@ -17,8 +17,7 @@ public class ListingInfo {
     private long version;
 
 
-    public ListingInfo(long id, String listing, long version) {
-        this.id = id;
+    public ListingInfo(String listing, long version) {
         this.listing = listing;
         this.version = version;
     }

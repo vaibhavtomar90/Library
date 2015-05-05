@@ -21,8 +21,7 @@ public class SignalTypes {
     private String defaultValue;
 
 
-    public SignalTypes(long id, String name, SignalDataTypes type, String defaultValue) {
-        this.id = id;
+    public SignalTypes(String name, SignalDataTypes type, String defaultValue) {
         this.name = name;
         this.type = type;
         this.defaultValue = defaultValue;
