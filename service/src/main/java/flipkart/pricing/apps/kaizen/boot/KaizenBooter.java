@@ -2,10 +2,9 @@ package flipkart.pricing.apps.kaizen.boot;
 
 import flipkart.pricing.apps.kaizen.boot.bundles.SpringBundle;
 import flipkart.pricing.apps.kaizen.boot.config.KaizenConfiguration;
-import flipkart.pricing.apps.kaizen.db.model.*;
 import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
-import io.dropwizard.hibernate.HibernateBundle;
+import io.dropwizard.hibernate.ScanningHibernateBundle;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -23,7 +22,7 @@ public class KaizenBooter extends Application<KaizenConfiguration>
     public void initialize(Bootstrap<KaizenConfiguration> bootstrap) {
         super.initialize(bootstrap);
         bootstrap.addBundle(new SpringBundle());
-        bootstrap.addBundle(new HibernateBundle<KaizenConfiguration>(ListingInfo.class, Signal.class, SignalDataTypes.class) {
+        bootstrap.addBundle(new ScanningHibernateBundle<KaizenConfiguration>("flipkart.pricing.apps.kaizen.db.model") {
             @Override
             public DataSourceFactory getDataSourceFactory(KaizenConfiguration kaizenConfiguration) {
                 return kaizenConfiguration.getDataSourceFactory();

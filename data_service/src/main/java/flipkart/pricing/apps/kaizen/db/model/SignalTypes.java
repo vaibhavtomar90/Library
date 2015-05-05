@@ -15,6 +15,7 @@ public class SignalTypes {
     private String name;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private SignalDataTypes type;
 
     @Column(name = "default_value")
