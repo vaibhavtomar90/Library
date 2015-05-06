@@ -37,4 +37,4 @@ database:
   properties:
           "hibernate.dialect": "org.hibernate.dialect.MySQL5Dialect"
           "hibernate.hbm2ddl.auto": "validate"
-          "hibernate.connection.isolation": "4"
+          "hibernate.connection.isolation": "2"
