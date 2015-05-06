@@ -39,6 +39,14 @@ public class Signal implements Comparable<Signal>, DomainEntity {
         this.serverTimestamp = serverTimestamp;
     }
 
+    public Signal(SignalId id, String value, long version, Timestamp expiry) {
+        this(id.getListingId(), id.getSignalTypeId(), value, version, expiry, null);
+    }
+
+    public Signal(Long listingId, Long signalTypeId, String value, long version, Timestamp expiry) {
+        this(listingId, signalTypeId, value, version, expiry, null);
+    }
+
 
     public SignalId getId() {
         return id;
