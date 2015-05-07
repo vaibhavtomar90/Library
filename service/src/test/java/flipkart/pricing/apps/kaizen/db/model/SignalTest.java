@@ -13,8 +13,8 @@ public class SignalTest {
     public void testCompareToForSameListingAndSignalTypeIds() {
         long currTime = System.currentTimeMillis();
         Timestamp timestamp = new Timestamp(currTime);
-        Signal signal1 = new Signal(1l, 1l, "foo", 1l, timestamp, timestamp);
-        Signal signal2 = new Signal(1l, 1l, "bar", 2l, new Timestamp(currTime + 100), new Timestamp(currTime + 100));
+        Signal signal1 = new Signal(1l, 1l, "foo", 1l, timestamp);
+        Signal signal2 = new Signal(1l, 1l, "bar", 2l, new Timestamp(currTime + 100));
         assertTrue(signal1.compareTo(signal2) == 0);
     }
 
@@ -22,8 +22,8 @@ public class SignalTest {
     public void testCompareToForSameListingIdButDifferentSignalTypeIds() {
         long currTime = System.currentTimeMillis();
         Timestamp timestamp = new Timestamp(currTime);
-        Signal signal1 = new Signal(1l, 2l, "foo", 1l, timestamp, timestamp);
-        Signal signal2 = new Signal(1l, 3l, "foo", 1l, timestamp, timestamp);
+        Signal signal1 = new Signal(1l, 2l, "foo", 1l, timestamp);
+        Signal signal2 = new Signal(1l, 3l, "foo", 1l, timestamp);
         assertTrue(signal1.compareTo(signal2) < 0);
         assertTrue(signal2.compareTo(signal1) > 0);
     }
@@ -32,8 +32,8 @@ public class SignalTest {
     public void testCompareToForSameSignalTypeIdButDifferentListingIds() {
         long currTime = System.currentTimeMillis();
         Timestamp timestamp = new Timestamp(currTime);
-        Signal signal1 = new Signal(2l, 1l, "foo", 1l, timestamp, timestamp);
-        Signal signal2 = new Signal(3l, 1l, "foo", 1l, timestamp, timestamp);
+        Signal signal1 = new Signal(2l, 1l, "foo", 1l, timestamp);
+        Signal signal2 = new Signal(3l, 1l, "foo", 1l, timestamp);
         assertTrue(signal1.compareTo(signal2) < 0);
         assertTrue(signal2.compareTo(signal1) > 0);
     }
@@ -42,8 +42,8 @@ public class SignalTest {
     public void testCompareToForDifferentSignalTypeAndListingIds() {
         long currTime = System.currentTimeMillis();
         Timestamp timestamp = new Timestamp(currTime);
-        Signal signal1 = new Signal(1l, 2l, "foo", 1l, timestamp, timestamp);
-        Signal signal2 = new Signal(3l, 4l, "foo", 1l, timestamp, timestamp);
+        Signal signal1 = new Signal(1l, 2l, "foo", 1l, timestamp);
+        Signal signal2 = new Signal(3l, 4l, "foo", 1l, timestamp);
         assertTrue(signal1.compareTo(signal2) < 0);
         assertTrue(signal2.compareTo(signal1) > 0);
     }

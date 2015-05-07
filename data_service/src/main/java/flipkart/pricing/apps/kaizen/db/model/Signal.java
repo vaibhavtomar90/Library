@@ -19,34 +19,32 @@ public class Signal implements Comparable<Signal>, DomainEntity {
     @Column(nullable = false)
     private long version;
 
-    @Column(nullable = false)
-    private Timestamp expiry;
-
     @Column(name = "server_timestamp", nullable = false)
     private Timestamp serverTimestamp;
 
-    public Signal() {}
+    @Column
+    private String qualifier;
 
-    public Signal(SignalId id, String value, long version, Timestamp expiry, Timestamp serverTimestamp) {
-        this(id.getListingId(), id.getSignalTypeId(), value, version, expiry, serverTimestamp);
-    }
 
-    public Signal(Long listingId, Long signalTypeId, String value, long version, Timestamp expiry, Timestamp serverTimestamp) {
-        this.id = new SignalId(listingId, signalTypeId);
+    public Signal(SignalId id, String value, long version, Timestamp serverTimestamp, String qualifier) {
+        this.id = id;
         this.value = value;
         this.version = version;
-        this.expiry = expiry;
         this.serverTimestamp = serverTimestamp;
+        this.qualifier = qualifier;
     }
 
-    public Signal(SignalId id, String value, long version, Timestamp expiry) {
-        this(id.getListingId(), id.getSignalTypeId(), value, version, expiry, null);
+    public Signal(SignalId id, String value, long version, Timestamp serverTimestamp) {
+        this(id, value, version, serverTimestamp, null);
     }
 
-    public Signal(Long listingId, Long signalTypeId, String value, long version, Timestamp expiry) {
-        this(listingId, signalTypeId, value, version, expiry, null);
+    public Signal(Long listingId, Long signalTypeId, String value, long version, Timestamp serverTimestamp, String qualifier) {
+        this(new SignalId(listingId, signalTypeId), value, version, serverTimestamp, qualifier);
     }
 
+    public Signal(Long listingId, Long signalTypeId, String value, long version, Timestamp serverTimestamp) {
+        this(listingId, signalTypeId, value, version, serverTimestamp, null);
+    }
 
     public SignalId getId() {
         return id;
@@ -60,15 +58,14 @@ public class Signal implements Comparable<Signal>, DomainEntity {
         return version;
     }
 
-    public Timestamp getExpiry() {
-        return expiry;
-    }
-
     public Timestamp getServerTimestamp() {
         return serverTimestamp;
     }
 
-    @Override
+    public String getQualifier() {
+        return qualifier;
+    }
+
     public int compareTo(Signal signal) {
         return id.compareTo(signal.getId());
     }
@@ -81,8 +78,8 @@ public class Signal implements Comparable<Signal>, DomainEntity {
         Signal signal = (Signal) o;
 
         if (version != signal.version) return false;
-        if (expiry != null ? !expiry.equals(signal.expiry) : signal.expiry != null) return false;
         if (id != null ? !id.equals(signal.id) : signal.id != null) return false;
+        if (qualifier != null ? !qualifier.equals(signal.qualifier) : signal.qualifier != null) return false;
         if (serverTimestamp != null ? !serverTimestamp.equals(signal.serverTimestamp) : signal.serverTimestamp != null)
             return false;
         if (value != null ? !value.equals(signal.value) : signal.value != null) return false;
@@ -95,8 +92,8 @@ public class Signal implements Comparable<Signal>, DomainEntity {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (value != null ? value.hashCode() : 0);
         result = 31 * result + (int) (version ^ (version >>> 32));
-        result = 31 * result + (expiry != null ? expiry.hashCode() : 0);
         result = 31 * result + (serverTimestamp != null ? serverTimestamp.hashCode() : 0);
+        result = 31 * result + (qualifier != null ? qualifier.hashCode() : 0);
         return result;
     }
 
@@ -106,8 +103,8 @@ public class Signal implements Comparable<Signal>, DomainEntity {
                 "id=" + id +
                 ", value='" + value + '\'' +
                 ", version=" + version +
-                ", expiry=" + expiry +
                 ", serverTimestamp=" + serverTimestamp +
+                ", qualifier='" + qualifier + '\'' +
                 '}';
     }
 }
