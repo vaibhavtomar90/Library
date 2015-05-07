@@ -1,15 +1,16 @@
 package flipkart.pricing.apps.kaizen.db.service;
 
 
+import flipkart.pricing.apps.kaizen.api.SignalRequestDetail;
+import flipkart.pricing.apps.kaizen.api.SignalRequestDto;
+import flipkart.pricing.apps.kaizen.api.SignalResponseDetail;
+import flipkart.pricing.apps.kaizen.api.SignalResponseDto;
 import flipkart.pricing.apps.kaizen.db.dao.ListingInfoDao;
 import flipkart.pricing.apps.kaizen.db.dao.SignalDao;
 import flipkart.pricing.apps.kaizen.db.dao.SignalTypeDao;
 import flipkart.pricing.apps.kaizen.db.model.ListingInfo;
 import flipkart.pricing.apps.kaizen.db.model.Signal;
-import flipkart.pricing.apps.kaizen.db.model.SignalId;
 import flipkart.pricing.apps.kaizen.db.model.SignalTypes;
-import flipkart.pricing.apps.kaizen.dto.SignalFetchDto;
-import flipkart.pricing.apps.kaizen.dto.SignalUpdateDto;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -30,9 +31,9 @@ public class SignalService {
         this.signalTypeDao = signalTypeDao;
     }
 
-    public boolean updateSignals(String listing, List<SignalUpdateDto> signalUpdateDtoList) {
-        ListingInfo listingInfo = listingInfoDao.insertIgnoreListing(listing);
-        List<Signal> signals = convertToSignals(listingInfo.getId(), signalUpdateDtoList);
+    public boolean updateSignals(SignalRequestDto signalRequestDto) {
+        ListingInfo listingInfo = listingInfoDao.insertIgnoreListing(signalRequestDto.getListing());
+        List<Signal> signals = convertToSignals(listingInfo.getId(), signalRequestDto.getSignalRequestDetails());
         int signalsUpdatedCount = 0;
         for (Signal signal: signals) {
             signalsUpdatedCount += signalDao.insertOrUpdateSignal(signal);
@@ -44,35 +45,39 @@ public class SignalService {
         return false;
     }
 
-    public List<SignalFetchDto> fetchSignals(String listing) {
+    public SignalResponseDto fetchSignals(String listing) {
         ListingInfo listingInfo = listingInfoDao.fetchListingByName(listing);
         List<SignalTypes> signalTypes = signalTypeDao.fetchAll();
         Map<Long, String> signalValueMap = new HashMap<>();
+        //Populating the default values
         for (SignalTypes signalType : signalTypes) {
             signalValueMap.put(signalType.getId(), signalType.getDefaultValue());
         }
         List<Signal> signals = signalDao.fetchAllForListing(listingInfo.getId());
+        //Overriding the default values, if values are explicitly present
         for (Signal signal : signals) {
             signalValueMap.put(signal.getId().getSignalTypeId(), signal.getValue());
         }
-        List<SignalFetchDto> signalFetchDtoList = new ArrayList<>();
+        List<SignalResponseDetail> signalResponseDetailsList = new ArrayList<>();
         for (SignalTypes signalType : signalTypes) {
             Long signalId = signalType.getId();
-            signalFetchDtoList.add(new SignalFetchDto(signalType.getName(), signalValueMap.get(signalId),
-                                   signalType.getType()));
+            signalResponseDetailsList.add(new SignalResponseDetail(signalType.getName(),
+                                          signalValueMap.get(signalId),
+                                          signalType.getType()));
         }
-        return signalFetchDtoList;
+        return new SignalResponseDto(listing, listingInfo.getVersion(), signalResponseDetailsList);
     }
 
 
-    private List<Signal> convertToSignals(Long listingId, List<SignalUpdateDto> signalUpdateDtoList) {
+    private List<Signal> convertToSignals(Long listingId, List<SignalRequestDetail> signalRequestDetailList) {
         List<Signal> signals = new ArrayList<>();
         Map<String, SignalTypes> signalTypesMap = signalTypeDao.fetchNameSignalTypesMap();
-        for(SignalUpdateDto signalUpdateDto : signalUpdateDtoList) {
-            SignalTypes signalType = signalTypesMap.get(signalUpdateDto.getSignalName());
-            signals.add(new Signal(new SignalId(listingId, signalType.getId()), signalUpdateDto.getSignalValue(),
-                                   signalUpdateDto.getVersion(), signalUpdateDto.getSignalExpiry()));
+        for(SignalRequestDetail signalRequestDetail : signalRequestDetailList) {
+            SignalTypes signalType = signalTypesMap.get(signalRequestDetail.getName());
+            signals.add(new Signal(listingId, signalType.getId(), signalRequestDetail.getValue(), signalRequestDetail.getVersion(),
+                                   null, signalRequestDetail.getQualifier())); //TODO define how to set server_timestamp
         }
         return signals;
     }
+
 }
