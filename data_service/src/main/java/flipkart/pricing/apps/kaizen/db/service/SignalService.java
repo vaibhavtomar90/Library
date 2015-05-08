@@ -32,28 +32,32 @@ public class SignalService {
     }
 
     public boolean updateSignals(SignalRequestDto signalRequestDto) {
-        ListingInfo listingInfo = listingInfoDao.insertIgnoreListing(signalRequestDto.getListing());
+        ListingInfo listingInfo = listingInfoDao.fetchListingByNameWithWriteLock(signalRequestDto.getListing()); //find with lock
+        if (listingInfo == null) {
+            listingInfo = listingInfoDao.insertIgnoreListing(signalRequestDto.getListing()); //this will take lock throughout the transaction
+        }
+        //TODO Do we need sorting on signals level ?? I can't think of the use if we have listing level sorting already but maybe I'm missing something
         List<Signal> signals = convertToSignals(listingInfo.getId(), signalRequestDto.getSignalRequestDetails());
         int signalsUpdatedCount = 0;
         for (Signal signal: signals) {
             signalsUpdatedCount += signalDao.insertOrUpdateSignal(signal);
         }
         if (signalsUpdatedCount > 0) {
-            listingInfoDao.updateVersionAndGetListing(listingInfo);
+            listingInfoDao.updateVersionAndGetListing(listingInfo.getListing());
             return true;
         }
         return false;
     }
 
     public SignalResponseDto fetchSignals(String listing) {
-        ListingInfo listingInfo = listingInfoDao.fetchListingByName(listing);
+        ListingInfo listingInfo = listingInfoDao.fetchListingByNameWithReadLock(listing);
         List<SignalTypes> signalTypes = signalTypeDao.fetchAll();
         Map<Long, String> signalValueMap = new HashMap<>();
         //Populating the default values
         for (SignalTypes signalType : signalTypes) {
             signalValueMap.put(signalType.getId(), signalType.getDefaultValue());
         }
-        List<Signal> signals = signalDao.fetchAllForListing(listingInfo.getId());
+        List<Signal> signals = signalDao.fetchSignals(listingInfo.getId());
         //Overriding the default values, if values are explicitly present
         for (Signal signal : signals) {
             signalValueMap.put(signal.getId().getSignalTypeId(), signal.getValue());

@@ -18,6 +18,10 @@ public class SignalTypeDao extends AbstractDAO<SignalTypes> {
         super(sessionFactory);
     }
 
+    public SignalTypes insertSignalType(SignalTypes signalType) {
+        return persist(signalType);
+    }
+
     public Map<String, SignalTypes> fetchNameSignalTypesMap() {
         List<SignalTypes> signalTypesList = fetchAll();
         Map<String, SignalTypes> signalTypesMap = new HashMap<>();

@@ -25,6 +25,8 @@ public class Signal implements Comparable<Signal>, DomainEntity {
     @Column
     private String qualifier;
 
+    public Signal() {}
+
 
     public Signal(SignalId id, String value, long version, Timestamp serverTimestamp, String qualifier) {
         this.id = id;
