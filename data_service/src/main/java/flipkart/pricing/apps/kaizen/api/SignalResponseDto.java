@@ -20,6 +20,9 @@ public class SignalResponseDto {
     @NotNull
     private List<SignalResponseDetail> signals;
 
+    @Deprecated
+    public SignalResponseDto() {} //for jackson
+
     public SignalResponseDto(String listing, Long listingVersion, List<SignalResponseDetail> signals) {
         this.listing = listing;
         this.listingVersion = listingVersion;

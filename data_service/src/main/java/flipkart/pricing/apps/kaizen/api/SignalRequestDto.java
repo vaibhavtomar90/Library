@@ -23,6 +23,9 @@ public class SignalRequestDto {
     @JsonProperty("version")
     private Long listingVersion;
 
+    @Deprecated
+    public SignalRequestDto() {} //for jackson
+
 
     public SignalRequestDto(String listing, List<SignalRequestDetail> signalRequestDetails, Long listingVersion) {
         this.listing = listing;

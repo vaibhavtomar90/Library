@@ -23,6 +23,9 @@ public class SignalRequestDetail {
     @JsonProperty
     private String qualifier;
 
+    @Deprecated
+    public SignalRequestDetail() {} //for jackson
+
 
     public SignalRequestDetail(String name, String value, Long version, String qualifier) {
         this.name = name;

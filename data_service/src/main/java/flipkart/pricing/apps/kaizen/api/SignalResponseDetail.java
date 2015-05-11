@@ -20,6 +20,9 @@ public class SignalResponseDetail {
     @NotNull
     private SignalDataTypes dataType;
 
+    @Deprecated
+    public SignalResponseDetail() {} //for jackson
+
     public SignalResponseDetail(String name, String value, SignalDataTypes dataType) {
         this.name = name;
         this.value = value;
