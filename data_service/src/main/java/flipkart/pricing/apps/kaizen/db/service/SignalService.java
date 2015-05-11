@@ -19,7 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -107,9 +106,8 @@ public class SignalService {
                 logger.error("Incorrect qualifier for signal "+signalRequestDetail.getName()+" : "+signalRequestDetail.getQualifier());
                 throw new InvalidQualifierException();
             }
-            //TODO define how to set server_timestamp
             signals.add(new Signal(listingId, signalType.getId(), signalRequestDetail.getValue(), signalRequestDetail.getVersion(),
-                                   new Timestamp(System.currentTimeMillis()), signalRequestDetail.getQualifier()));
+                                   signalRequestDetail.getQualifier()));
         }
         return signals;
     }

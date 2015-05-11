@@ -13,8 +13,8 @@ import java.util.List;
 
 public class SignalDao extends AbstractDAO<Signal> {
 
-    private static final String INSERT_SIGNAL_QUERY = "INSERT INTO signals (listing_id, signal_type_id, value, version, server_timestamp, qualifier) VALUES (:listing_id, :signal_type_id, :value, :version, :server_timestamp, :qualifier)";
-    private static final String UPDATE_SIGNAL_QUERY = "UPDATE signals SET value = :value, version = :version, server_timestamp = :server_timestamp, qualifier = :qualifier WHERE listing_id = :listing_id AND signal_type_id = :signal_type_id AND version <= :version";
+    private static final String INSERT_SIGNAL_QUERY = "INSERT INTO signals (listing_id, signal_type_id, value, version, qualifier) VALUES (:listing_id, :signal_type_id, :value, :version, :qualifier)";
+    private static final String UPDATE_SIGNAL_QUERY = "UPDATE signals SET value = :value, version = :version, qualifier = :qualifier WHERE listing_id = :listing_id AND signal_type_id = :signal_type_id AND version <= :version";
 
     @Inject
     public SignalDao(SessionFactory sessionFactory) {
@@ -27,7 +27,6 @@ public class SignalDao extends AbstractDAO<Signal> {
                               .setLong("signal_type_id", signal.getId().getSignalTypeId())
                               .setString("value", signal.getValue())
                               .setLong("version", signal.getVersion())
-                              .setTimestamp("server_timestamp", signal.getServerTimestamp())
                               .setString("qualifier", signal.getQualifier()).executeUpdate();
     }
 
@@ -35,7 +34,6 @@ public class SignalDao extends AbstractDAO<Signal> {
        return currentSession().createSQLQuery(UPDATE_SIGNAL_QUERY)
                               .setString("value", signal.getValue())
                               .setLong("version", signal.getVersion())
-                              .setTimestamp("server_timestamp", signal.getServerTimestamp())
                               .setString("qualifier", signal.getQualifier())
                               .setLong("listing_id", signal.getId().getListingId())
                               .setLong("signal_type_id", signal.getId().getSignalTypeId()).executeUpdate();
@@ -58,8 +56,7 @@ public class SignalDao extends AbstractDAO<Signal> {
 
     public int insertOrUpdateSignal(Signal signal) {
         Signal fetch = fetchSignals(signal.getId().getListingId(), signal.getId().getSignalTypeId());
-        //TODO original dm had a try-catch block here, talk with Vivek. I don't think it's required
-        //TODO since we already have listing level lock
+        //TODO original dm had a try-catch block here, talk with Vivek. I don't think it's required since we already have listing level lock
         return (fetch != null) ? updateSignal(signal) : insertSignal(signal);
     }
 }

@@ -19,7 +19,7 @@ public class Signal implements Comparable<Signal>, DomainEntity {
     @Column(nullable = false)
     private long version;
 
-    @Column(name = "server_timestamp", nullable = false)
+    @Column(name = "server_timestamp", columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Timestamp serverTimestamp;
 
     @Column
@@ -36,8 +36,12 @@ public class Signal implements Comparable<Signal>, DomainEntity {
         this.qualifier = qualifier;
     }
 
-    public Signal(SignalId id, String value, long version, Timestamp serverTimestamp) {
-        this(id, value, version, serverTimestamp, null);
+    public Signal(SignalId id, String value, long version) {
+        this(id, value, version, null, null);
+    }
+
+    public Signal(Long listingId, Long signalTypeId, String value, long version) {
+        this(new SignalId(listingId, signalTypeId), value, version);
     }
 
     public Signal(Long listingId, Long signalTypeId, String value, long version, Timestamp serverTimestamp, String qualifier) {
@@ -47,6 +51,11 @@ public class Signal implements Comparable<Signal>, DomainEntity {
     public Signal(Long listingId, Long signalTypeId, String value, long version, Timestamp serverTimestamp) {
         this(listingId, signalTypeId, value, version, serverTimestamp, null);
     }
+
+    public Signal(Long listingId, Long signalTypeId, String value, long version, String qualifier) {
+        this(listingId, signalTypeId, value, version, null, qualifier);
+    }
+
 
     public SignalId getId() {
         return id;
@@ -82,8 +91,9 @@ public class Signal implements Comparable<Signal>, DomainEntity {
         if (version != signal.version) return false;
         if (id != null ? !id.equals(signal.id) : signal.id != null) return false;
         if (qualifier != null ? !qualifier.equals(signal.qualifier) : signal.qualifier != null) return false;
-        if (serverTimestamp != null ? !serverTimestamp.equals(signal.serverTimestamp) : signal.serverTimestamp != null)
-            return false;
+        //TODO: Should this be there considering that is an auto-update column
+//        if (serverTimestamp != null ? !serverTimestamp.equals(signal.serverTimestamp) : signal.serverTimestamp != null)
+//            return false;
         if (value != null ? !value.equals(signal.value) : signal.value != null) return false;
 
         return true;

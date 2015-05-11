@@ -42,6 +42,10 @@ public class HibernateSessionTestRule implements TestRule {
         };
     }
 
+    public void clearSession() {
+        sessionFactory.getCurrentSession().clear();
+    }
+
     private void shutdown() {
         try {
             try {
