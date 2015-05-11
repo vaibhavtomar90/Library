@@ -11,14 +11,21 @@ import flipkart.pricing.apps.kaizen.db.dao.SignalTypeDao;
 import flipkart.pricing.apps.kaizen.db.model.ListingInfo;
 import flipkart.pricing.apps.kaizen.db.model.Signal;
 import flipkart.pricing.apps.kaizen.db.model.SignalTypes;
+import flipkart.pricing.apps.kaizen.exceptions.InvalidQualifierException;
+import flipkart.pricing.apps.kaizen.exceptions.ListingNotFoundException;
+import flipkart.pricing.apps.kaizen.exceptions.SignalNameNotFoundException;
+import flipkart.pricing.apps.kaizen.exceptions.SignalValueInvalidException;
 
 import javax.inject.Inject;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class SignalService {
+
+    private static final String ACCEPTED_QUALIFIER = "INR";
 
     private SignalDao signalDao;
     private ListingInfoDao listingInfoDao;
@@ -34,7 +41,7 @@ public class SignalService {
     public boolean updateSignals(SignalRequestDto signalRequestDto) {
         ListingInfo listingInfo = listingInfoDao.fetchListingByNameWithWriteLock(signalRequestDto.getListing()); //find with lock
         if (listingInfo == null) {
-            listingInfo = listingInfoDao.insertIgnoreListing(signalRequestDto.getListing()); //this will take lock throughout the transaction
+            listingInfo = listingInfoDao.insertIgnoreListing(signalRequestDto.getListing()); //this will again take a write lock
         }
         //TODO Do we need sorting on signals level ?? I can't think of the use if we have listing level sorting already but maybe I'm missing something
         List<Signal> signals = convertToSignals(listingInfo.getId(), signalRequestDto.getSignalRequestDetails());
@@ -51,6 +58,9 @@ public class SignalService {
 
     public SignalResponseDto fetchSignals(String listing) {
         ListingInfo listingInfo = listingInfoDao.fetchListingByNameWithReadLock(listing);
+        if (listingInfo == null) {
+            throw new ListingNotFoundException(listing);
+        }
         List<SignalTypes> signalTypes = signalTypeDao.fetchAll();
         Map<Long, String> signalValueMap = new HashMap<>();
         //Populating the default values
@@ -78,8 +88,19 @@ public class SignalService {
         Map<String, SignalTypes> signalTypesMap = signalTypeDao.fetchNameSignalTypesMap();
         for(SignalRequestDetail signalRequestDetail : signalRequestDetailList) {
             SignalTypes signalType = signalTypesMap.get(signalRequestDetail.getName());
+            //All the error handling
+            if (signalType == null) {
+                throw new SignalNameNotFoundException(signalRequestDetail.getName());
+            }
+            if (!signalType.getType().isValid(signalRequestDetail.getValue())) {
+                throw new SignalValueInvalidException(signalRequestDetail.getValue(), signalRequestDetail.getName());
+            }
+            if (signalType.getType().needsQualifier() && !ACCEPTED_QUALIFIER.equals(signalRequestDetail.getQualifier())) {
+                throw new InvalidQualifierException();
+            }
+            //TODO define how to set server_timestamp
             signals.add(new Signal(listingId, signalType.getId(), signalRequestDetail.getValue(), signalRequestDetail.getVersion(),
-                                   null, signalRequestDetail.getQualifier())); //TODO define how to set server_timestamp
+                                   new Timestamp(System.currentTimeMillis()), signalRequestDetail.getQualifier()));
         }
         return signals;
     }

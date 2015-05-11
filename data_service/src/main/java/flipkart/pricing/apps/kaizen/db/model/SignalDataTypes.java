@@ -63,9 +63,28 @@ public enum SignalDataTypes {
         public boolean isValid(String value) {
             return true;
         }
+    },
+    PRICE {
+        @Override
+        public boolean isValid(String value) {
+            if (value==null){
+                return true;
+            }
+            try {
+                Double.parseDouble(value);
+                return true;
+            } catch(NumberFormatException e) {
+                return false;
+            }
+        }
+        @Override
+        public boolean needsQualifier() {
+            return true;
+        }
     };
 
     abstract public boolean isValid(String value);
 
+    public boolean needsQualifier() { return false; }
 
 }
