@@ -32,7 +32,7 @@ public class ListingInfoDao extends AbstractDAO<ListingInfo> {
     public ListingInfo updateVersionAndGetListing(String listing) {
         int execUpdate = currentSession().createSQLQuery(UPDATE_VERSION_QUERY).setString("listing", listing).executeUpdate();
         if(execUpdate <= 0) {
-            throw new UnableToUpdateVersionException();
+            throw new UnableToUpdateVersionException(listing);
         }
         currentSession().clear();
         Criteria criteria = currentSession().createCriteria(ListingInfo.class).add(Restrictions.eq("listing", listing));
