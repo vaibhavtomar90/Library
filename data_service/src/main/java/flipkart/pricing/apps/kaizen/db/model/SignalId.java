@@ -10,14 +10,14 @@ import javax.persistence.Embeddable;
 public class SignalId implements Comparable<SignalId>, DomainEntity {
 
     @Column(name = "listing_id", nullable = false)
-    private Long listingId;
+    private long listingId;
 
     @Column(name = "signal_type_id", nullable = false)
-    private Long signalTypeId;
+    private long signalTypeId;
 
     public SignalId() {}
 
-    public SignalId(Long listingId, Long signalTypeId) {
+    public SignalId(long listingId, long signalTypeId) {
         this.listingId = listingId;
         this.signalTypeId = signalTypeId;
     }
@@ -33,9 +33,9 @@ public class SignalId implements Comparable<SignalId>, DomainEntity {
 
     @Override
     public int compareTo(SignalId signalId) {
-        int listingComparisonValue = listingId.compareTo(signalId.getListingId());
+        int listingComparisonValue = Long.compare(listingId, signalId.getListingId());
         if (listingComparisonValue == 0) {
-            return signalTypeId.compareTo(signalId.getSignalTypeId());
+            return Long.compare(signalTypeId, signalId.getSignalTypeId());
         }
         return listingComparisonValue;
     }
@@ -48,6 +48,7 @@ public class SignalId implements Comparable<SignalId>, DomainEntity {
                 '}';
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,17 +56,16 @@ public class SignalId implements Comparable<SignalId>, DomainEntity {
 
         SignalId signalId = (SignalId) o;
 
-        if (listingId != null ? !listingId.equals(signalId.listingId) : signalId.listingId != null) return false;
-        if (signalTypeId != null ? !signalTypeId.equals(signalId.signalTypeId) : signalId.signalTypeId != null)
-            return false;
+        if (listingId != signalId.listingId) return false;
+        if (signalTypeId != signalId.signalTypeId) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = listingId != null ? listingId.hashCode() : 0;
-        result = 31 * result + (signalTypeId != null ? signalTypeId.hashCode() : 0);
+        int result = (int) (listingId ^ (listingId >>> 32));
+        result = 31 * result + (int) (signalTypeId ^ (signalTypeId >>> 32));
         return result;
     }
 }
