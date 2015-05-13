@@ -1,12 +1,23 @@
 package flipkart.pricing.apps.kaizen.boot.config;
 
+
 import org.apache.camel.CamelContext;
 import org.apache.camel.spring.SpringCamelContext;
+
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.hibernate.SessionFactory;
+
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.orm.hibernate4.HibernateTransactionManager;
+import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+
+import javax.sql.DataSource;
+import java.beans.PropertyVetoException;
+import java.util.Properties;
 
 /**
  * @understands : Spring context configuration
@@ -30,4 +41,48 @@ public class KaizenContextConfiguration {
         return new SpringCamelContext();
     }
 
+    //TODO ideally this session factory should be the same as used by dropwizard
+    @Bean
+    public LocalSessionFactoryBean sessionFactory() throws PropertyVetoException {
+        final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        sessionFactory.setDataSource(dataSource());
+        sessionFactory.setPackagesToScan("flipkart.pricing.apps.kaizen.db.model");
+        sessionFactory.setHibernateProperties(hibernateProperties());
+        return sessionFactory;
+    }
+
+    @Bean
+    public DataSource dataSource() throws PropertyVetoException {
+        final YamlPropertiesFactoryBean yamlPropertiesFactoryBean = yamlPropertiesLoader();
+        Properties properties = yamlPropertiesFactoryBean.getObject();
+        ComboPooledDataSource dataSource = new ComboPooledDataSource();
+        // TODO : Use yaml configs
+        dataSource.setDriverClass(properties.getProperty("database.driverClass"));
+        dataSource.setJdbcUrl(properties.getProperty("database.url"));
+        dataSource.setUser(properties.getProperty("database.user"));
+        dataSource.setPassword(properties.getProperty("database.pass"));
+        return dataSource;
+    }
+
+
+
+    @Bean
+    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
+        HibernateTransactionManager txManager = new HibernateTransactionManager();
+        txManager.setSessionFactory(sessionFactory);
+        return txManager;
+    }
+
+
+    private Properties hibernateProperties() {
+        final YamlPropertiesFactoryBean yamlPropertiesFactoryBean = yamlPropertiesLoader();
+        Properties properties = yamlPropertiesFactoryBean.getObject();
+        return new Properties() {
+            {
+                setProperty("hibernate.hbm2ddl.auto", properties.getProperty("database.properties.hibernate.hbm2ddl.auto"));
+                setProperty("hibernate.dialect", properties.getProperty("database.properties.hibernate.dialect"));
+                setProperty("hibernate.connection.isolation", properties.getProperty("database.properties.hibernate.connection.isolation"));
+            }
+        };
+    }
 }
