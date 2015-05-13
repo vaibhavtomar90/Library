@@ -1,10 +1,18 @@
 package flipkart.pricing.apps.kaizen.db.model;
 
+import flipkart.pricing.apps.kaizen.boot.config.KaizenContextConfiguration;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = KaizenContextConfiguration.class)
+@ActiveProfiles("test")
 public class SignalDataTypeTest {
 
     @Test

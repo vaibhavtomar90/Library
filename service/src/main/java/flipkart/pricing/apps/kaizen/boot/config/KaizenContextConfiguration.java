@@ -2,7 +2,6 @@ package flipkart.pricing.apps.kaizen.boot.config;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -77,5 +76,4 @@ public class KaizenContextConfiguration {
             }
         };
     }
-
 }

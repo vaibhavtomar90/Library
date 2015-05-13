@@ -5,6 +5,7 @@ import flipkart.pricing.apps.kaizen.api.SignalFetchDetail;
 import flipkart.pricing.apps.kaizen.api.SignalSaveDetail;
 import flipkart.pricing.apps.kaizen.api.SignalSaveDto;
 import flipkart.pricing.apps.kaizen.api.SignalFetchDto;
+import flipkart.pricing.apps.kaizen.boot.config.KaizenContextConfiguration;
 import flipkart.pricing.apps.kaizen.db.dao.ListingInfoDao;
 import flipkart.pricing.apps.kaizen.db.dao.SignalInfoDao;
 import flipkart.pricing.apps.kaizen.db.dao.SignalTypeDao;
@@ -16,10 +17,14 @@ import flipkart.pricing.apps.kaizen.exceptions.InvalidQualifierException;
 import flipkart.pricing.apps.kaizen.exceptions.ListingNotFoundException;
 import flipkart.pricing.apps.kaizen.exceptions.SignalNameNotFoundException;
 import flipkart.pricing.apps.kaizen.exceptions.SignalValueInvalidException;
-import flipkart.pricing.apps.kaizen.testrules.HibernateSessionTestRule;
-import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -28,18 +33,26 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = KaizenContextConfiguration.class)
+@ActiveProfiles("test")
 public class SignalServiceTest {
 
-    @Rule
-    public HibernateSessionTestRule hibernateSessionTestRule = new HibernateSessionTestRule();
+    @Inject
+    private SignalService signalService;
 
+    @Inject
+    private SignalInfoDao signalInfoDao;
+
+    @Inject
+    private SignalTypeDao signalTypeDao;
+
+    @Inject
+    private ListingInfoDao listingInfoDao;
 
     @Test(expected = SignalNameNotFoundException.class)
+    @Transactional
     public void shouldThrowExceptionIfSignalTypeDoesNotExist() {
-        SignalInfoDao signalInfoDao = new SignalInfoDao(hibernateSessionTestRule.getSessionFactory());
-        ListingInfoDao listingInfoDao = new ListingInfoDao(hibernateSessionTestRule.getSessionFactory());
-        SignalTypeDao signalTypeDao = new SignalTypeDao(hibernateSessionTestRule.getSessionFactory());
-        SignalService signalService = new SignalService(signalInfoDao, listingInfoDao, signalTypeDao);
         //Add signals for foo listing
         List<SignalSaveDetail> signalSaveDetails = Arrays.asList(new SignalSaveDetail("mrp", "45.0", 1l));
         SignalSaveDto signalSaveDto = new SignalSaveDto("foo", signalSaveDetails);
@@ -47,11 +60,8 @@ public class SignalServiceTest {
     }
 
     @Test(expected = SignalValueInvalidException.class)
+    @Transactional
     public void shouldThrowExceptionIfSignalValueIsInvalid() {
-        SignalInfoDao signalInfoDao = new SignalInfoDao(hibernateSessionTestRule.getSessionFactory());
-        ListingInfoDao listingInfoDao = new ListingInfoDao(hibernateSessionTestRule.getSessionFactory());
-        SignalTypeDao signalTypeDao = new SignalTypeDao(hibernateSessionTestRule.getSessionFactory());
-        SignalService signalService = new SignalService(signalInfoDao, listingInfoDao, signalTypeDao);
         signalTypeDao.insertSignalType(new SignalType("mrp", SignalDataType.DOUBLE, null));
         //Add signals for foo listing
         List<SignalSaveDetail> signalSaveDetails = Arrays.asList(new SignalSaveDetail("mrp", "bar", 0l));
@@ -60,11 +70,8 @@ public class SignalServiceTest {
     }
 
     @Test(expected = InvalidQualifierException.class)
+    @Transactional
     public void shouldThrowExceptionIfNoQualifierIsProvidedForPriceTypeSignal() {
-        SignalInfoDao signalInfoDao = new SignalInfoDao(hibernateSessionTestRule.getSessionFactory());
-        ListingInfoDao listingInfoDao = new ListingInfoDao(hibernateSessionTestRule.getSessionFactory());
-        SignalTypeDao signalTypeDao = new SignalTypeDao(hibernateSessionTestRule.getSessionFactory());
-        SignalService signalService = new SignalService(signalInfoDao, listingInfoDao, signalTypeDao);
         signalTypeDao.insertSignalType(new SignalType("mrp", SignalDataType.PRICE, null));
         //Add signals for foo listing
         List<SignalSaveDetail> signalSaveDetails = Arrays.asList(new SignalSaveDetail("mrp", "45.0", 0l));
@@ -73,11 +80,8 @@ public class SignalServiceTest {
     }
 
     @Test(expected = InvalidQualifierException.class)
+    @Transactional
     public void shouldThrowExceptionIfInvalidQualifierIsProvidedForPriceTypeSignal() {
-        SignalInfoDao signalInfoDao = new SignalInfoDao(hibernateSessionTestRule.getSessionFactory());
-        ListingInfoDao listingInfoDao = new ListingInfoDao(hibernateSessionTestRule.getSessionFactory());
-        SignalTypeDao signalTypeDao = new SignalTypeDao(hibernateSessionTestRule.getSessionFactory());
-        SignalService signalService = new SignalService(signalInfoDao, listingInfoDao, signalTypeDao);
         signalTypeDao.insertSignalType(new SignalType("mrp", SignalDataType.PRICE, null));
         //Add signals for foo listing
         List<SignalSaveDetail> signalSaveDetails = Arrays.asList(new SignalSaveDetail("mrp", "45.0", 0l, "USD"));
@@ -86,11 +90,8 @@ public class SignalServiceTest {
     }
 
     @Test
+    @Transactional
     public void shouldUpdateListingVersionIfAnySignalChanges() {
-        SignalInfoDao signalInfoDao = new SignalInfoDao(hibernateSessionTestRule.getSessionFactory());
-        ListingInfoDao listingInfoDao = new ListingInfoDao(hibernateSessionTestRule.getSessionFactory());
-        SignalTypeDao signalTypeDao = new SignalTypeDao(hibernateSessionTestRule.getSessionFactory());
-        SignalService signalService = new SignalService(signalInfoDao, listingInfoDao, signalTypeDao);
         //Add signalInfo types
         signalTypeDao.insertSignalType(new SignalType("mrp", SignalDataType.DOUBLE, null));
         Map<String, SignalType> signalTypes = signalTypeDao.fetchNameSignalTypesMap();
@@ -117,51 +118,36 @@ public class SignalServiceTest {
     }
 
     @Test
+    @Transactional
     public void shouldNotUpdateListingVersionIfNoSignalChanges() {
-        SignalInfoDao signalInfoDao = new SignalInfoDao(hibernateSessionTestRule.getSessionFactory());
-        ListingInfoDao listingInfoDao = new ListingInfoDao(hibernateSessionTestRule.getSessionFactory());
-        SignalTypeDao signalTypeDao = new SignalTypeDao(hibernateSessionTestRule.getSessionFactory());
-        SignalService signalService = new SignalService(signalInfoDao, listingInfoDao, signalTypeDao);
         //Add signalInfo types
         signalTypeDao.insertSignalType(new SignalType("mrp", SignalDataType.DOUBLE, null));
         Map<String, SignalType> signalTypes = signalTypeDao.fetchNameSignalTypesMap();
         //Add signals for foo listing
         List<SignalSaveDetail> signalSaveDetails = Arrays.asList(new SignalSaveDetail("mrp", "45.0", 1l));
         SignalSaveDto signalSaveDto = new SignalSaveDto("foo", signalSaveDetails);
-        boolean versionUpdated = signalService.updateSignals(signalSaveDto);
-        assertTrue(versionUpdated);
+        signalService.updateSignals(signalSaveDto);
+        //Try to update signals with an older version
+        List<SignalSaveDetail> signalSaveDetails1 = Arrays.asList(new SignalSaveDetail("mrp", "55.0", 0l));
+        SignalSaveDto signalSaveDto1 = new SignalSaveDto("foo", signalSaveDetails1);
+        boolean versionUpdated = signalService.updateSignals(signalSaveDto1);
+        assertFalse(versionUpdated);
         ListingInfo fetchedListingInfo = listingInfoDao.fetchListingByNameWithReadLock("foo");
         assertTrue(fetchedListingInfo.getVersion() == 1l);
         SignalInfo signalInfo = signalInfoDao.fetchSignals(fetchedListingInfo.getId(), signalTypes.get("mrp").getId());
         assertTrue(signalInfo.getValue().equals("45.0"));
         assertTrue(signalInfo.getVersion() == 1l);
-        //Try to update signals with an older version
-        List<SignalSaveDetail> signalSaveDetails1 = Arrays.asList(new SignalSaveDetail("mrp", "55.0", 0l));
-        SignalSaveDto signalSaveDto1 = new SignalSaveDto("foo", signalSaveDetails1);
-        versionUpdated = signalService.updateSignals(signalSaveDto1);
-        assertFalse(versionUpdated);
-        fetchedListingInfo = listingInfoDao.fetchListingByNameWithReadLock("foo");
-        assertTrue(fetchedListingInfo.getVersion() == 1l);
-        signalInfo = signalInfoDao.fetchSignals(fetchedListingInfo.getId(), signalTypes.get("mrp").getId());
-        assertTrue(signalInfo.getValue().equals("45.0"));
-        assertTrue(signalInfo.getVersion() == 1l);
     }
 
     @Test(expected = ListingNotFoundException.class)
+    @Transactional
     public void shouldThrowExceptionIfListingIfNotPresentForFetch() {
-        SignalInfoDao signalInfoDao = new SignalInfoDao(hibernateSessionTestRule.getSessionFactory());
-        ListingInfoDao listingInfoDao = new ListingInfoDao(hibernateSessionTestRule.getSessionFactory());
-        SignalTypeDao signalTypeDao = new SignalTypeDao(hibernateSessionTestRule.getSessionFactory());
-        SignalService signalService = new SignalService(signalInfoDao, listingInfoDao, signalTypeDao);
         signalService.fetchSignals("foo");
     }
 
     @Test
+    @Transactional
     public void shouldReturnDefaultValuesInFetchIfSignalIsNotPresent() {
-        SignalInfoDao signalInfoDao = new SignalInfoDao(hibernateSessionTestRule.getSessionFactory());
-        ListingInfoDao listingInfoDao = new ListingInfoDao(hibernateSessionTestRule.getSessionFactory());
-        SignalTypeDao signalTypeDao = new SignalTypeDao(hibernateSessionTestRule.getSessionFactory());
-        SignalService signalService = new SignalService(signalInfoDao, listingInfoDao, signalTypeDao);
         //Add signal types
         signalTypeDao.insertSignalType(new SignalType("mrp", SignalDataType.DOUBLE, "1.0"));
         signalTypeDao.insertSignalType(new SignalType("ssp", SignalDataType.DOUBLE, "1.0"));

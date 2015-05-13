@@ -22,7 +22,7 @@ import static org.junit.Assert.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {KaizenContextConfiguration.class})
 @ActiveProfiles("test")
-public class ListingResourceTest {
+public class ListingResourceIntegrationTest {
 
     @Rule
     @Autowired
