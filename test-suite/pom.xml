@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>flipkart.pricing.apps</groupId>
+    <artifactId>kaizen</artifactId>
+    <version>1.0</version>
+  </parent>
+  <groupId>flipkart.pricing.apps.kaizen</groupId>
+  <artifactId>test-suite</artifactId>
+  <version>1.0</version>
+  <name>test-suite</name>
+  <url>http://maven.apache.org</url>
+  <dependencies>
+    <dependency>
+      <groupId>flipkart.pricing.apps.kaizen</groupId>
+      <artifactId>service</artifactId>
+      <version>1.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>flipkart.pricing.apps.kaizen</groupId>
+      <artifactId>data_service</artifactId>
+      <version>1.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${spring.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+</project>
