@@ -16,7 +16,8 @@ public class ListingInfo {
     @Column(nullable = false)
     private long version;
 
-    public ListingInfo() {}
+    @Deprecated
+    ListingInfo() {}
 
     public ListingInfo(String listing, long version) {
         this.listing = listing;

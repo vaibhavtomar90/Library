@@ -8,7 +8,7 @@ import java.util.List;
 
 public class SignalResponseDto {
 
-    @JsonProperty("listing")
+    @JsonProperty
     @NotNull
     private String listing;
 
@@ -16,12 +16,12 @@ public class SignalResponseDto {
     @NotNull
     private Long listingVersion;
 
-    @JsonProperty("signals")
+    @JsonProperty
     @NotNull
     private List<SignalResponseDetail> signals;
 
     @Deprecated
-    public SignalResponseDto() {} //for jackson
+    SignalResponseDto() {} //for jackson
 
     public SignalResponseDto(String listing, Long listingVersion, List<SignalResponseDetail> signals) {
         this.listing = listing;
