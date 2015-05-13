@@ -1,5 +1,7 @@
 package flipkart.pricing.apps.kaizen.boot.config;
 
+import org.apache.camel.CamelContext;
+import org.apache.camel.spring.SpringCamelContext;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -21,6 +23,11 @@ public class KaizenContextConfiguration {
         final YamlPropertiesFactoryBean yamlPropertiesFactoryBean = new CustomYamlPropertiesFactoryBean();
         yamlPropertiesFactoryBean.setResources(new ClassPathResource(KaizenConfiguration.YML_CONFIG_FILE));
         return yamlPropertiesFactoryBean;
+    }
+
+    @Bean
+    public CamelContext getCamelContext() {
+        return new SpringCamelContext();
     }
 
 }
