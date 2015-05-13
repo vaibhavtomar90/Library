@@ -21,7 +21,7 @@ public class SignalResponseDetail {
     private SignalDataTypes dataType;
 
     @Deprecated
-    public SignalResponseDetail() {} //for jackson
+    SignalResponseDetail() {} //for jackson
 
     public SignalResponseDetail(String name, String value, SignalDataTypes dataType) {
         this.name = name;

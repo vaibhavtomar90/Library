@@ -10,7 +10,7 @@ import java.util.List;
 
 public class SignalRequestDto {
 
-    @JsonProperty("listing")
+    @JsonProperty
     @NotNull
     private String listing;
 
@@ -24,7 +24,7 @@ public class SignalRequestDto {
     private Long listingVersion;
 
     @Deprecated
-    public SignalRequestDto() {} //for jackson
+    SignalRequestDto() {} //for jackson
 
 
     public SignalRequestDto(String listing, List<SignalRequestDetail> signalRequestDetails, Long listingVersion) {

@@ -15,7 +15,8 @@ public class SignalId implements Comparable<SignalId>, DomainEntity {
     @Column(name = "signal_type_id", nullable = false)
     private long signalTypeId;
 
-    public SignalId() {}
+    @Deprecated
+    SignalId() {}
 
     public SignalId(long listingId, long signalTypeId) {
         this.listingId = listingId;
