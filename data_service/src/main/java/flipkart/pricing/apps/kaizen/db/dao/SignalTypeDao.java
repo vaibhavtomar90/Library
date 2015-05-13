@@ -1,7 +1,7 @@
 package flipkart.pricing.apps.kaizen.db.dao;
 
 
-import flipkart.pricing.apps.kaizen.db.model.SignalTypes;
+import flipkart.pricing.apps.kaizen.db.model.SignalType;
 import io.dropwizard.hibernate.AbstractDAO;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
@@ -13,29 +13,29 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class SignalTypeDao extends AbstractDAO<SignalTypes> {
+public class SignalTypeDao extends AbstractDAO<SignalType> {
 
     @Inject
     public SignalTypeDao(SessionFactory sessionFactory) {
         super(sessionFactory);
     }
 
-    public SignalTypes insertSignalType(SignalTypes signalType) {
+    public SignalType insertSignalType(SignalType signalType) {
         return persist(signalType);
     }
 
-    public Map<String, SignalTypes> fetchNameSignalTypesMap() {
-        List<SignalTypes> signalTypesList = fetchAll();
-        Map<String, SignalTypes> signalTypesMap = new HashMap<>();
-        for (SignalTypes signalType : signalTypesList) {
+    public Map<String, SignalType> fetchNameSignalTypesMap() {
+        List<SignalType> signalTypeList = fetchAll();
+        Map<String, SignalType> signalTypesMap = new HashMap<>();
+        for (SignalType signalType : signalTypeList) {
             signalTypesMap.put(signalType.getName(), signalType);
         }
         return signalTypesMap;
     }
 
 
-    public List<SignalTypes> fetchAll() {
-        Criteria criteria = currentSession().createCriteria(SignalTypes.class);
+    public List<SignalType> fetchAll() {
+        Criteria criteria = currentSession().createCriteria(SignalType.class);
         return list(criteria);
     }
 

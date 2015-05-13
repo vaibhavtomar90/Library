@@ -1,8 +1,8 @@
 package flipkart.pricing.apps.kaizen.db.dao;
 
 
-import flipkart.pricing.apps.kaizen.db.model.SignalDataTypes;
-import flipkart.pricing.apps.kaizen.db.model.SignalTypes;
+import flipkart.pricing.apps.kaizen.db.model.SignalDataType;
+import flipkart.pricing.apps.kaizen.db.model.SignalType;
 import flipkart.pricing.apps.kaizen.testrules.HibernateSessionTestRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,18 +21,18 @@ public class SignalTypeDaoTest {
 
     @Test
     public void shouldPersistAndFetchAllSignalTypes() {
-        List<SignalTypes> signalTypes = new ArrayList<>();
-        signalTypes.add(new SignalTypes("foo", SignalDataTypes.DOUBLE, "1.0"));
-        signalTypes.add(new SignalTypes("bar", SignalDataTypes.INT, "1"));
+        List<SignalType> signalTypes = new ArrayList<>();
+        signalTypes.add(new SignalType("foo", SignalDataType.DOUBLE, "1.0"));
+        signalTypes.add(new SignalType("bar", SignalDataType.INT, "1"));
         SignalTypeDao signalTypeDao = new SignalTypeDao(hibernateSessionTestRule.getSessionFactory());
-        for (SignalTypes signalType : signalTypes) {
+        for (SignalType signalType : signalTypes) {
             signalTypeDao.insertSignalType(signalType);
         }
-        List<SignalTypes> fetchedSignalTypes = signalTypeDao.fetchAll();
+        List<SignalType> fetchedSignalTypes = signalTypeDao.fetchAll();
         assertTrue(fetchedSignalTypes.size() == 2);
         int idx = 0;
-        for (SignalTypes fetchedSignalType : fetchedSignalTypes) {
-            SignalTypes persistedSignalType = signalTypes.get(idx);
+        for (SignalType fetchedSignalType : fetchedSignalTypes) {
+            SignalType persistedSignalType = signalTypes.get(idx);
             assertNotNull(fetchedSignalType.getId());
             assertTrue(fetchedSignalType.equals(persistedSignalType));
             idx ++;
@@ -41,17 +41,17 @@ public class SignalTypeDaoTest {
 
     @Test
     public void shouldCreateNameSignalTypeMap() {
-        List<SignalTypes> signalTypes = new ArrayList<>();
-        signalTypes.add(new SignalTypes("foo", SignalDataTypes.DOUBLE, "1.0"));
-        signalTypes.add(new SignalTypes("bar", SignalDataTypes.INT, "1"));
+        List<SignalType> signalTypes = new ArrayList<>();
+        signalTypes.add(new SignalType("foo", SignalDataType.DOUBLE, "1.0"));
+        signalTypes.add(new SignalType("bar", SignalDataType.INT, "1"));
         SignalTypeDao signalTypeDao = new SignalTypeDao(hibernateSessionTestRule.getSessionFactory());
-        for (SignalTypes signalType : signalTypes) {
+        for (SignalType signalType : signalTypes) {
             signalTypeDao.insertSignalType(signalType);
         }
-        Map<String, SignalTypes> fetchedNameSignalTypesMap = signalTypeDao.fetchNameSignalTypesMap();
+        Map<String, SignalType> fetchedNameSignalTypesMap = signalTypeDao.fetchNameSignalTypesMap();
         assertTrue(fetchedNameSignalTypesMap.size() == 2);
-        for (SignalTypes persistedSignalType : signalTypes) {
-            SignalTypes fetchedSignalType = fetchedNameSignalTypesMap.get(persistedSignalType.getName());
+        for (SignalType persistedSignalType : signalTypes) {
+            SignalType fetchedSignalType = fetchedNameSignalTypesMap.get(persistedSignalType.getName());
             assertNotNull(fetchedSignalType.getId());
             assertTrue(fetchedSignalType.equals(persistedSignalType));
         }

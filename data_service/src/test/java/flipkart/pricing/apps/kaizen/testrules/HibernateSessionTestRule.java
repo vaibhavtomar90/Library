@@ -2,9 +2,9 @@ package flipkart.pricing.apps.kaizen.testrules;
 
 
 import flipkart.pricing.apps.kaizen.db.model.ListingInfo;
-import flipkart.pricing.apps.kaizen.db.model.Signal;
-import flipkart.pricing.apps.kaizen.db.model.SignalDataTypes;
-import flipkart.pricing.apps.kaizen.db.model.SignalTypes;
+import flipkart.pricing.apps.kaizen.db.model.SignalDataType;
+import flipkart.pricing.apps.kaizen.db.model.SignalInfo;
+import flipkart.pricing.apps.kaizen.db.model.SignalType;
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -50,9 +50,9 @@ public class HibernateSessionTestRule implements TestRule {
         try {
             try {
                 try {
-                    sessionFactory.getCurrentSession().createSQLQuery("truncate signals").executeUpdate();
-                    sessionFactory.getCurrentSession().createSQLQuery("truncate listing_infos").executeUpdate();
-                    sessionFactory.getCurrentSession().createSQLQuery("truncate signal_types").executeUpdate();
+                    sessionFactory.getCurrentSession().createSQLQuery("truncate SignalInfo").executeUpdate();
+                    sessionFactory.getCurrentSession().createSQLQuery("truncate ListingInfo").executeUpdate();
+                    sessionFactory.getCurrentSession().createSQLQuery("truncate SignalType").executeUpdate();
                     sessionFactory.getCurrentSession().getTransaction().rollback();
 
                 } catch (Exception ex) {
@@ -71,9 +71,9 @@ public class HibernateSessionTestRule implements TestRule {
     private SessionFactory createSessionFactory() {
         Configuration annotatedConfiguration = new Configuration();
         annotatedConfiguration.addAnnotatedClass(ListingInfo.class)
-                .addAnnotatedClass(SignalTypes.class)
-                .addAnnotatedClass(SignalDataTypes.class)
-                .addAnnotatedClass(Signal.class);
+                .addAnnotatedClass(SignalType.class)
+                .addAnnotatedClass(SignalDataType.class)
+                .addAnnotatedClass(SignalInfo.class);
 
         annotatedConfiguration.setProperty(Environment.DRIVER, "com.mysql.jdbc.Driver");
         annotatedConfiguration.setProperty(Environment.URL, "jdbc:mysql://127.0.0.1:3306/pricing_kaizen");
