@@ -5,12 +5,14 @@ import flipkart.pricing.apps.kaizen.db.model.SignalTypes;
 import io.dropwizard.hibernate.AbstractDAO;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public class SignalTypeDao extends AbstractDAO<SignalTypes> {
 
     @Inject

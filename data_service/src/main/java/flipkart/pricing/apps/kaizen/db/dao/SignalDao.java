@@ -6,11 +6,13 @@ import io.dropwizard.hibernate.AbstractDAO;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
 import java.util.List;
 
+
+@Repository
 public class SignalDao extends AbstractDAO<Signal> {
 
     private static final String INSERT_SIGNAL_QUERY = "INSERT INTO signals (listing_id, signal_type_id, value, version, qualifier) VALUES (:listing_id, :signal_type_id, :value, :version, :qualifier)";

@@ -8,9 +8,11 @@ import org.hibernate.Criteria;
 import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
 
+@Repository
 public class ListingInfoDao extends AbstractDAO<ListingInfo> {
 
     private static final String INSERT_IGNORE_QUERY = "INSERT IGNORE INTO listing_infos (listing, version) values (:listing, 0)";
