@@ -6,26 +6,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-public class SignalResponseDto {
+/**
+ * @Understands Dto to be shared for returning signals of a listing
+ */
+public class SignalFetchDto {
 
     @JsonProperty
     @NotNull
     private String listing;
 
-    @JsonProperty("version")
+    @JsonProperty
     @NotNull
-    private Long listingVersion;
+    private Long version;
 
     @JsonProperty
     @NotNull
-    private List<SignalResponseDetail> signals;
+    private List<SignalFetchDetail> signals;
 
     @Deprecated
-    SignalResponseDto() {} //for jackson
+    SignalFetchDto() {} //for jackson
 
-    public SignalResponseDto(String listing, Long listingVersion, List<SignalResponseDetail> signals) {
+    public SignalFetchDto(String listing, Long version, List<SignalFetchDetail> signals) {
         this.listing = listing;
-        this.listingVersion = listingVersion;
+        this.version = version;
         this.signals = signals;
     }
 
@@ -33,23 +36,23 @@ public class SignalResponseDto {
         return listing;
     }
 
-    public Long getListingVersion() {
-        return listingVersion;
+    public Long getVersion() {
+        return version;
     }
 
-    public List<SignalResponseDetail> getSignals() {
+    public List<SignalFetchDetail> getSignals() {
         return signals;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SignalResponseDto)) return false;
+        if (!(o instanceof SignalFetchDto)) return false;
 
-        SignalResponseDto that = (SignalResponseDto) o;
+        SignalFetchDto that = (SignalFetchDto) o;
 
         if (listing != null ? !listing.equals(that.listing) : that.listing != null) return false;
-        if (listingVersion != null ? !listingVersion.equals(that.listingVersion) : that.listingVersion != null)
+        if (version != null ? !version.equals(that.version) : that.version != null)
             return false;
         if (signals != null ? !signals.equals(that.signals) : that.signals != null) return false;
 
@@ -59,16 +62,16 @@ public class SignalResponseDto {
     @Override
     public int hashCode() {
         int result = listing != null ? listing.hashCode() : 0;
-        result = 31 * result + (listingVersion != null ? listingVersion.hashCode() : 0);
+        result = 31 * result + (version != null ? version.hashCode() : 0);
         result = 31 * result + (signals != null ? signals.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "SignalResponseDto{" +
+        return "SignalFetchDto{" +
                 "listing='" + listing + '\'' +
-                ", listingVersion=" + listingVersion +
+                ", version=" + version +
                 ", signals=" + signals +
                 '}';
     }

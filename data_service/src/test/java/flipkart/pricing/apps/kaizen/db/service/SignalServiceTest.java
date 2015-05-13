@@ -1,10 +1,10 @@
 package flipkart.pricing.apps.kaizen.db.service;
 
 
-import flipkart.pricing.apps.kaizen.api.SignalRequestDetail;
-import flipkart.pricing.apps.kaizen.api.SignalRequestDto;
-import flipkart.pricing.apps.kaizen.api.SignalResponseDetail;
-import flipkart.pricing.apps.kaizen.api.SignalResponseDto;
+import flipkart.pricing.apps.kaizen.api.SignalFetchDetail;
+import flipkart.pricing.apps.kaizen.api.SignalSaveDetail;
+import flipkart.pricing.apps.kaizen.api.SignalSaveDto;
+import flipkart.pricing.apps.kaizen.api.SignalFetchDto;
 import flipkart.pricing.apps.kaizen.db.dao.ListingInfoDao;
 import flipkart.pricing.apps.kaizen.db.dao.SignalDao;
 import flipkart.pricing.apps.kaizen.db.dao.SignalTypeDao;
@@ -20,7 +20,6 @@ import flipkart.pricing.apps.kaizen.testrules.HibernateSessionTestRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -42,9 +41,9 @@ public class SignalServiceTest {
         SignalTypeDao signalTypeDao = new SignalTypeDao(hibernateSessionTestRule.getSessionFactory());
         SignalService signalService = new SignalService(signalDao, listingInfoDao, signalTypeDao);
         //Add signals for foo listing
-        List<SignalRequestDetail> signalRequestDetails = Arrays.asList(new SignalRequestDetail("mrp", "45.0", 1l));
-        SignalRequestDto signalRequestDto = new SignalRequestDto("foo", signalRequestDetails);
-        signalService.updateSignals(signalRequestDto);
+        List<SignalSaveDetail> signalSaveDetails = Arrays.asList(new SignalSaveDetail("mrp", "45.0", 1l));
+        SignalSaveDto signalSaveDto = new SignalSaveDto("foo", signalSaveDetails);
+        signalService.updateSignals(signalSaveDto);
     }
 
     @Test(expected = SignalValueInvalidException.class)
@@ -55,9 +54,9 @@ public class SignalServiceTest {
         SignalService signalService = new SignalService(signalDao, listingInfoDao, signalTypeDao);
         signalTypeDao.insertSignalType(new SignalTypes("mrp", SignalDataTypes.DOUBLE, null));
         //Add signals for foo listing
-        List<SignalRequestDetail> signalRequestDetails = Arrays.asList(new SignalRequestDetail("mrp", "bar", 0l));
-        SignalRequestDto signalRequestDto = new SignalRequestDto("foo", signalRequestDetails);
-        signalService.updateSignals(signalRequestDto);
+        List<SignalSaveDetail> signalSaveDetails = Arrays.asList(new SignalSaveDetail("mrp", "bar", 0l));
+        SignalSaveDto signalSaveDto = new SignalSaveDto("foo", signalSaveDetails);
+        signalService.updateSignals(signalSaveDto);
     }
 
     @Test(expected = InvalidQualifierException.class)
@@ -68,9 +67,9 @@ public class SignalServiceTest {
         SignalService signalService = new SignalService(signalDao, listingInfoDao, signalTypeDao);
         signalTypeDao.insertSignalType(new SignalTypes("mrp", SignalDataTypes.PRICE, null));
         //Add signals for foo listing
-        List<SignalRequestDetail> signalRequestDetails = Arrays.asList(new SignalRequestDetail("mrp", "45.0", 0l));
-        SignalRequestDto signalRequestDto = new SignalRequestDto("foo", signalRequestDetails);
-        signalService.updateSignals(signalRequestDto);
+        List<SignalSaveDetail> signalSaveDetails = Arrays.asList(new SignalSaveDetail("mrp", "45.0", 0l));
+        SignalSaveDto signalSaveDto = new SignalSaveDto("foo", signalSaveDetails);
+        signalService.updateSignals(signalSaveDto);
     }
 
     @Test(expected = InvalidQualifierException.class)
@@ -81,9 +80,9 @@ public class SignalServiceTest {
         SignalService signalService = new SignalService(signalDao, listingInfoDao, signalTypeDao);
         signalTypeDao.insertSignalType(new SignalTypes("mrp", SignalDataTypes.PRICE, null));
         //Add signals for foo listing
-        List<SignalRequestDetail> signalRequestDetails = Arrays.asList(new SignalRequestDetail("mrp", "45.0", 0l, "USD"));
-        SignalRequestDto signalRequestDto = new SignalRequestDto("foo", signalRequestDetails);
-        signalService.updateSignals(signalRequestDto);
+        List<SignalSaveDetail> signalSaveDetails = Arrays.asList(new SignalSaveDetail("mrp", "45.0", 0l, "USD"));
+        SignalSaveDto signalSaveDto = new SignalSaveDto("foo", signalSaveDetails);
+        signalService.updateSignals(signalSaveDto);
     }
 
     @Test
@@ -96,9 +95,9 @@ public class SignalServiceTest {
         signalTypeDao.insertSignalType(new SignalTypes("mrp", SignalDataTypes.DOUBLE, null));
         Map<String, SignalTypes> signalTypes = signalTypeDao.fetchNameSignalTypesMap();
         //Add signals for foo listing
-        List<SignalRequestDetail> signalRequestDetails = Arrays.asList(new SignalRequestDetail("mrp", "45.0", 0l));
-        SignalRequestDto signalRequestDto = new SignalRequestDto("foo", signalRequestDetails);
-        boolean versionUpdated = signalService.updateSignals(signalRequestDto);
+        List<SignalSaveDetail> signalSaveDetails = Arrays.asList(new SignalSaveDetail("mrp", "45.0", 0l));
+        SignalSaveDto signalSaveDto = new SignalSaveDto("foo", signalSaveDetails);
+        boolean versionUpdated = signalService.updateSignals(signalSaveDto);
         assertTrue(versionUpdated);
         ListingInfo fetchedListingInfo = listingInfoDao.fetchListingByNameWithReadLock("foo");
         assertTrue(fetchedListingInfo.getVersion() == 1l);
@@ -106,9 +105,9 @@ public class SignalServiceTest {
         assertTrue(signal.getValue().equals("45.0"));
         assertTrue(signal.getVersion() == 0l);
         //Try to update signals with a newer version
-        List<SignalRequestDetail> signalRequestDetails1 = Arrays.asList(new SignalRequestDetail("mrp", "55.0", 1l));
-        SignalRequestDto signalRequestDto1 = new SignalRequestDto("foo", signalRequestDetails1);
-        versionUpdated = signalService.updateSignals(signalRequestDto1);
+        List<SignalSaveDetail> signalSaveDetails1 = Arrays.asList(new SignalSaveDetail("mrp", "55.0", 1l));
+        SignalSaveDto signalSaveDto1 = new SignalSaveDto("foo", signalSaveDetails1);
+        versionUpdated = signalService.updateSignals(signalSaveDto1);
         assertTrue(versionUpdated);
         fetchedListingInfo = listingInfoDao.fetchListingByNameWithReadLock("foo");
         assertTrue(fetchedListingInfo.getVersion() == 2l);
@@ -127,9 +126,9 @@ public class SignalServiceTest {
         signalTypeDao.insertSignalType(new SignalTypes("mrp", SignalDataTypes.DOUBLE, null));
         Map<String, SignalTypes> signalTypes = signalTypeDao.fetchNameSignalTypesMap();
         //Add signals for foo listing
-        List<SignalRequestDetail> signalRequestDetails = Arrays.asList(new SignalRequestDetail("mrp", "45.0", 1l));
-        SignalRequestDto signalRequestDto = new SignalRequestDto("foo", signalRequestDetails);
-        boolean versionUpdated = signalService.updateSignals(signalRequestDto);
+        List<SignalSaveDetail> signalSaveDetails = Arrays.asList(new SignalSaveDetail("mrp", "45.0", 1l));
+        SignalSaveDto signalSaveDto = new SignalSaveDto("foo", signalSaveDetails);
+        boolean versionUpdated = signalService.updateSignals(signalSaveDto);
         assertTrue(versionUpdated);
         ListingInfo fetchedListingInfo = listingInfoDao.fetchListingByNameWithReadLock("foo");
         assertTrue(fetchedListingInfo.getVersion() == 1l);
@@ -137,9 +136,9 @@ public class SignalServiceTest {
         assertTrue(signal.getValue().equals("45.0"));
         assertTrue(signal.getVersion() == 1l);
         //Try to update signals with an older version
-        List<SignalRequestDetail> signalRequestDetails1 = Arrays.asList(new SignalRequestDetail("mrp", "55.0", 0l));
-        SignalRequestDto signalRequestDto1 = new SignalRequestDto("foo", signalRequestDetails1);
-        versionUpdated = signalService.updateSignals(signalRequestDto1);
+        List<SignalSaveDetail> signalSaveDetails1 = Arrays.asList(new SignalSaveDetail("mrp", "55.0", 0l));
+        SignalSaveDto signalSaveDto1 = new SignalSaveDto("foo", signalSaveDetails1);
+        versionUpdated = signalService.updateSignals(signalSaveDto1);
         assertFalse(versionUpdated);
         fetchedListingInfo = listingInfoDao.fetchListingByNameWithReadLock("foo");
         assertTrue(fetchedListingInfo.getVersion() == 1l);
@@ -166,15 +165,15 @@ public class SignalServiceTest {
         //Add signal types
         signalTypeDao.insertSignalType(new SignalTypes("mrp", SignalDataTypes.DOUBLE, "1.0"));
         signalTypeDao.insertSignalType(new SignalTypes("ssp", SignalDataTypes.DOUBLE, "1.0"));
-        List<SignalRequestDetail> signalRequestDetails = Arrays.asList(new SignalRequestDetail("mrp", "45.0", 0l));
-        SignalRequestDto signalRequestDto = new SignalRequestDto("foo", signalRequestDetails);
-        signalService.updateSignals(signalRequestDto);
-        SignalResponseDto signalResponseDto = signalService.fetchSignals("foo");
-        assertTrue(signalResponseDto.getListing().equals("foo"));
-        assertTrue(signalResponseDto.getListingVersion() == 1l);
-        List<SignalResponseDetail> expectedSignalDetails = Arrays.asList(new SignalResponseDetail("mrp", "45.0", SignalDataTypes.DOUBLE),
-                                                                         new SignalResponseDetail("ssp", "1.0", SignalDataTypes.DOUBLE));
-        assertTrue(expectedSignalDetails.equals(signalResponseDto.getSignals()));
+        List<SignalSaveDetail> signalSaveDetails = Arrays.asList(new SignalSaveDetail("mrp", "45.0", 0l));
+        SignalSaveDto signalSaveDto = new SignalSaveDto("foo", signalSaveDetails);
+        signalService.updateSignals(signalSaveDto);
+        SignalFetchDto signalFetchDto = signalService.fetchSignals("foo");
+        assertTrue(signalFetchDto.getListing().equals("foo"));
+        assertTrue(signalFetchDto.getVersion() == 1l);
+        List<SignalFetchDetail> expectedSignalDetails = Arrays.asList(new SignalFetchDetail("mrp", "45.0", SignalDataTypes.DOUBLE),
+                                                                         new SignalFetchDetail("ssp", "1.0", SignalDataTypes.DOUBLE));
+        assertTrue(expectedSignalDetails.equals(signalFetchDto.getSignals()));
     }
 
 }

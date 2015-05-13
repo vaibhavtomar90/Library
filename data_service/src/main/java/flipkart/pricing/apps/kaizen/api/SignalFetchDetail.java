@@ -6,7 +6,10 @@ import flipkart.pricing.apps.kaizen.db.model.SignalDataTypes;
 
 import javax.validation.constraints.NotNull;
 
-public class SignalResponseDetail {
+/**
+ * @Understands the individual signal details (name, value, etc) returned for a listing
+ */
+public class SignalFetchDetail {
 
     @JsonProperty
     @NotNull
@@ -21,9 +24,9 @@ public class SignalResponseDetail {
     private SignalDataTypes dataType;
 
     @Deprecated
-    SignalResponseDetail() {} //for jackson
+    SignalFetchDetail() {} //for jackson
 
-    public SignalResponseDetail(String name, String value, SignalDataTypes dataType) {
+    public SignalFetchDetail(String name, String value, SignalDataTypes dataType) {
         this.name = name;
         this.value = value;
         this.dataType = dataType;
@@ -44,9 +47,9 @@ public class SignalResponseDetail {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SignalResponseDetail)) return false;
+        if (!(o instanceof SignalFetchDetail)) return false;
 
-        SignalResponseDetail that = (SignalResponseDetail) o;
+        SignalFetchDetail that = (SignalFetchDetail) o;
 
         if (dataType != that.dataType) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
@@ -65,7 +68,7 @@ public class SignalResponseDetail {
 
     @Override
     public String toString() {
-        return "SignalResponseDetail{" +
+        return "SignalFetchDetail{" +
                 "name='" + name + '\'' +
                 ", value='" + value + '\'' +
                 ", dataType=" + dataType +

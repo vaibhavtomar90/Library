@@ -1,10 +1,10 @@
 package flipkart.pricing.apps.kaizen.db.service;
 
 
-import flipkart.pricing.apps.kaizen.api.SignalRequestDetail;
-import flipkart.pricing.apps.kaizen.api.SignalRequestDto;
-import flipkart.pricing.apps.kaizen.api.SignalResponseDetail;
-import flipkart.pricing.apps.kaizen.api.SignalResponseDto;
+import flipkart.pricing.apps.kaizen.api.SignalFetchDetail;
+import flipkart.pricing.apps.kaizen.api.SignalFetchDto;
+import flipkart.pricing.apps.kaizen.api.SignalSaveDetail;
+import flipkart.pricing.apps.kaizen.api.SignalSaveDto;
 import flipkart.pricing.apps.kaizen.db.dao.ListingInfoDao;
 import flipkart.pricing.apps.kaizen.db.dao.SignalDao;
 import flipkart.pricing.apps.kaizen.db.dao.SignalTypeDao;
@@ -44,14 +44,14 @@ public class SignalService {
         this.signalTypeDao = signalTypeDao;
     }
 
-    public boolean updateSignals(SignalRequestDto signalRequestDto) {
-        ListingInfo listingInfo = listingInfoDao.fetchListingByNameWithWriteLock(signalRequestDto.getListing()); //find with lock
+    public boolean updateSignals(SignalSaveDto signalSaveDto) {
+        ListingInfo listingInfo = listingInfoDao.fetchListingByNameWithWriteLock(signalSaveDto.getListing()); //find with lock
         if (listingInfo == null) {
-            logger.debug("Creating new listing "+signalRequestDto.getListing());
-            listingInfo = listingInfoDao.insertIgnoreListing(signalRequestDto.getListing()); //this will again take a write lock
+            logger.debug("Creating new listing "+ signalSaveDto.getListing());
+            listingInfo = listingInfoDao.insertIgnoreListing(signalSaveDto.getListing()); //this will again take a write lock
         }
         //TODO Do we need sorting on signals level ?? I can't think of the use if we have listing level sorting already but maybe I'm missing something
-        List<Signal> signals = convertToSignals(listingInfo.getId(), signalRequestDto.getSignalRequestDetails());
+        List<Signal> signals = convertToSignals(listingInfo.getId(), signalSaveDto.getSignals());
         int signalsUpdatedCount = 0;
         for (Signal signal: signals) {
             signalsUpdatedCount += signalDao.insertOrUpdateSignal(signal);
@@ -65,7 +65,7 @@ public class SignalService {
         return false;
     }
 
-    public SignalResponseDto fetchSignals(String listing) {
+    public SignalFetchDto fetchSignals(String listing) {
         ListingInfo listingInfo = listingInfoDao.fetchListingByNameWithReadLock(listing);
         if (listingInfo == null) {
             throw new ListingNotFoundException(listing);
@@ -81,37 +81,37 @@ public class SignalService {
         for (Signal signal : signals) {
             signalValueMap.put(signal.getId().getSignalTypeId(), signal.getValue());
         }
-        List<SignalResponseDetail> signalResponseDetailsList = new ArrayList<>();
+        List<SignalFetchDetail> signalFetchDetailsList = new ArrayList<>();
         for (SignalTypes signalType : signalTypes) {
             Long signalId = signalType.getId();
-            signalResponseDetailsList.add(new SignalResponseDetail(signalType.getName(),
+            signalFetchDetailsList.add(new SignalFetchDetail(signalType.getName(),
                                           signalValueMap.get(signalId),
                                           signalType.getType()));
         }
-        return new SignalResponseDto(listing, listingInfo.getVersion(), signalResponseDetailsList);
+        return new SignalFetchDto(listing, listingInfo.getVersion(), signalFetchDetailsList);
     }
 
 
-    private List<Signal> convertToSignals(Long listingId, List<SignalRequestDetail> signalRequestDetailList) {
+    private List<Signal> convertToSignals(Long listingId, List<SignalSaveDetail> signalSaveDetailList) {
         List<Signal> signals = new ArrayList<>();
         Map<String, SignalTypes> signalTypesMap = signalTypeDao.fetchNameSignalTypesMap();
-        for(SignalRequestDetail signalRequestDetail : signalRequestDetailList) {
-            SignalTypes signalType = signalTypesMap.get(signalRequestDetail.getName());
+        for(SignalSaveDetail signalSaveDetail : signalSaveDetailList) {
+            SignalTypes signalType = signalTypesMap.get(signalSaveDetail.getName());
             //All the error handling
             if (signalType == null) {
-                logger.error("No entry present for signal name: "+signalRequestDetail.getName());
-                throw new SignalNameNotFoundException(signalRequestDetail.getName());
+                logger.error("No entry present for signal name: "+ signalSaveDetail.getName());
+                throw new SignalNameNotFoundException(signalSaveDetail.getName());
             }
-            if (!signalType.getType().isValid(signalRequestDetail.getValue())) {
-                logger.error(signalRequestDetail.getValue()+" is invalid value for signal name: "+signalRequestDetail.getName());
-                throw new SignalValueInvalidException(signalRequestDetail.getValue(), signalRequestDetail.getName());
+            if (!signalType.getType().isValid(signalSaveDetail.getValue())) {
+                logger.error(signalSaveDetail.getValue()+" is invalid value for signal name: "+ signalSaveDetail.getName());
+                throw new SignalValueInvalidException(signalSaveDetail.getValue(), signalSaveDetail.getName());
             }
-            if (signalType.getType().needsQualifier() && !ACCEPTED_QUALIFIER.equals(signalRequestDetail.getQualifier())) {
-                logger.error("Incorrect qualifier for signal "+signalRequestDetail.getName()+" : "+signalRequestDetail.getQualifier());
+            if (signalType.getType().needsQualifier() && !ACCEPTED_QUALIFIER.equals(signalSaveDetail.getQualifier())) {
+                logger.error("Incorrect qualifier for signal "+ signalSaveDetail.getName()+" : "+ signalSaveDetail.getQualifier());
                 throw new InvalidQualifierException();
             }
-            signals.add(new Signal(listingId, signalType.getId(), signalRequestDetail.getValue(), signalRequestDetail.getVersion(),
-                                   signalRequestDetail.getQualifier()));
+            signals.add(new Signal(listingId, signalType.getId(), signalSaveDetail.getValue(), signalSaveDetail.getVersion(),
+                                   signalSaveDetail.getQualifier()));
         }
         return signals;
     }
