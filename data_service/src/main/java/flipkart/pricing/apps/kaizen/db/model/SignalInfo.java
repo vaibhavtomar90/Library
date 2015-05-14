@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 @Table
 public class SignalInfo implements Comparable<SignalInfo>, Model {
 
+    //TODO Is there a better way to include relation with listingInfo and signalType here ??
     @EmbeddedId
     private SignalId id;
 
