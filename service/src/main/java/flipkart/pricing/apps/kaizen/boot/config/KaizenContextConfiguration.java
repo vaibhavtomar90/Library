@@ -2,6 +2,7 @@ package flipkart.pricing.apps.kaizen.boot.config;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -27,6 +28,7 @@ public class KaizenContextConfiguration {
     }
 
     @Bean
+    @Qualifier("yamlPropertiesLoader")
     public YamlPropertiesFactoryBean yamlPropertiesLoader() {
         final YamlPropertiesFactoryBean yamlPropertiesFactoryBean = new CustomYamlPropertiesFactoryBean();
         yamlPropertiesFactoryBean.setResources(new ClassPathResource(KaizenConfiguration.YML_CONFIG_FILE));
@@ -35,17 +37,16 @@ public class KaizenContextConfiguration {
 
     //TODO ideally this session factory should be the same as used by dropwizard
     @Bean
-    public LocalSessionFactoryBean sessionFactory() throws PropertyVetoException {
+    public LocalSessionFactoryBean sessionFactory(@Qualifier("yamlPropertiesLoader") YamlPropertiesFactoryBean yamlPropertiesFactoryBean) throws PropertyVetoException {
        final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-       sessionFactory.setDataSource(dataSource());
+       sessionFactory.setDataSource(dataSource(yamlPropertiesFactoryBean));
        sessionFactory.setPackagesToScan("flipkart.pricing.apps.kaizen.db.model");
-       sessionFactory.setHibernateProperties(hibernateProperties());
+       sessionFactory.setHibernateProperties(hibernateProperties(yamlPropertiesFactoryBean));
        return sessionFactory;
     }
 
     @Bean
-    public DataSource dataSource() throws PropertyVetoException {
-        final YamlPropertiesFactoryBean yamlPropertiesFactoryBean = yamlPropertiesLoader();
+    public DataSource dataSource(YamlPropertiesFactoryBean yamlPropertiesFactoryBean) throws PropertyVetoException {
         Properties properties = yamlPropertiesFactoryBean.getObject();
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
         dataSource.setDriverClass(properties.getProperty("database.driverClass"));
@@ -56,7 +57,6 @@ public class KaizenContextConfiguration {
     }
 
 
-
     @Bean
     public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
         HibernateTransactionManager txManager = new HibernateTransactionManager();
@@ -65,8 +65,7 @@ public class KaizenContextConfiguration {
     }
 
 
-    private Properties hibernateProperties() {
-        final YamlPropertiesFactoryBean yamlPropertiesFactoryBean = yamlPropertiesLoader();
+    private Properties hibernateProperties(YamlPropertiesFactoryBean yamlPropertiesFactoryBean) {
         Properties properties = yamlPropertiesFactoryBean.getObject();
         return new Properties() {
             {
