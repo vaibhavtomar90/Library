@@ -19,7 +19,7 @@ public class SignalInfo implements Comparable<SignalInfo>, Model {
     @Column(nullable = false)
     private long version;
 
-    @Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @Column
     private Timestamp serverTimestamp;
 
     @Column
