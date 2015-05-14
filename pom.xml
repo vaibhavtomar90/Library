@@ -116,5 +116,6 @@
   <modules>
     <module>service</module>
     <module>data_service</module>
+    <module>test-suite</module>
   </modules>
 </project>

@@ -4,8 +4,8 @@ package flipkart.pricing.apps.kaizen.db.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "signal_types")
-public class SignalTypes {
+@Table
+public class SignalType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,14 +16,14 @@ public class SignalTypes {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private SignalDataTypes type;
+    private SignalDataType type;
 
-    @Column(name = "default_value")
+    @Column
     private String defaultValue;
 
-    public SignalTypes() {}
+    public SignalType() {}
 
-    public SignalTypes(String name, SignalDataTypes type, String defaultValue) {
+    public SignalType(String name, SignalDataType type, String defaultValue) {
         this.name = name;
         this.type = type;
         this.defaultValue = defaultValue;
@@ -37,7 +37,7 @@ public class SignalTypes {
         return name;
     }
 
-    public SignalDataTypes getType() {
+    public SignalDataType getType() {
         return type;
     }
 
@@ -48,11 +48,10 @@ public class SignalTypes {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SignalTypes)) return false;
+        if (!(o instanceof SignalType)) return false;
 
-        SignalTypes that = (SignalTypes) o;
+        SignalType that = (SignalType) o;
 
-        if (id != that.id) return false;
         if (defaultValue != null ? !defaultValue.equals(that.defaultValue) : that.defaultValue != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (type != null ? !type.equals(that.type) : that.type != null) return false;
@@ -62,8 +61,7 @@ public class SignalTypes {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        int result = (name != null ? name.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (defaultValue != null ? defaultValue.hashCode() : 0);
         return result;
@@ -71,7 +69,7 @@ public class SignalTypes {
 
     @Override
     public String toString() {
-        return "SignalTypes{" +
+        return "SignalType{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +

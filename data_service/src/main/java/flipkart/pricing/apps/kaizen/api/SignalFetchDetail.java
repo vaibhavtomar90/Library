@@ -2,7 +2,7 @@ package flipkart.pricing.apps.kaizen.api;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import flipkart.pricing.apps.kaizen.db.model.SignalDataTypes;
+import flipkart.pricing.apps.kaizen.db.model.SignalDataType;
 
 import javax.validation.constraints.NotNull;
 
@@ -21,12 +21,12 @@ public class SignalFetchDetail {
 
     @JsonProperty
     @NotNull
-    private SignalDataTypes dataType;
+    private SignalDataType dataType;
 
     @Deprecated
     SignalFetchDetail() {} //for jackson
 
-    public SignalFetchDetail(String name, String value, SignalDataTypes dataType) {
+    public SignalFetchDetail(String name, String value, SignalDataType dataType) {
         this.name = name;
         this.value = value;
         this.dataType = dataType;
@@ -40,7 +40,7 @@ public class SignalFetchDetail {
         return value;
     }
 
-    public SignalDataTypes getDataType() {
+    public SignalDataType getDataType() {
         return dataType;
     }
 
