@@ -2,22 +2,20 @@ package flipkart.pricing.apps.kaizen.db.dao;
 
 import flipkart.pricing.apps.kaizen.boot.config.KaizenContextConfiguration;
 import flipkart.pricing.apps.kaizen.db.model.ListingDataVersion;
-import flipkart.pricing.apps.kaizen.testrules.HibernateSessionTestRulePC;
+import flipkart.pricing.apps.kaizen.testrules.KaizenDBClearRule;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.stereotype.Repository;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.spy;
 
 
 /**
@@ -30,20 +28,17 @@ import static org.mockito.Mockito.spy;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {KaizenContextConfiguration.class})
-
-public class ListingDataVersionDAOTest {
+public class ListingDataVersionDAOIntegrationTest {
 
     @Rule
     @Inject
-    public HibernateSessionTestRulePC hibernateSessionTestRulePC;
+    public KaizenDBClearRule kaizenDBClearRule;
 
     @Inject
     ListingDataVersionDAO listingDataVersionDAO;
 
-
     @Before
     public void setUp() throws Exception {
-
     }
 
     @After
@@ -53,41 +48,42 @@ public class ListingDataVersionDAOTest {
 
     @Test
     @Transactional
+    @Rollback(false)
     public void testUpdateListingForNonExistentVersion() throws Exception {
 
-        ListingDataVersion listingDataVersion = new ListingDataVersion("LST123544", 100L) ;
-
+        String listingId = "LST123544";
+        ListingDataVersion listingDataVersion = new ListingDataVersion(listingId, 100L) ;
         assertTrue(listingDataVersionDAO.updateListing(listingDataVersion) == true);
-        assertTrue(listingDataVersionDAO.updateListing(listingDataVersion) == true);
-
+        ListingDataVersion dataVersion =  listingDataVersionDAO.get(listingId);
+        assertTrue(dataVersion.getListingID().equals(listingId) &&
+                dataVersion.getDataVersion().equals(new Long(100L)));
     }
 
     @Test
     @Transactional
+    @Rollback(false)
+
     public void testUpdateListingForExistentVersionWithHigherVersion() throws Exception {
 
-        ListingDataVersion listingDataVersion = new ListingDataVersion("LST123544", 100L) ;
+        String listingId = "LST123545";
+        ListingDataVersion listingDataVersion = new ListingDataVersion(listingId, 100L) ;
 
         assertTrue(listingDataVersionDAO.updateListing(listingDataVersion) == true);
 
-        hibernateSessionTestRulePC.getSessionFactory().getCurrentSession().flush();;
+        assertTrue(listingDataVersionDAO.updateListing(new ListingDataVersion(listingId, 99L)) == false);
 
-        assertTrue(listingDataVersionDAO.updateListing(new ListingDataVersion("LST123544", 99L)) == false);
-
+        ListingDataVersion dataVersion =  listingDataVersionDAO.get(listingId);
+        assertTrue(dataVersion.getListingID().equals(listingId) &&
+                dataVersion.getDataVersion().equals(new Long(100L)));
     }
 
     @Test
     @Transactional
+    @Rollback(false)
     public void testUpdateListingForExistentVersionWithLowerVersion() throws Exception {
 
-
         ListingDataVersion listingDataVersion = new ListingDataVersion("LST123544", 99L) ;
-
         assertTrue(listingDataVersionDAO.updateListing(listingDataVersion) == true);
-
-        hibernateSessionTestRulePC.getSessionFactory().getCurrentSession().flush();;
-
         assertTrue(listingDataVersionDAO.updateListing(new ListingDataVersion("LST123544", 100L)) == true);
-
     }
 }

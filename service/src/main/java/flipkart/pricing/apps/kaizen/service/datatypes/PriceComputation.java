@@ -1,60 +1,56 @@
 package flipkart.pricing.apps.kaizen.service.datatypes;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * Created with IntelliJ IDEA.
  * User: bhushan.sk
  * Date: 05/05/15
  * Time: 12:33 PM
- * To change this template use File | Settings | File Templates.
+ * Description : Domain POJO to represent the single Computation record
+ * retrieved from DB (for a Version per listingID)
  */
-public class PriceComputation implements Serializable{
-
-    private  long priceVersion;
-    private  double mrp;
-    private  double fsp;
-    private  double fk_discount;
-
+public class PriceComputation implements Serializable {
 
     private final String listingID;
+
+    /**
+     * The unique global counter version, for this priceComputation!
+     */
+    private final Long priceVersion;
+
+    private final PricingData pricingData;
+
     private final String computeContext;
 
+    private final Timestamp computedAt;
 
-
-    public PriceComputation(String listingID,long priceVersion, double mrp, double fsp,
-                            double fk_discount,String computeContext) {
-        this.priceVersion = priceVersion;
-        this.mrp = mrp;
-        this.fsp = fsp;
-        this.fk_discount = fk_discount;
+    public PriceComputation(String listingID, Long priceVersion,
+                            PricingData pricingData,
+                            Timestamp timestamp,
+                            String computeContext) {
         this.listingID = listingID;
+        this.priceVersion = priceVersion;
+        this.pricingData = pricingData;
+        this.computedAt = timestamp;
         this.computeContext = computeContext;
     }
 
-
     public String getComputeContext() {
         return computeContext;
-    }
-
-    public double getMrp() {
-        return mrp;
-    }
-
-    public double getFsp() {
-        return fsp;
-    }
-
-    public double getFk_discount() {
-        return fk_discount;
     }
 
     public String getListingID() {
         return listingID;
     }
 
-    public long getPriceVersion() {
+    public Long getPriceVersion() {
         return priceVersion;
+    }
+
+    public Timestamp getComputedAt() {
+        return computedAt;
     }
 
     @Override
@@ -64,29 +60,22 @@ public class PriceComputation implements Serializable{
 
         PriceComputation that = (PriceComputation) o;
 
-        if (priceVersion != that.priceVersion) return false;
         if (!listingID.equals(that.listingID)) return false;
+        if (!priceVersion.equals(that.priceVersion)) return false;
+        if (!pricingData.equals(that.pricingData)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (priceVersion ^ (priceVersion >>> 32));
-        result = 31 * result + listingID.hashCode();
+        int result = listingID.hashCode();
+        result = 31 * result + priceVersion.hashCode();
         return result;
     }
 
-    public void setMrp(double mrp) {
-        this.mrp = mrp;
-    }
-
-    public void setFsp(double fsp) {
-        this.fsp = fsp;
-    }
-
-    public void setFk_discount(double fk_discount) {
-        this.fk_discount = fk_discount;
+    public PricingData getPricingData() {
+        return pricingData;
     }
 }
 

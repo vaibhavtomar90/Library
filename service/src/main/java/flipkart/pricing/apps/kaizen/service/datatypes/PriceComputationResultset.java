@@ -8,14 +8,25 @@ import java.util.List;
  * User: bhushan.sk
  * Date: 13/05/15
  * Time: 1:41 AM
- * To change this template use File | Settings | File Templates.
+ * Description : High level ResultSet sort of class, to present the results
+ * received by Delta API
  */
-public class PriceComputationResultset implements Serializable{
+public class PriceComputationResultSet implements Serializable{
+
+    /**
+     * List of PriceComputations, usually returned by the Delta API
+     */
     final List<PriceComputation> priceComputations;
+    /**
+     * Self explanatory. If nothing to be read further, then 0.
+     */
     final Long nextAvailableVersion;
+
     final Boolean hasMoreToRead;
 
-    public PriceComputationResultset(List<PriceComputation> priceComputations, Long nextAvailableVersion, Boolean hasMoreToRead) {
+    public PriceComputationResultSet(List<PriceComputation> priceComputations,
+                                     Long nextAvailableVersion,
+                                     Boolean hasMoreToRead) {
         this.priceComputations = priceComputations;
         this.nextAvailableVersion = nextAvailableVersion;
         this.hasMoreToRead = hasMoreToRead;

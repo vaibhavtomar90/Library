@@ -15,28 +15,35 @@ import java.io.Serializable;
  * To change this template use File | Settings | File Templates.
  */
 @Entity
-@Table(name="ListingDataVersion")
 public class ListingDataVersion implements Serializable{
-
 
     @Id
     @Column(nullable = false, columnDefinition = "char", length = 26)
     private String listingID;
 
-    @Column(name="version", nullable = false)
-    private Long listingDataVersion;
+    private Long dataVersion;
 
-    public ListingDataVersion(@NotNull String listingID, @NotNull Long listingDataVersion) {
+    public ListingDataVersion(@NotNull String listingID,
+                              @NotNull Long listingDataVersion) {
         this.listingID = listingID;
-        this.listingDataVersion = listingDataVersion;
+        this.dataVersion = listingDataVersion;
     }
 
     public String getListingID() {
         return listingID;
     }
 
-    public Long getListingDataVersion() {
-        return listingDataVersion;
+    public Long getDataVersion() {
+        return dataVersion;
+    }
+
+    public void setDataVersion(Long dataVersion) {
+        this.dataVersion = dataVersion;
+    }
+
+    @Deprecated
+    protected ListingDataVersion(){
+
     }
 
     @Override
@@ -46,7 +53,7 @@ public class ListingDataVersion implements Serializable{
 
         ListingDataVersion that = (ListingDataVersion) o;
 
-        if (!listingDataVersion.equals(that.listingDataVersion)) return false;
+        if (!dataVersion.equals(that.dataVersion)) return false;
         if (!listingID.equals(that.listingID)) return false;
 
         return true;
@@ -55,16 +62,7 @@ public class ListingDataVersion implements Serializable{
     @Override
     public int hashCode() {
         int result = listingID.hashCode();
-        result = 31 * result + listingDataVersion.hashCode();
+        result = 31 * result + dataVersion.hashCode();
         return result;
-    }
-
-    @Deprecated
-    protected ListingDataVersion(){
-
-    }
-
-    public void setListingDataVersion(Long listingDataVersion) {
-        this.listingDataVersion = listingDataVersion;
     }
 }

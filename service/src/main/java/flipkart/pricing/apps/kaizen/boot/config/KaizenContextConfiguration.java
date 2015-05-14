@@ -38,11 +38,11 @@ public class KaizenContextConfiguration {
     //TODO ideally this session factory should be the same as used by dropwizard
     @Bean
     public LocalSessionFactoryBean sessionFactory(@Qualifier("yamlPropertiesLoader") YamlPropertiesFactoryBean yamlPropertiesFactoryBean) throws PropertyVetoException {
-       final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-       sessionFactory.setDataSource(dataSource(yamlPropertiesFactoryBean));
-       sessionFactory.setPackagesToScan("flipkart.pricing.apps.kaizen.db.model");
-       sessionFactory.setHibernateProperties(hibernateProperties(yamlPropertiesFactoryBean));
-       return sessionFactory;
+        final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        sessionFactory.setDataSource(dataSource(yamlPropertiesFactoryBean));
+        sessionFactory.setPackagesToScan("flipkart.pricing.apps.kaizen.db.model");
+        sessionFactory.setHibernateProperties(hibernateProperties(yamlPropertiesFactoryBean));
+        return sessionFactory;
     }
 
     @Bean
@@ -72,7 +72,13 @@ public class KaizenContextConfiguration {
                 setProperty("hibernate.hbm2ddl.auto", properties.getProperty("database.properties.hibernate.hbm2ddl.auto"));
                 setProperty("hibernate.dialect", properties.getProperty("database.properties.hibernate.dialect"));
                 setProperty("hibernate.connection.isolation", properties.getProperty("database.properties.hibernate.connection.isolation"));
+                setProperty("hibernate.show_sql", properties.getProperty("database.properties.hibernate.show_sql"));
+                setProperty("hibernate.use_sql_comments", properties.getProperty("database.properties.hibernate.use_sql_comments"));
+                setProperty("hibernate.format_sql", properties.getProperty("database.properties.hibernate.format_sql"));
+
             }
         };
     }
 }
+
+

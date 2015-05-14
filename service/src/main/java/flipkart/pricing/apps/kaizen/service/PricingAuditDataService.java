@@ -1,7 +1,8 @@
 package flipkart.pricing.apps.kaizen.service;
 
 import flipkart.pricing.apps.kaizen.service.datatypes.PriceComputation;
-import flipkart.pricing.apps.kaizen.service.datatypes.PriceComputationResultset;
+import flipkart.pricing.apps.kaizen.service.datatypes.PriceComputationResultSet;
+import flipkart.pricing.apps.kaizen.service.datatypes.PriceComputeEvent;
 
 import javax.validation.constraints.NotNull;
 
@@ -10,19 +11,13 @@ import javax.validation.constraints.NotNull;
  * User: bhushan.sk
  * Date: 05/05/15
  * Time: 12:15 PM
- * To change this template use File | Settings | File Templates.
+ * Description : the Datalayer interface to read and write PricingAudit and Reconcililation objects.
  */
 public interface PricingAuditDataService {
 
-
-
-    Long savePriceComputeRecord(@NotNull PriceComputation priceComputation);
+    Long savePriceComputeRecord(@NotNull PriceComputeEvent priceComputation);
 
     PriceComputation getPriceComputeRecordByVersion(Long version);
 
-    PriceComputationResultset getPriceComputation(Long fromComputePriceVersion, int countOfRecords);
-
-
-
-
+    PriceComputationResultSet getPriceComputation(Long fromComputePriceVersion, int countOfRecords);
 }

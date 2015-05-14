@@ -1,22 +1,19 @@
 package flipkart.pricing.apps.kaizen.service;
 
-import flipkart.pricing.apps.kaizen.service.datatypes.PriceComputation;
-import flipkart.pricing.apps.kaizen.service.datatypes.PriceComputationResultset;
+import flipkart.pricing.apps.kaizen.service.datatypes.PriceComputationResultSet;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
  * User: bhushan.sk
  * Date: 13/05/15
  * Time: 1:31 AM
- * To change this template use File | Settings | File Templates.
+ * ListingPriceUpdateService : which hands over the request to Data layer simply(for now!)
  */
 @Component
 public class ListingPriceUpdatesServiceImpl implements ListingPriceUpdatesService {
-
 
     PricingAuditDataService pricingAuditDataService;
 
@@ -26,9 +23,7 @@ public class ListingPriceUpdatesServiceImpl implements ListingPriceUpdatesServic
     }
 
     @Override
-    public PriceComputationResultset getFromVersion(Long version, int numberOfRecords) {
-
+    public PriceComputationResultSet getFromVersion(Long version, int numberOfRecords) {
         return this.pricingAuditDataService.getPriceComputation(version,numberOfRecords);
-
     }
 }

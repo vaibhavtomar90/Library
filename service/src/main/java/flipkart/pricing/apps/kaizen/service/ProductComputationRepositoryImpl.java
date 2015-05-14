@@ -1,15 +1,16 @@
 package flipkart.pricing.apps.kaizen.service;
 
 import flipkart.pricing.apps.kaizen.db.dao.ListingDataVersionDAO;
-import flipkart.pricing.apps.kaizen.db.dao.PricingAuditRecordDAO;
-import flipkart.pricing.apps.kaizen.db.dao.PriceReConComputationDAO;
+import flipkart.pricing.apps.kaizen.db.dao.PriceComputationAuditDAO;
+import flipkart.pricing.apps.kaizen.db.dao.PriceComputationLatestDAO;
 import flipkart.pricing.apps.kaizen.db.model.ListingDataVersion;
-import flipkart.pricing.apps.kaizen.db.model.PricingAuditRecord;
-import flipkart.pricing.apps.kaizen.db.model.ReConAuditRecord;
+import flipkart.pricing.apps.kaizen.db.model.PriceComputationAudit;
+import flipkart.pricing.apps.kaizen.db.model.PriceComputationLatest;
 import flipkart.pricing.apps.kaizen.service.datatypes.PriceComputation;
+import flipkart.pricing.apps.kaizen.service.datatypes.PriceComputeEvent;
+import flipkart.pricing.apps.kaizen.service.datatypes.PricingData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ import java.util.List;
  * User: bhushan.sk
  * Date: 11/05/15
  * Time: 11:23 PM
- * To change this template use File | Settings | File Templates.
+ * DB Based (PriceComputationAudit and PriceComputationLatest tables!)
  */
 
 @Service
@@ -33,81 +34,90 @@ public class ProductComputationRepositoryImpl implements  ProductComputationRepo
 
     private static Logger logger = LoggerFactory.getLogger(ProductComputationRepositoryImpl.class);
 
+    // TODO :Right now, confining to concrete class,
+    // better would been just another DAO Interface over
+    // DRopwizard's AbstractDAO<>
 
-    @Inject
-    PricingAuditRecordDAO priceAuditDao;
+    PriceComputationAuditDAO priceComputationAuditDAO;
 
-    @Inject
-    PriceReConComputationDAO priceReConLogDao;
+    PriceComputationLatestDAO priceComputationLatestDAO;
 
-    @Inject
     ListingDataVersionDAO listingDataVersionDAO;
 
-    public Long savePriceComputation(PriceComputation priceComputation) {
+    @Inject
+    public ProductComputationRepositoryImpl(
+            PriceComputationAuditDAO priceComputationAuditDAO,
+            PriceComputationLatestDAO priceComputationLatestDAO,
+            ListingDataVersionDAO listingDataVersionDAO)
+    {
+        this.priceComputationAuditDAO = priceComputationAuditDAO;
+        this.priceComputationLatestDAO = priceComputationLatestDAO;
+        this.listingDataVersionDAO = listingDataVersionDAO;
+    }
+
+
+    // To be called within a transaction
+    public Long savePriceComputation(PriceComputeEvent priceComputeEvent) {
 
         Long priceChangeId = 0L;
-
         try {
 
             do {
+                ListingDataVersion listingDataVersion = new ListingDataVersion(priceComputeEvent.getListingID(),
+                        priceComputeEvent.getDataVersion());
 
-                ListingDataVersion listingDataVersion = new ListingDataVersion(priceComputation.getListingID(),
-                        priceComputation.getPriceVersion());
+                // Algo : We take write pessimistic lock on ListingDataVersion, to block the
+                // concurrent update on a ListingID in question. If MVCC is kicks in we return
+                // from there, without processing the event further.
+                // We have BIG lock (per listing level) via 'ListingDataVersion' table. EVerything is atomic on
+                // per listing basis.So, no need
+                // to take exclusive locks subsequently/at-least on per Listing level
 
-                // BEGIN TRANS
-
-
-                // MVCC kicked in, new version already existed, dropping it here
                 if (!listingDataVersionDAO.updateListing(listingDataVersion))
                     break;
 
                 // else,we have work to do
+                String listingID = priceComputeEvent.getListingID();
+
+                // First check, if there is any existing PriceComputationLatest entry exists for given 'listingID'
+                // if yes, we are going to update it, by this newer PriceComputeEvent link
+
+                PriceComputationLatest priceComputationLatest = priceComputationLatestDAO.get(listingID);
+
+                if (priceComputationLatest == null)
+                    priceComputationLatest = new PriceComputationLatest(listingID);
 
 
-                String listingID = priceComputation.getListingID();
-
-                // check, if there is any existing ReCon entry exists for given 'listingID'
-                // if yes, we are going to simply update it
-
-
-                ReConAuditRecord reConAuditRecord = priceReConLogDao.get(listingID);
-
-                //  this is for making sure, if the listing ID never got updated and
-                // we are getting it for the firs time.
-                // We have BIG lock (per listing level) on top of this, so we are guaranteed that,
-                // the existence check and setting of the listingID a fresh is atomic
-                if (reConAuditRecord == null)
-                    reConAuditRecord = new ReConAuditRecord(listingID);
+                PricingData pricingData = priceComputeEvent.getPricingData();
+                PriceComputationAudit priceComputationAudit = new PriceComputationAudit(listingID, pricingData.getMrp(),
+                        pricingData.getFsp(), pricingData.getFk_discount(), priceComputeEvent.getJsonContext());
 
 
-                PricingAuditRecord pricingAuditRecord = new PricingAuditRecord(listingID, priceComputation.getMrp(),
-                        priceComputation.getFsp(), priceComputation.getFk_discount());
-
-
-                // get the identity values generated , which you wont get, unless you save
+                // get the identity values generated , which you wont get, unless call  save
+                // on Hibernate session.
                 // this is required to set all the hibernate graph of object in a sane state
 
-                priceChangeId = priceAuditDao.save(pricingAuditRecord);
+                priceChangeId = priceComputationAuditDAO.save(priceComputationAudit);
 
-
-                // patch this Audit Row, with ReCon as a foreign key
+                // patch this Audit Row, with 'PriceComputationLatest' as a foreign key
                 // this is where the generated 'priceChangeID' gets linked up
-                reConAuditRecord.setPricingAuditRecord(pricingAuditRecord);
+                priceComputationLatest.setPriceComputationAudit(priceComputationAudit);
 
-                priceReConLogDao.upsert(reConAuditRecord);
+                priceComputationLatestDAO.upsert(priceComputationLatest);
 
                 // we have two rows at the end of this
 
+                // 1. Global PriceComputationLatest  table (1 update or new)
+                // 2. Price Audit log table  (1 new)
 
-                // END
             } while (false);
 
 
         } catch (Exception ex) {
 
-            logger.error("Error in savePriceComputation", ex);
+            String msg = "Error in savePriceComputation for ListingID=" + priceComputeEvent.getListingID();
+            logger.error(msg, ex);
             throw ex;
-            // logging to be added
 
         } finally {
 
@@ -117,32 +127,34 @@ public class ProductComputationRepositoryImpl implements  ProductComputationRepo
     }
 
     public PriceComputation getPriceComputation(Long computePriceVersion) {
-        ReConAuditRecord reConAuditRecord = this.priceReConLogDao.getByVersion(computePriceVersion);
-        return map(reConAuditRecord);
+        PriceComputationLatest priceComputationLatest =
+                this.priceComputationLatestDAO.getByVersion(computePriceVersion);
+        return map(priceComputationLatest);
     }
 
     public List<PriceComputation> getPriceComputation(Long fromComputePriceVersion, int countOfRecords) {
 
-        final List<ReConAuditRecord> reConRecords =
-                priceReConLogDao.getReConRecords(fromComputePriceVersion, countOfRecords);
+        final List<PriceComputationLatest> reConRecords =
+                priceComputationLatestDAO.getReConRecords(fromComputePriceVersion, countOfRecords);
 
         ArrayList<PriceComputation> priceComputations = new ArrayList<>(reConRecords.size());
-        for (ReConAuditRecord reConAuditRecord : reConRecords)
-            priceComputations.add(map(reConAuditRecord));
+        for (PriceComputationLatest priceComputationLatest : reConRecords)
+            priceComputations.add(map(priceComputationLatest));
 
         return priceComputations;
     }
 
-    // Converting the lying Model objects to domain level objects
-    private PriceComputation map(ReConAuditRecord reConAuditRecord) {
+    // Converting the underlying DB Model objects to domain level objects
+    private PriceComputation map(PriceComputationLatest priceComputationLatest) {
 
         PriceComputation priceComputation = null;
 
-        if (reConAuditRecord != null) {
-            PricingAuditRecord auditRecord = reConAuditRecord.getPricingAuditRecord();
+        if (priceComputationLatest != null) {
+            PriceComputationAudit auditRecord = priceComputationLatest.getPriceComputationAudit();
             priceComputation = new
-                    PriceComputation(reConAuditRecord.getListingId(),
-                    auditRecord.getId(), auditRecord.getMrp(), auditRecord.getFsp(), auditRecord.getFk_discount(),
+                    PriceComputation(auditRecord.getListingId(),auditRecord.getId(),
+                    new PricingData(auditRecord.getFsp(),auditRecord.getMrp(),auditRecord.getFk_discount()),
+                    auditRecord.getComputedAt(),
                     auditRecord.getJsonContext());
 
         }

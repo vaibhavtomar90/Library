@@ -14,48 +14,45 @@ import java.sql.Timestamp;
 
 
 @Entity
-@Table(name="PriceComputationAudit")
-public class PricingAuditRecord implements Serializable{
+//@Table(name="PriceComputationAudit")
+public class PriceComputationAudit implements Serializable{
 
 
-    //@OneToOne(cascade = CascadeType.ALL, mappedBy = "pricingAuditRecord", fetch = FetchType.LAZY)
+    //@OneToOne(cascade = CascadeType.ALL, mappedBy = "priceComputationAudit", fetch = FetchType.LAZY)
     // @JoinColumn(name="listing_id",unique = true)
-    // ReConAuditRecord reConAuditRecord;
+    // PriceComputationLatest reConAuditRecord;
 
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="price_version")
     Long id;
 
-    @Column(name="listing_id", columnDefinition = "char", length = 26)
+    @Column(columnDefinition = "char", length = 26)
     String listingId;
 
-
-    @Column(name="mrp", nullable = false)
     double mrp ;
 
-    @Column(name="fsp", nullable = false)
     double fsp;
 
-    @Column(name="fk_discount", nullable = false)
     double fk_discount ;
 
-    @Column(name="computedAt")
     Timestamp computedAt;
 
-    @Column(name="jsonContext")
     String jsonContext;
 
+    public PriceComputationAudit(String listingId, double mrp, double fsp, double fk_discount) {
+        this(listingId, mrp, fsp, fk_discount, "");
+    }
 
-    public PricingAuditRecord(String listingId, double mrp, double fsp, double fk_discount) {
+    public PriceComputationAudit(String listingId, double mrp, double fsp, double fk_discount, String jsonContext) {
         this.listingId = listingId;
         this.mrp = mrp;
         this.fsp = fsp;
         this.fk_discount = fk_discount;
+        this.jsonContext = jsonContext;
     }
 
-    public PricingAuditRecord() {
+    public PriceComputationAudit() {
 
     }
 

@@ -36,5 +36,9 @@ database:
   checkConnectionWhileIdle: false
   properties:
           "hibernate.dialect": "org.hibernate.dialect.MySQL5Dialect"
-          "hibernate.hbm2ddl.auto": "validate"
+          "hibernate.hbm2ddl.auto": "NONE"
           "hibernate.connection.isolation": "2"
+          "hibernate.show_sql": "true"
+          "hibernate.use_sql_comments": "true"
+          "hibernate.format_sql" : "true"
+

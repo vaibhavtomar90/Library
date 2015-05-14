@@ -25,17 +25,16 @@ import java.math.BigInteger;
  */
 @Component
 @Repository
-
 public class ListingDataVersionDAO extends AbstractDAO<ListingDataVersion> {
 
     private static Logger logger = LoggerFactory.getLogger(ListingDataVersionDAO.class);
 
     private static final String INSERT_IGNORE =
-            "INSERT IGNORE INTO ListingDataVersion (listingID, version) values (:listingID, :version)";
+            "INSERT IGNORE INTO ListingDataVersion (listingID, dataVersion) values (:listingID, :version)";
 
     private static final String UPDATE_LISTINGDATA =
-            "UPDATE ListingDataVersion" +
-                    " set version = :new_version where listingID = :listingID AND :new_version > version";
+            "UPDATE ListingDataVersion " +
+                    " set dataVersion = :version where (listingID = :listingID AND dataVersion < :version )";
 
     @Inject
     public ListingDataVersionDAO(SessionFactory sessionFactory) {
@@ -60,7 +59,7 @@ public class ListingDataVersionDAO extends AbstractDAO<ListingDataVersion> {
             // 1. Upsert ListingDataVersion Record for listing 'L'
 
             String listingID = listingDataVersion.getListingID();
-            Long listingVersion = listingDataVersion.getListingDataVersion();
+            Long listingVersion = listingDataVersion.getDataVersion();
 
             int noOfUpdatedRecords = currentSession().createSQLQuery(
                     INSERT_IGNORE).
@@ -69,6 +68,7 @@ public class ListingDataVersionDAO extends AbstractDAO<ListingDataVersion> {
 
             if (noOfUpdatedRecords > 0) {
                 isListingUpdated = Boolean.TRUE;
+                logger.info("Fresh Listing came in {0}", listingID);
                 break;
             }
 
@@ -83,13 +83,18 @@ public class ListingDataVersionDAO extends AbstractDAO<ListingDataVersion> {
                 throw new RuntimeException("Could not insert or retrieve ListingDataVersion = " + listingID);
             }
 
-            dataVersion.setListingDataVersion(listingVersion);
+            // Nasty hibernate, was caching the data, and writing back the older data
+            // before terminating the session..thereby overwriting the useful updates,
+            // done below . Probably I dnt understand Hibernate behavior well..
+            // but it works!! in all cases
+            currentSession().evict(dataVersion);
+
+            dataVersion.setDataVersion(listingVersion);
 
             // now lets do the version bump. We are sure here, that  ListingID is present in DB
             noOfUpdatedRecords = testAndIncrementListingVersion(dataVersion);
             // noOfUpdateRecords == 0, then either the existing version in the DB, was greater than the
             //  listingDataVersion, else we pass the updated row count, which should be always 1
-
 
             if (noOfUpdatedRecords > 0) {
                 isListingUpdated = Boolean.TRUE;
@@ -100,16 +105,23 @@ public class ListingDataVersionDAO extends AbstractDAO<ListingDataVersion> {
         return isListingUpdated;
     }
 
+    // only for test
+    public ListingDataVersion get(String id) {
+        return super.get(id);
+    }
+
     private int testAndIncrementListingVersion(ListingDataVersion listingDataVersion) {
 
         String listingID = listingDataVersion.getListingID();
 
         int executeUpdate = currentSession().createSQLQuery(UPDATE_LISTINGDATA).
                 setString("listingID", listingID).
-                setLong("new_version", listingDataVersion.getListingDataVersion()).
+                setLong("version", listingDataVersion.getDataVersion()).
                 executeUpdate();
 
-        currentSession().flush();
+        if (executeUpdate == 0)
+            logger.info("Ignoring the Version {0} for {1} as MVCC kicks in", listingDataVersion.getDataVersion(),
+                    listingID);
 
         return executeUpdate;
     }

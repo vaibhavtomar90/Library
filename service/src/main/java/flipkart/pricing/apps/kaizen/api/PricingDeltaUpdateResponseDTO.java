@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,10 +12,10 @@ import java.util.List;
  * User: bhushan.sk
  * Date: 13/05/15
  * Time: 12:43 AM
- * To change this template use File | Settings | File Templates.
+ * Description : DTO For Delta API response
  */
 
-public class PricingDeltaUpdateResponseDTO {
+public class PricingDeltaUpdateResponseDTO implements Serializable{
 
     @JsonProperty
     @NotNull

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * User: bhushan.sk
  * Date: 13/05/15
  * Time: 12:55 AM
- * To change this template use File | Settings | File Templates.
+ * Description : Individual priceupdate item
  */
 public class PricingUpdate {
 
