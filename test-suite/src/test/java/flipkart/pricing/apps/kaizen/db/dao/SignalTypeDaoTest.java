@@ -4,6 +4,7 @@ package flipkart.pricing.apps.kaizen.db.dao;
 import flipkart.pricing.apps.kaizen.boot.config.KaizenContextConfiguration;
 import flipkart.pricing.apps.kaizen.db.model.SignalDataType;
 import flipkart.pricing.apps.kaizen.db.model.SignalType;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ActiveProfiles;
@@ -63,6 +64,13 @@ public class SignalTypeDaoTest {
             assertNotNull(fetchedSignalType.getId());
             assertTrue(fetchedSignalType.equals(persistedSignalType));
         }
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    @Transactional
+    public void shouldThrowExceptionWhilePersistingSameSignalNameTwice() {
+       signalTypeDao.insertSignalType(new SignalType("foo", SignalDataType.DOUBLE, "1.0"));
+       signalTypeDao.insertSignalType(new SignalType("foo", SignalDataType.DOUBLE, "1.0"));
     }
 
 
