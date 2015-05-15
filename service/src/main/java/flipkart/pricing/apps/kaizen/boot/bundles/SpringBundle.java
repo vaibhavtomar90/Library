@@ -21,7 +21,7 @@ public class SpringBundle implements ConfiguredBundle<KaizenConfiguration> {
         final Map<String, Object> resources = context.getBeansWithAnnotation(Path.class);
         resources.forEach((name, res) -> environment.jersey().register(res));
         final Map<String, HealthCheck> healthChecks = context.getBeansOfType(HealthCheck.class);
-        healthChecks.forEach((name,hc) -> environment.healthChecks().register(name,hc));
+        healthChecks.forEach((name, hc) -> environment.healthChecks().register(name, hc));
     }
 
     @Override

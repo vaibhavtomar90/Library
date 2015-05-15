@@ -10,7 +10,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
+@Named
 public class ListingInfoDao extends AbstractDAO<ListingInfo> {
 
     private static final String INSERT_IGNORE_QUERY = "INSERT IGNORE INTO listing_infos (listing, version) values (:listing, 0)";

@@ -7,10 +7,11 @@ import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Named
 public class SignalTypeDao extends AbstractDAO<SignalTypes> {
 
     @Inject

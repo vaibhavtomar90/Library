@@ -9,8 +9,9 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.List;
-
+@Named
 public class SignalDao extends AbstractDAO<Signal> {
 
     private static final String INSERT_SIGNAL_QUERY = "INSERT INTO signals (listing_id, signal_type_id, value, version, qualifier) VALUES (:listing_id, :signal_type_id, :value, :version, :qualifier)";

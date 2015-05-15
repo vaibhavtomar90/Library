@@ -16,6 +16,9 @@
       <hibernate.version>4.3.5.Final</hibernate.version>
       <dropwizard.version>0.8.1</dropwizard.version>
       <camel.version>2.15.1</camel.version>
+      <scala-library.version>2.10.4</scala-library.version>
+      <kafka-version>0.8.2.0</kafka-version>
+      <zookeeper.version>3.4.6</zookeeper.version>
   </properties>
 
   <developers>
@@ -34,7 +37,7 @@
             </snapshots>
             <id>central</id>
             <name>Maven Repository Switchboard</name>
-            <url>http://repo1.maven.org/maven2</url>
+            <url>http://repo.maven.org/maven2</url>
         </repository>
 
         <repository>

@@ -38,3 +38,13 @@ database:
           "hibernate.dialect": "org.hibernate.dialect.MySQL5Dialect"
           "hibernate.hbm2ddl.auto": "validate"
           "hibernate.connection.isolation": "2"
+kaizen:
+  kafka:
+    brokerHost: localhost
+    brokerPort: 9092
+    dataservice:
+      postIngestionTopic: testThree
+    compute: 
+      postComputeTopic: testThree
+    propagate: 
+      propagationTopic: testThree
