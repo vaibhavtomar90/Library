@@ -50,6 +50,7 @@ if [ "$CMD" == "configure" ]; then
 
     case "$PAC" in 
         *) if [ -x "/etc/init.d/$PAC" ]; then
+                /etc/init.d/$PAC migrate
                 /etc/init.d/$PAC start
                 echo "deploys.$ENV.$PAC:1|c" | nc -w 1 -u $STATSD_URL $STATSD_PORT
            fi;;

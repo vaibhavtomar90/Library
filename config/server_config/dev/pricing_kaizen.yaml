@@ -26,10 +26,10 @@ logging:
             timeZone: IST
 
 database:
-  driverClass: com.mysql.jdbc.Driver
-  user: root
+  driverClass: "com.mysql.jdbc.Driver"
+  user: "root"
   password:
-  url: jdbc:mysql://localhost/pricing_kaizen
+  url: "jdbc:mysql://localhost/pricing_kaizen"
   maxWaitForConnection: 1s
   minSize: 2
   maxSize: 10
