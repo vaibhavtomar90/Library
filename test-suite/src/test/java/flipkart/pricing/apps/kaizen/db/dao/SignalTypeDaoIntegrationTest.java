@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = KaizenContextConfiguration.class)
 @ActiveProfiles("test")
-public class SignalTypeDaoTest {
+public class SignalTypeDaoIntegrationTest {
 
     @Inject
     private SignalTypeDao signalTypeDao;
