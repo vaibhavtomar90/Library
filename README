@@ -3,6 +3,7 @@ Setup requires Kafka server & MySQL server running on your system.
 MySQL setup
 1. If you have a mac, then get the installation from a peer. Make sure you give a blank password for root while installing mysql
 2. Run ./bootstrap.sh to create the bare DB
+3. cd service/ && mvn liquibase:update (You would have to run liquibase:update each time a new migration is written)
 
 Kafka Setup
 1. The test suite requires a kafka server running on your system. You can use kafka_2.11-0.8.2.0. See instructions on website on how to start the server
