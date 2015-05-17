@@ -43,8 +43,8 @@ kaizen:
     brokerHost: localhost
     brokerPort: 9092
     dataservice:
-      postIngestionTopic: testThree
+      postIngestionTopic: kaizen-post-save
     compute: 
-      postComputeTopic: testThree
+      postComputeTopic: kaizen-post-compute
     propagate: 
-      propagationTopic: testThree
+      propagationTopic: pricing-price-updates

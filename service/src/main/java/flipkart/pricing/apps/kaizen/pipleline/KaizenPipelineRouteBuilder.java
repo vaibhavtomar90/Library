@@ -1,21 +1,29 @@
 package flipkart.pricing.apps.kaizen.pipleline;
 
+import flipkart.pricing.apps.kaizen.api.ListingUpdateMessage;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.beans.factory.annotation.Value;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import static flipkart.pricing.apps.kaizen.pipleline.KafkaEndpointUriBuilderUtil.getUri;
+
+@Named
 public class KaizenPipelineRouteBuilder extends RouteBuilder {
-    
+
     private String kafkaBrokerHost;
     private String postIngestionTopic;
     private String postComputeTopic;
     private String propagationTopic;
     private String kafkaBrokerPort;
 
-    public KaizenPipelineRouteBuilder(String kafkaBrokerHost, 
-                                      String postIngestionTopic, 
-                                      String postComputeTopic, 
-                                      String propagationTopic, 
-                                      String kafkaBrokerPort) {
+    @Inject
+    public KaizenPipelineRouteBuilder(@Value("${kaizen.kafka.brokerHost}")String kafkaBrokerHost,
+                                      @Value("${kaizen.kafka.dataservice.postIngestionTopic}")String postIngestionTopic,
+                                      @Value("${kaizen.kafka.compute.postComputeTopic}")String postComputeTopic,
+                                      @Value("${kaizen.kafka.propagate.propagationTopic}")String propagationTopic,
+                                      @Value("${kaizen.kafka.brokerPort}")String kafkaBrokerPort)  {
         this.kafkaBrokerHost = kafkaBrokerHost;
         this.postIngestionTopic = postIngestionTopic;
         this.postComputeTopic = postComputeTopic;
@@ -26,9 +34,13 @@ public class KaizenPipelineRouteBuilder extends RouteBuilder {
     @Override
     public void configure() throws Exception {
         from("direct:processIncomingSignals")
-            .beanRef("signalService","updateSignals")
-            .to("kafka:"+kafkaBrokerHost+":"+kafkaBrokerPort+
-                "?topic="+postIngestionTopic+
-                "&serializerClass=kafka.serializer.StringEncoder&requestRequiredAcks=-1");
+            .transacted()
+            .multicast()
+            .beanRef("signalService", "updateSignals")
+            .to("direct:toKafka");
+        from("direct:toKafka")
+            .transacted()
+            .convertBodyTo(ListingUpdateMessage.class).to(getUri(kafkaBrokerHost, kafkaBrokerPort, postIngestionTopic));
     }
+
 }

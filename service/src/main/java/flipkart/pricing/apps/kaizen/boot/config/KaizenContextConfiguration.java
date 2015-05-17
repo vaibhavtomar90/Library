@@ -7,13 +7,15 @@ import org.apache.camel.ProducerTemplate;
 import org.apache.camel.spring.SpringCamelContext;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * @understands : Spring context configuration
  */
 @Configuration
-@ComponentScan(value = {"flipkart.pricing.apps.kaizen"}, excludeFilters = {@ComponentScan.Filter(value = {DataSourceConfiguration.class,HibernateConfiguration.class,CamelPipelineConfig.class}, type = FilterType.ASSIGNABLE_TYPE)})
-@Import({DataSourceConfiguration.class,HibernateConfiguration.class,CamelPipelineConfig.class})
+@ComponentScan(value = {"flipkart.pricing.apps.kaizen"}, excludeFilters = {@ComponentScan.Filter(value = {DataSourceConfiguration.class,HibernateConfiguration.class}, type = FilterType.ASSIGNABLE_TYPE)})
+@Import({DataSourceConfiguration.class,HibernateConfiguration.class})
+@EnableTransactionManagement
 public class KaizenContextConfiguration {
     @Deprecated // for CGLIB only
     public KaizenContextConfiguration() {
@@ -36,7 +38,7 @@ public class KaizenContextConfiguration {
     @Bean
     public CamelContext getCamelContext(KaizenPipelineRouteBuilder kaizenPipelineRouteBuilder) throws Exception {
         CamelContext camelContext = new SpringCamelContext();
-        camelContext.addRoutes(kaizenPipelineRouteBuilder);
+        camelContext.addRoutes(kaizenPipelineRouteBuilder); // TODO : Use spring context to read all routes (not an issue now since we have only one route)
         return camelContext;
     }
 }
