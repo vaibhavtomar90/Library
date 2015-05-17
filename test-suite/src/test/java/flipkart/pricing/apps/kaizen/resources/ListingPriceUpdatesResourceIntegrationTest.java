@@ -84,9 +84,9 @@ public class ListingPriceUpdatesResourceIntegrationTest {
 
         assertTrue(priceUpdateDTO.getUpdates().size() == countOfGeneratedListing);
 
-        assertTrue(priceUpdateDTO.getMore_data() == false); // as we have asked for all versions
+        assertTrue(priceUpdateDTO.getMoreData() == false); // as we have asked for all versions
 
-        assertTrue(priceUpdateDTO.getNext_version() == 0L); // since, there is nothing to read further
+        assertTrue(priceUpdateDTO.getNextVersion() == 0L); // since, there is nothing to read further
 
         // check, if the JSON fields match with all the generated ones.
         for (int i = 0; i < countOfGeneratedListing; ++i) {
@@ -133,7 +133,7 @@ public class ListingPriceUpdatesResourceIntegrationTest {
 
         assertTrue(priceUpdateDTO.getUpdates().size() == countRecords);
 
-        assertTrue(priceUpdateDTO.getMore_data() == true); // as we have asked for all 5 versions out of 10 generated
+        assertTrue(priceUpdateDTO.getMoreData() == true); // as we have asked for all 5 versions out of 10 generated
 
         // check, if the JSON fields match with all the generated ones.
         for (int i = 0; i < countRecords; ++i) {
@@ -154,7 +154,7 @@ public class ListingPriceUpdatesResourceIntegrationTest {
                     latestPriceVersions.get(i).getPricingData().getFsp()));
         }
 
-        assertTrue(priceUpdateDTO.getNext_version() > priceUpdateDTO.getUpdates().get(countRecords - 1).getVersion());
+        assertTrue(priceUpdateDTO.getNextVersion() > priceUpdateDTO.getUpdates().get(countRecords - 1).getVersion());
     }
 }
 

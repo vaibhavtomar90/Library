@@ -65,4 +65,17 @@ public class ListingDataVersion implements Serializable{
         result = 31 * result + dataVersion.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder(50);
+
+        builder.append("ListingDataversion=[").
+                append("ListingID=[").
+                append(this.listingID).append("]").
+                append("Version=[").append(this.getDataVersion()).append("]").append("]");
+
+        return builder.toString();
+
+    }
 }

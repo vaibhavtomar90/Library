@@ -15,20 +15,20 @@ public class PriceComputeEvent implements Serializable {
     /**
      * ListingID
      */
-    String listingID;
+    final private String listingID;
 
     /**
      * The DM's dataversion for this listing, which
      * triggered this price computation event
      */
-    Long dataVersion;
+    final private Long dataVersion;
 
     /**
      * The priceing data, to be bundled, across!
      */
-    PricingData pricingData;
+    final private PricingData pricingData;
 
-    String jsonContext;
+    final private String jsonContext;
 
     public PriceComputeEvent(String listingID, Long dataVersion,
                              PricingData pricingData, String jsonContext) {

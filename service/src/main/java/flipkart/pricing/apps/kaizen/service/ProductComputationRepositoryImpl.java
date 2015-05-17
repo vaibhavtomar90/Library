@@ -38,11 +38,11 @@ public class ProductComputationRepositoryImpl implements  ProductComputationRepo
     // better would been just another DAO Interface over
     // DRopwizard's AbstractDAO<>
 
-    PriceComputationAuditDAO priceComputationAuditDAO;
+    final private PriceComputationAuditDAO priceComputationAuditDAO;
 
-    PriceComputationLatestDAO priceComputationLatestDAO;
+    final private PriceComputationLatestDAO priceComputationLatestDAO;
 
-    ListingDataVersionDAO listingDataVersionDAO;
+    final private ListingDataVersionDAO listingDataVersionDAO;
 
     @Inject
     public ProductComputationRepositoryImpl(

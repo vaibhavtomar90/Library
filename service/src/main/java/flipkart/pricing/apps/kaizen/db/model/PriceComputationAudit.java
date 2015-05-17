@@ -38,11 +38,8 @@ public class PriceComputationAudit implements Serializable{
 
     Timestamp computedAt;
 
+    @Column(columnDefinition = "text")
     String jsonContext;
-
-    public PriceComputationAudit(String listingId, double mrp, double fsp, double fk_discount) {
-        this(listingId, mrp, fsp, fk_discount, "");
-    }
 
     public PriceComputationAudit(String listingId, double mrp, double fsp, double fk_discount, String jsonContext) {
         this.listingId = listingId;
@@ -52,7 +49,8 @@ public class PriceComputationAudit implements Serializable{
         this.jsonContext = jsonContext;
     }
 
-    public PriceComputationAudit() {
+    @Deprecated
+    PriceComputationAudit() {
 
     }
 

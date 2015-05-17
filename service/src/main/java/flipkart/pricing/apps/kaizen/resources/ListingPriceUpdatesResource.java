@@ -10,7 +10,7 @@ package flipkart.pricing.apps.kaizen.resources;
 
 import flipkart.pricing.apps.kaizen.api.PricingDeltaUpdateResponseDTO;
 import flipkart.pricing.apps.kaizen.api.PricingUpdate;
-import flipkart.pricing.apps.kaizen.service.ListingPriceUpdatesService;
+import flipkart.pricing.apps.kaizen.service.PricingAuditDataService;
 import flipkart.pricing.apps.kaizen.service.datatypes.PriceComputation;
 import flipkart.pricing.apps.kaizen.service.datatypes.PriceComputationResultSet;
 import flipkart.pricing.apps.kaizen.service.datatypes.PricingData;
@@ -38,15 +38,16 @@ public class ListingPriceUpdatesResource {
     private static final int MAX_DELTA_RECORDS = 1000;
     private static Logger logger = LoggerFactory.getLogger(ListingPriceUpdatesResource.class);
 
-    ListingPriceUpdatesService listingPriceUpdatesService;
+    private final PricingAuditDataService listingPriceUpdatesService;
 
     @Inject
-    public ListingPriceUpdatesResource(ListingPriceUpdatesService listingPriceUpdatesService) {
+    public ListingPriceUpdatesResource(PricingAuditDataService listingPriceUpdatesService) {
         this.listingPriceUpdatesService = listingPriceUpdatesService;
     }
 
     @GET
     @Path("/delta")
+    // TODO : Metrics to be added
     public PricingDeltaUpdateResponseDTO getDeltaPriceUpdates
             (@QueryParam("version")
              Long fromVersion,
@@ -62,7 +63,7 @@ public class ListingPriceUpdatesResource {
                 throw new IllegalArgumentException("Incorrect fromVersion or Count specified");
 
             final PriceComputationResultSet computationResultset =
-                   this.listingPriceUpdatesService.getFromVersion(fromVersion, updateCount);
+                   this.listingPriceUpdatesService.getPriceComputation(fromVersion, updateCount);
 
             return map(computationResultset);
 

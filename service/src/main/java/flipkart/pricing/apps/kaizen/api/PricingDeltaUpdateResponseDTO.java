@@ -23,18 +23,18 @@ public class PricingDeltaUpdateResponseDTO implements Serializable{
 
     @JsonProperty
     @NotNull
-    final Long next_version;
+    final Long nextVersion;
 
     @JsonProperty
     @NotNull
-    final Boolean more_data;
+    final Boolean moreData;
 
     @JsonCreator
     public PricingDeltaUpdateResponseDTO(@JsonProperty("updates") List<PricingUpdate> updates,
-                                         @JsonProperty("next_version") Long next_version,
-                                         @JsonProperty("more_data")Boolean more_data){
-        this.more_data = more_data;
-        this.next_version = next_version;
+                                         @JsonProperty("nextVersion") Long nextVersion,
+                                         @JsonProperty("moreData")Boolean moreData){
+        this.moreData = moreData;
+        this.nextVersion = nextVersion;
         this.updates = updates;
     }
 
@@ -42,11 +42,19 @@ public class PricingDeltaUpdateResponseDTO implements Serializable{
         return updates;
     }
 
-    public Long getNext_version() {
-        return next_version;
+    public Long getNextVersion() {
+        return nextVersion;
     }
 
-    public Boolean getMore_data() {
-        return more_data;
+    public Boolean getMoreData() {
+        return moreData;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder(1024);
+        stringBuilder.append(getClass().getSimpleName()).append("[").append("moreData=[").append(getMoreData()).append("]")
+                .append("nextVersion=").append(nextVersion).append("[updates=[").append(this.updates.toString()).append("]]");
+        return stringBuilder.toString();
     }
 }

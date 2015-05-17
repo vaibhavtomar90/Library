@@ -11,9 +11,9 @@ import java.io.Serializable;
  */
 public class PricingData implements Serializable {
 
-    Double fsp;
-    Double mrp;
-    Double fk_discount;
+    private final Double fsp;
+    private final Double mrp;
+    private final Double fk_discount;
 
     public PricingData(Double fsp, Double mrp, Double fk_discount) {
         this.fsp = fsp;
@@ -53,5 +53,15 @@ public class PricingData implements Serializable {
         result = 31 * result + mrp.hashCode();
         result = 31 * result + fk_discount.hashCode();
         return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder(50);
+        builder.append("PricingData={").append("mrp=[").append(this.getMrp()).append("],")
+                .append("fsp=[").append(this.getFsp()).append("],").append("fk_discount=[")
+                .append(this.getFk_discount()).append("]}");
+
+        return builder.toString();
     }
 }

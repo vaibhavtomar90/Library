@@ -13,19 +13,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class PricingUpdate {
 
     @JsonProperty
-    final String listing;
+    private final String listing;
 
     @JsonProperty
-    final Double mrp;
+    private final Double mrp;
 
     @JsonProperty
-    final Double fsp;
+    private final Double fsp;
 
     @JsonProperty
-    final Double fk_discount;
+    private final Double fk_discount;
 
     @JsonProperty
-    final Long version;
+    private final Long version;
 
     @JsonCreator
     public PricingUpdate(@JsonProperty("listing") String listing,
@@ -58,5 +58,15 @@ public class PricingUpdate {
 
     public Long getVersion() {
         return version;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder(100);
+        stringBuilder.append(getClass().getSimpleName()).append("[").append("listing={").append(listing)
+                .append("}").append("mrp={").append(mrp).append("}").append("fsp=").append("{").append(fsp).append("}")
+                .append("fk_discount=").append("{").append(fk_discount).append("}").append("version={")
+                .append(version) .append("}").append("]") ;
+        return stringBuilder.toString();
     }
 }

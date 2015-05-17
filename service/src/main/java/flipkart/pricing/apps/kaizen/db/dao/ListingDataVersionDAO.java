@@ -27,7 +27,7 @@ import java.math.BigInteger;
 @Repository
 public class ListingDataVersionDAO extends AbstractDAO<ListingDataVersion> {
 
-    private static Logger logger = LoggerFactory.getLogger(ListingDataVersionDAO.class);
+    private static final Logger logger = LoggerFactory.getLogger(ListingDataVersionDAO.class);
 
     private static final String INSERT_IGNORE =
             "INSERT IGNORE INTO ListingDataVersion (listingID, dataVersion) values (:listingID, :version)";
@@ -48,7 +48,7 @@ public class ListingDataVersionDAO extends AbstractDAO<ListingDataVersion> {
      * PriceComputation Audit Table, thru high layers
      *
      * @param listingDataVersion
-     * @return listDataVersion, of the upserted ListingDataVersion record
+     * @return True if listing is update else false.
      */
 
     public Boolean updateListing(ListingDataVersion listingDataVersion) {
@@ -106,7 +106,8 @@ public class ListingDataVersionDAO extends AbstractDAO<ListingDataVersion> {
     }
 
     // only for test
-    public ListingDataVersion get(String id) {
+    @Deprecated
+    ListingDataVersion get(String id) {
         return super.get(id);
     }
 
