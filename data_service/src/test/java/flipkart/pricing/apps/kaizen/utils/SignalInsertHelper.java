@@ -1,8 +1,8 @@
 package flipkart.pricing.apps.kaizen.utils;
 
 import flipkart.pricing.apps.kaizen.db.dao.SignalTypeDao;
-import flipkart.pricing.apps.kaizen.db.model.SignalDataTypes;
-import flipkart.pricing.apps.kaizen.db.model.SignalTypes;
+import flipkart.pricing.apps.kaizen.db.model.SignalDataType;
+import flipkart.pricing.apps.kaizen.db.model.SignalType;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -22,10 +22,10 @@ public class SignalInsertHelper {
     }
 
     public void createSignals() {
-        signalTypeDao.insertSignalType(new SignalTypes(MRP_PRICE_TYPE_SIGNALTYPE, SignalDataTypes.PRICE, null));
-        signalTypeDao.insertSignalType(new SignalTypes(ATP_INT_TYPE_SIGNALTYPE, SignalDataTypes.INT, "0"));
-        signalTypeDao.insertSignalType(new SignalTypes(BAND_DOUBLE_TYPE_SIGNALTYPE, SignalDataTypes.DOUBLE, "0.0"));
-        signalTypeDao.insertSignalType(new SignalTypes(BRAND_STRING_TYPE_SIGNALTYPE, SignalDataTypes.STRING,null));
-        signalTypeDao.insertSignalType(new SignalTypes(PAGEHITS_LONG_TYPE_SIGNALTYPE, SignalDataTypes.LONG, "0"));
+        signalTypeDao.insertSignalType(new SignalType(MRP_PRICE_TYPE_SIGNALTYPE, SignalDataType.PRICE, null));
+        signalTypeDao.insertSignalType(new SignalType(ATP_INT_TYPE_SIGNALTYPE, SignalDataType.INT, "0"));
+        signalTypeDao.insertSignalType(new SignalType(BAND_DOUBLE_TYPE_SIGNALTYPE, SignalDataType.DOUBLE, "0.0"));
+        signalTypeDao.insertSignalType(new SignalType(BRAND_STRING_TYPE_SIGNALTYPE, SignalDataType.STRING,null));
+        signalTypeDao.insertSignalType(new SignalType(PAGEHITS_LONG_TYPE_SIGNALTYPE, SignalDataType.LONG, "0"));
     }
 }

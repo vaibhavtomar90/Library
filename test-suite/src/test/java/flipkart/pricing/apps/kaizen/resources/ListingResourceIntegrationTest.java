@@ -1,7 +1,6 @@
 package flipkart.pricing.apps.kaizen.resources;
 
 import flipkart.pricing.apps.kaizen.api.SignalFetchDto;
-import flipkart.pricing.apps.kaizen.api.SignalResponseDto;
 import flipkart.pricing.apps.kaizen.boot.config.KaizenContextConfiguration;
 import flipkart.pricing.apps.kaizen.db.service.SignalService;
 import flipkart.pricing.apps.kaizen.testrules.DbSetupRule;
@@ -20,7 +19,7 @@ import javax.inject.Inject;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
 
-import static flipkart.pricing.apps.kaizen.utils.SignalResponseDtoMatcher.isEquivalent;
+import static flipkart.pricing.apps.kaizen.utils.SignalFetchDtoMatcher.isEquivalent;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -50,10 +49,10 @@ public class ListingResourceIntegrationTest {
     public void shouldSaveListingDataToDB_ForNewListing() throws Exception {
         final Response response = resources.client().target("/v1/listings").request().
             header(ListingResource.CLIENT_ID_HEADER_KEY, "fooBar").
-            post(Entity.json(SignalDtoTestUtils.getSampleSignalRequestDto()));
+            post(Entity.json(SignalDtoTestUtils.getSampleSignalSaveDto()));
         assertThat(response.getStatus(), is(200));
         final SignalFetchDto fetchedSignalsForLst1 = hibernateSessionUtil.withinSession(() -> signalService.fetchSignals("lst1"));
-        assertThat(fetchedSignalsForLst1, isEquivalent(SignalDtoTestUtils.getSampleSignalResponseDto()));
+        assertThat(fetchedSignalsForLst1, isEquivalent(SignalDtoTestUtils.getSampleSignalFetchDto()));
         // TODO : assert that Message has been propagated to Kafka once the entire pipeline from Save -> Compute -> Propagate is built
     }
 

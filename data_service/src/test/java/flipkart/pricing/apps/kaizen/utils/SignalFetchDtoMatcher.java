@@ -1,28 +1,28 @@
 package flipkart.pricing.apps.kaizen.utils;
 
-import flipkart.pricing.apps.kaizen.api.SignalResponseDto;
+import flipkart.pricing.apps.kaizen.api.SignalFetchDto;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
-public class SignalResponseDtoMatcher extends BaseMatcher<SignalResponseDto> {
-    private SignalResponseDto expectedDto;
+public class SignalFetchDtoMatcher extends BaseMatcher<SignalFetchDto> {
+    private SignalFetchDto expectedDto;
 
-    public static Matcher<SignalResponseDto> isEquivalent(SignalResponseDto expectedDto) {
-        return new SignalResponseDtoMatcher(expectedDto);
+    public static Matcher<SignalFetchDto> isEquivalent(SignalFetchDto expectedDto) {
+        return new SignalFetchDtoMatcher(expectedDto);
     }
 
-    private SignalResponseDtoMatcher(SignalResponseDto expectedDto) {
+    private SignalFetchDtoMatcher(SignalFetchDto expectedDto) {
         this.expectedDto = expectedDto;
     }
 
     @Override
     public boolean matches(Object item) {
-        if (!(item instanceof SignalResponseDto)) return false;
-        SignalResponseDto givenItem = (SignalResponseDto) item;
+        if (!(item instanceof SignalFetchDto)) return false;
+        SignalFetchDto givenItem = (SignalFetchDto) item;
         if (givenItem.equals(expectedDto)) return true;
         if (!givenItem.getListing().equals(expectedDto.getListing())) return false;
-        if (!givenItem.getListingVersion().equals(expectedDto.getListingVersion())) return false;
+        if (!givenItem.getVersion().equals(expectedDto.getVersion())) return false;
         if (!expectedDto.getSignals().containsAll(givenItem.getSignals())) return false;
         return true;
     }

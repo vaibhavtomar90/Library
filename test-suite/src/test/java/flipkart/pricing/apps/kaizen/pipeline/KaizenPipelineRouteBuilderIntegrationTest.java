@@ -1,8 +1,7 @@
 package flipkart.pricing.apps.kaizen.pipeline;
 
-import flipkart.pricing.apps.kaizen.api.SignalRequestDetail;
-import flipkart.pricing.apps.kaizen.api.SignalRequestDto;
-import flipkart.pricing.apps.kaizen.api.SignalResponseDto;
+import flipkart.pricing.apps.kaizen.api.SignalFetchDto;
+import flipkart.pricing.apps.kaizen.api.SignalSaveDetail;
 import flipkart.pricing.apps.kaizen.boot.config.KaizenContextConfiguration;
 import flipkart.pricing.apps.kaizen.db.service.SignalService;
 import flipkart.pricing.apps.kaizen.exceptions.ListingNotFoundException;
@@ -10,12 +9,10 @@ import flipkart.pricing.apps.kaizen.exceptions.SignalNameNotFoundException;
 import flipkart.pricing.apps.kaizen.pipleline.KafkaEndpointUriBuilderUtil;
 import flipkart.pricing.apps.kaizen.pipleline.KaizenPipelineRouteBuilder;
 import flipkart.pricing.apps.kaizen.testrules.DbSetupRule;
-import flipkart.pricing.apps.kaizen.testrules.SignalTypesInjectionRule;
 import flipkart.pricing.apps.kaizen.utils.HibernateSessionUtil;
 import flipkart.pricing.apps.kaizen.utils.SignalDtoTestUtils;
 import org.apache.camel.*;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.model.ModelCamelContext;
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.spring.SpringCamelContext;
 import org.apache.camel.test.junit4.CamelTestSupport;
@@ -27,17 +24,11 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.core.Is.is;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {KaizenContextConfiguration.class})
@@ -68,7 +59,7 @@ public class KaizenPipelineRouteBuilderIntegrationTest extends CamelTestSupport 
     private String postIngestionTopic;
 
     @Inject
-    private HibernateSessionUtil<SignalResponseDto> hibernateSessionUtil;
+    private HibernateSessionUtil<SignalFetchDto> hibernateSessionUtil;
 
     @Inject
     private SignalService signalService;
@@ -103,7 +94,7 @@ public class KaizenPipelineRouteBuilderIntegrationTest extends CamelTestSupport 
 
         boolean dummyRuntimeExcpetionThrown = false;
         try {
-            incomingSignals.sendBody(SignalDtoTestUtils.getSampleSignalRequestDto());
+            incomingSignals.sendBody(SignalDtoTestUtils.getSampleSignalSaveDto());
         } catch (RuntimeCamelException e) {
             assertThat(e.getCause().getMessage(),containsString("You shall not Pass!"));
             dummyRuntimeExcpetionThrown = true;
@@ -117,8 +108,8 @@ public class KaizenPipelineRouteBuilderIntegrationTest extends CamelTestSupport 
         // Sending a signal that does not exist
         boolean signalNotFoundExceptionThrown = false;
         try {
-            incomingSignals.sendBody(SignalDtoTestUtils.getSampleSignalRequestDto(
-                "foo", 1l, Collections.singletonList(new SignalRequestDetail("foo", "bar", 1l))));
+            incomingSignals.sendBody(SignalDtoTestUtils.getSampleSignalSaveDto(
+                "foo", 1l, Collections.singletonList(new SignalSaveDetail("foo", "bar", 1l))));
         } catch (CamelExecutionException e) {
             // TODO : See if Camel can return the actual exception
             if (e.getCause().getCause() instanceof SignalNameNotFoundException)
@@ -145,13 +136,13 @@ public class KaizenPipelineRouteBuilderIntegrationTest extends CamelTestSupport 
         });
         boolean dummyRuntimeExcpetionThrown = false;
         try {
-            incomingSignals.sendBody(SignalDtoTestUtils.getSampleSignalRequestDto());
+            incomingSignals.sendBody(SignalDtoTestUtils.getSampleSignalSaveDto());
         } catch (RuntimeCamelException e) {
             assertThat(e.getCause().getMessage(),containsString("You shall not Pass!"));
             dummyRuntimeExcpetionThrown = true;
         }
         assertTrue(dummyRuntimeExcpetionThrown);
         // Ensure nothing was written to DB. Would result in Exception
-        final SignalResponseDto fetchedSignalsForLst1 = hibernateSessionUtil.withinSession(() -> signalService.fetchSignals("lst1"));
+        final SignalFetchDto fetchedSignalsForLst1 = hibernateSessionUtil.withinSession(() -> signalService.fetchSignals("lst1"));
     }
 }
