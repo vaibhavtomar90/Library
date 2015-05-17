@@ -1,6 +1,6 @@
 package flipkart.pricing.apps.kaizen.db.model;
 
-public enum SignalDataTypes {
+public enum SignalDataType {
 
     INT {
         @Override

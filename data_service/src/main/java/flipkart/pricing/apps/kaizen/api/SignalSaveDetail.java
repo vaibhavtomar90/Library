@@ -5,7 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotNull;
 
-public class SignalRequestDetail {
+/**
+ * @Understands the individual signal details (name, value, version, etc) ingested for a listing
+ */
+public class SignalSaveDetail {
 
     @JsonProperty
     @NotNull
@@ -24,17 +27,17 @@ public class SignalRequestDetail {
     private String qualifier;
 
     @Deprecated
-    SignalRequestDetail() {} //for jackson
+    SignalSaveDetail() {} //for jackson
 
 
-    public SignalRequestDetail(String name, String value, Long version, String qualifier) {
+    public SignalSaveDetail(String name, String value, Long version, String qualifier) {
         this.name = name;
         this.value = value;
         this.version = version;
         this.qualifier = qualifier;
     }
 
-    public SignalRequestDetail(String name, String value, Long version) {
+    public SignalSaveDetail(String name, String value, Long version) {
         this(name, value, version, null);
     }
 
@@ -57,9 +60,9 @@ public class SignalRequestDetail {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SignalRequestDetail)) return false;
+        if (!(o instanceof SignalSaveDetail)) return false;
 
-        SignalRequestDetail that = (SignalRequestDetail) o;
+        SignalSaveDetail that = (SignalSaveDetail) o;
 
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (qualifier != null ? !qualifier.equals(that.qualifier) : that.qualifier != null) return false;
@@ -80,7 +83,7 @@ public class SignalRequestDetail {
 
     @Override
     public String toString() {
-        return "SignalRequestDetail{" +
+        return "SignalSaveDetail{" +
                 "name='" + name + '\'' +
                 ", value='" + value + '\'' +
                 ", version=" + version +

@@ -1,5 +1,6 @@
 package flipkart.pricing.apps.kaizen.resources;
 
+import flipkart.pricing.apps.kaizen.api.SignalFetchDto;
 import flipkart.pricing.apps.kaizen.api.SignalResponseDto;
 import flipkart.pricing.apps.kaizen.boot.config.KaizenContextConfiguration;
 import flipkart.pricing.apps.kaizen.db.service.SignalService;
@@ -43,7 +44,7 @@ public class ListingResourceIntegrationTest {
     public CamelContext camelContext;
 
     @Inject
-    HibernateSessionUtil<SignalResponseDto> hibernateSessionUtil;
+    HibernateSessionUtil<SignalFetchDto> hibernateSessionUtil;
     
     @Test
     public void shouldSaveListingDataToDB_ForNewListing() throws Exception {
@@ -51,7 +52,7 @@ public class ListingResourceIntegrationTest {
             header(ListingResource.CLIENT_ID_HEADER_KEY, "fooBar").
             post(Entity.json(SignalDtoTestUtils.getSampleSignalRequestDto()));
         assertThat(response.getStatus(), is(200));
-        final SignalResponseDto fetchedSignalsForLst1 = hibernateSessionUtil.withinSession(() -> signalService.fetchSignals("lst1"));
+        final SignalFetchDto fetchedSignalsForLst1 = hibernateSessionUtil.withinSession(() -> signalService.fetchSignals("lst1"));
         assertThat(fetchedSignalsForLst1, isEquivalent(SignalDtoTestUtils.getSampleSignalResponseDto()));
         // TODO : assert that Message has been propagated to Kafka once the entire pipeline from Save -> Compute -> Propagate is built
     }

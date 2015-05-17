@@ -1,6 +1,6 @@
 package flipkart.pricing.apps.kaizen.resources;
 
-import flipkart.pricing.apps.kaizen.api.SignalRequestDto;
+import flipkart.pricing.apps.kaizen.api.SignalSaveDto;
 import org.apache.camel.ProducerTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ public class ListingResource {
     @POST
     @Path("/listings")
     public String saveData(@HeaderParam(CLIENT_ID_HEADER_KEY) String clientId,
-                           SignalRequestDto listingData) {
+                           SignalSaveDto listingData) {
         logger.info("%s",listingData);
         persistEndpoint.sendBody(listingData);
         return "OK";

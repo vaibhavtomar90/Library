@@ -8,15 +8,15 @@ import org.hibernate.Criteria;
 import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
-@Named
+@Repository
 public class ListingInfoDao extends AbstractDAO<ListingInfo> {
 
-    private static final String INSERT_IGNORE_QUERY = "INSERT IGNORE INTO listing_infos (listing, version) values (:listing, 0)";
-    private static final String UPDATE_VERSION_QUERY = "UPDATE listing_infos SET version = version + 1 WHERE listing = :listing";
+    private static final String INSERT_IGNORE_QUERY = "INSERT IGNORE INTO ListingInfo (listing, version) values (:listing, 0)";
+    private static final String UPDATE_VERSION_QUERY = "UPDATE ListingInfo SET version = version + 1 WHERE listing = :listing";
 
     @Inject
     public ListingInfoDao(SessionFactory sessionFactory) {

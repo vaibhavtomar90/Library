@@ -5,7 +5,10 @@ import flipkart.pricing.apps.kaizen.pipleline.KaizenPipelineRouteBuilder;
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.spring.SpringCamelContext;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -13,7 +16,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @understands : Spring context configuration
  */
 @Configuration
-@ComponentScan(value = {"flipkart.pricing.apps.kaizen"}, excludeFilters = {@ComponentScan.Filter(value = {DataSourceConfiguration.class,HibernateConfiguration.class}, type = FilterType.ASSIGNABLE_TYPE)})
+@ComponentScan(value = {"flipkart.pricing.apps.kaizen"})
 @Import({DataSourceConfiguration.class,HibernateConfiguration.class})
 @EnableTransactionManagement
 public class KaizenContextConfiguration {
