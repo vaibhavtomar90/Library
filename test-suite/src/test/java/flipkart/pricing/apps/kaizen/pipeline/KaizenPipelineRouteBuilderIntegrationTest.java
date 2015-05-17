@@ -23,6 +23,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -41,6 +42,7 @@ import static org.hamcrest.core.Is.is;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {KaizenContextConfiguration.class})
 @ActiveProfiles("test")
+@DirtiesContext
 public class KaizenPipelineRouteBuilderIntegrationTest extends CamelTestSupport {
 
     @Rule
@@ -82,7 +84,7 @@ public class KaizenPipelineRouteBuilderIntegrationTest extends CamelTestSupport 
     }
 
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void ingestionRouteShould_ThrowExceptionIfWriteToKafkaFails() throws Exception {
         final RouteDefinition route = camelContext.getRouteDefinitions().get(0); // Works since we currently have only one route
         route.adviceWith(camelContext, new RouteBuilder() {
@@ -98,7 +100,15 @@ public class KaizenPipelineRouteBuilderIntegrationTest extends CamelTestSupport 
                     });
             }
         });
-        incomingSignals.sendBody(SignalDtoTestUtils.getSampleSignalRequestDto());
+
+        boolean dummyRuntimeExcpetionThrown = false;
+        try {
+            incomingSignals.sendBody(SignalDtoTestUtils.getSampleSignalRequestDto());
+        } catch (RuntimeCamelException e) {
+            assertThat(e.getCause().getMessage(),containsString("You shall not Pass!"));
+            dummyRuntimeExcpetionThrown = true;
+        }
+        assertTrue(dummyRuntimeExcpetionThrown);
     }
 
     @Test
@@ -140,6 +150,7 @@ public class KaizenPipelineRouteBuilderIntegrationTest extends CamelTestSupport 
             assertThat(e.getCause().getMessage(),containsString("You shall not Pass!"));
             dummyRuntimeExcpetionThrown = true;
         }
+        assertTrue(dummyRuntimeExcpetionThrown);
         // Ensure nothing was written to DB. Would result in Exception
         final SignalResponseDto fetchedSignalsForLst1 = hibernateSessionUtil.withinSession(() -> signalService.fetchSignals("lst1"));
     }
