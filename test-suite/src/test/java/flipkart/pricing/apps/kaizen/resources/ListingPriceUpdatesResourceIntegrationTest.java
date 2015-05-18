@@ -62,7 +62,7 @@ public class ListingPriceUpdatesResourceIntegrationTest {
     @Transactional
     @Rollback(false)
     @Test
-    public void writePriceComputesAndRetrieveViaRestDeltaAPI() throws Exception {
+    public void testWritePriceComputesAndRetrieveViaRestDeltaAPI() throws Exception {
 
         final int countOfGeneratedListing = 10;
         final int countOfListingUpdates = 1;
@@ -110,7 +110,7 @@ public class ListingPriceUpdatesResourceIntegrationTest {
     @Transactional
     @Rollback(false)
     @Test
-    public void writePriceComputesAndRetrievePartialViaRestDeltaAPI() throws Exception {
+    public void testWritePriceComputesAndRetrievePartialEntriesViaRestDeltaAPI() throws Exception {
 
         final int countOfGeneratedListing = 10;
         final int countRecords = 5;
