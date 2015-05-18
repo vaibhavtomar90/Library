@@ -47,4 +47,4 @@ kaizen:
     compute: 
       postComputeTopic: kaizen-post-compute
     propagate: 
-      propagationTopic: pricing-price-updates
+      propagationTopic: price-update-event
