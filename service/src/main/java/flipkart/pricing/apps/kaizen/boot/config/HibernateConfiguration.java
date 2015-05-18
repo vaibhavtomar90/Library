@@ -1,11 +1,14 @@
 package flipkart.pricing.apps.kaizen.boot.config;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.context.internal.ManagedSessionContext;
+import org.hibernate.internal.SessionFactoryImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
@@ -35,7 +38,7 @@ public class HibernateConfiguration {
 
 
     @Bean
-    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
+    public PlatformTransactionManager transactionManager(SessionFactory sessionFactory) {
         HibernateTransactionManager txManager = new HibernateTransactionManager();
         txManager.setSessionFactory(sessionFactory);
         return txManager;

@@ -6,6 +6,8 @@ import io.dropwizard.db.DataSourceFactory;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @understands DW Config class for Kaizen App
@@ -18,6 +20,16 @@ public class KaizenConfiguration extends Configuration {
     @NotNull
     @JsonProperty
     private DataSourceFactory database = new DataSourceFactory();
+
+    /**
+     * DW also uses the same yaml file as spring.
+     * THus, we needed to add this Map as a placeholder for all configs that are defined under the heading 'kaizen' & are actually used by spring*
+     * This map is not & should not be used anywhere in the code.
+     */
+    @Valid
+    @NotNull
+    @JsonProperty
+    private Map<String,Object> kaizen = new HashMap<>();
 
     public DataSourceFactory getDataSourceFactory() {
         database.build(null,null);

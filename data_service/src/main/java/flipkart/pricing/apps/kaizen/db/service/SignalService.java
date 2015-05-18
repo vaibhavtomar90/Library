@@ -20,14 +20,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
-@Transactional
 public class SignalService {
 
     private static final String ACCEPTED_QUALIFIER = "INR";
