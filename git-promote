@@ -4,7 +4,7 @@
 #echo "not ready yet" && exit
 DOMAIN=$1
 shift 1
-PACKAGE="dm"
+PACKAGE="kaizen"
 [ ! -z $1 ] && PACKAGE=$1 && shift 1
 case $DOMAIN in 
     nm|stage|stagech|qa)
@@ -18,10 +18,5 @@ esac
 TAG=release/fk-pricing-kaizen/${DOMAIN}-$(date +%Y%m%d-%H%M)${1}
 echo "Promoting to $DOMAIN." $TAG 
 git tag -m "Promoting to $DOMAIN." $TAG 
-git push --tags
-
-
-
-
-
-
+git push origin --tags
+git push corp --tags
