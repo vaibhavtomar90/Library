@@ -34,7 +34,7 @@ public class KaizenContextConfiguration {
     @Bean(name = "incomingSignal")
     public ProducerTemplate getIncomingSignalProducerTemplate(CamelContext camelContext) {
         final ProducerTemplate producerTemplate = camelContext.createProducerTemplate();
-        producerTemplate.setDefaultEndpointUri("direct:processIncomingSignals");
+        producerTemplate.setDefaultEndpointUri(KaizenPipelineRouteBuilder.DIRECT_PROCESS_INCOMING_SIGNALS);
         return producerTemplate;
     }
 

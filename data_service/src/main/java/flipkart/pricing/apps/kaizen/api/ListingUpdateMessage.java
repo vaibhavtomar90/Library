@@ -6,7 +6,7 @@ import java.util.Objects;
  * @understands Message that goes out once new listing data is saved
  */
 public class ListingUpdateMessage {
-    String listingId;
+    private final String listingId;
 
     public ListingUpdateMessage(String listingId) {
         this.listingId = listingId;

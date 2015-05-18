@@ -5,12 +5,12 @@ import flipkart.pricing.apps.kaizen.api.SignalSaveDto;
 import org.apache.camel.Converter;
 
 /**
- * @understands Camel Compatible converter that converts a given SignalRequestDto to ListingUpdateMessage
+ * @understands Camel Compatible converter that converts a given SignalSaveDto to ListingUpdateMessage
  */
 @Converter
 public class SignalSaveDtoToListingUpdateMessageConverter {
     @Converter
-    public static ListingUpdateMessage convert(SignalSaveDto signalRequestDto) {
-        return new ListingUpdateMessage(signalRequestDto.getListing());
+    public static ListingUpdateMessage convert(SignalSaveDto signalSaveDto) {
+        return new ListingUpdateMessage(signalSaveDto.getListing());
     }
 }

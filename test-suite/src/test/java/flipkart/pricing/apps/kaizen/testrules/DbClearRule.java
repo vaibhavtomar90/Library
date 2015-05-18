@@ -22,6 +22,6 @@ public class DbClearRule extends ExternalResource {
     @Override
     protected void before() throws Throwable {
         super.before();
-        JdbcTestUtils.deleteFromTables(new JdbcTemplate(dataSource),"SignalType","ListingInfo"); // TODO Implement this better
+        JdbcTestUtils.deleteFromTables(new JdbcTemplate(dataSource),"SignalType","ListingInfo","SignalInfo"); // TODO Implement this better
     }
 }

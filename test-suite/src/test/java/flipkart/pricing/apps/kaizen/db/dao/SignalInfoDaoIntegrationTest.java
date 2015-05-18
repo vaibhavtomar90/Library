@@ -2,7 +2,9 @@ package flipkart.pricing.apps.kaizen.db.dao;
 
 import flipkart.pricing.apps.kaizen.boot.config.KaizenContextConfiguration;
 import flipkart.pricing.apps.kaizen.db.model.SignalInfo;
+import flipkart.pricing.apps.kaizen.testrules.DbClearRule;
 import flipkart.pricing.apps.kaizen.utils.HibernateSessionUtil;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ActiveProfiles;
@@ -14,7 +16,9 @@ import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -27,6 +31,10 @@ public class SignalInfoDaoIntegrationTest {
 
     @Inject
     private HibernateSessionUtil hibernateSessionUtil;
+
+    @Inject
+    @Rule
+    public DbClearRule dbClearRule;
 
     @Test
     @Transactional
@@ -98,10 +106,10 @@ public class SignalInfoDaoIntegrationTest {
         SignalInfo signalInfo2 = new SignalInfo(1l, 3l, "3.0", 3l);
         signalInfoDao.insertOrUpdateSignal(signalInfo2);
         List<SignalInfo> fetchedSignalInfos = signalInfoDao.fetchSignals(1l);
-        assertTrue(fetchedSignalInfos.equals(Arrays.asList(signalInfo, signalInfo1, signalInfo2)));
-        assertTrue(signalInfoDao.fetchSignals(1l, 1l).equals(signalInfo));
-        assertTrue(signalInfoDao.fetchSignals(1l, 2l).equals(signalInfo1));
-        assertTrue(signalInfoDao.fetchSignals(1l, 3l).equals(signalInfo2));
+        assertThat(fetchedSignalInfos,is(Arrays.asList(signalInfo, signalInfo1, signalInfo2)));
+        assertThat(signalInfoDao.fetchSignals(1l, 1l), is(signalInfo));
+        assertThat(signalInfoDao.fetchSignals(1l, 2l), is(signalInfo1));
+        assertThat(signalInfoDao.fetchSignals(1l, 3l),is(signalInfo2));
         List<SignalInfo> fetchedSignals1 = signalInfoDao.fetchSignals(1l, Arrays.asList(1l, 2l));
         assertTrue(fetchedSignals1.equals(Arrays.asList(signalInfo, signalInfo1)));
     }

@@ -19,7 +19,7 @@ import javax.ws.rs.Path;
 public class ListingResource {
 
     public static final String CLIENT_ID_HEADER_KEY = "X-CLIENT-ID";
-    private static Logger logger = LoggerFactory.getLogger(ListingResource.class);
+    private static final Logger logger = LoggerFactory.getLogger(ListingResource.class);
 
     private final ProducerTemplate persistEndpoint;
 
@@ -32,7 +32,7 @@ public class ListingResource {
     @Path("/listings")
     public String saveData(@HeaderParam(CLIENT_ID_HEADER_KEY) String clientId,
                            SignalSaveDto listingData) {
-        logger.info("%s",listingData);
+        logger.debug("Received {}",listingData);
         persistEndpoint.sendBody(listingData);
         return "OK";
 

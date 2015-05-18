@@ -12,6 +12,8 @@ import static flipkart.pricing.apps.kaizen.pipleline.KafkaEndpointUriBuilderUtil
 @Named
 public class KaizenPipelineRouteBuilder extends RouteBuilder {
 
+    public static final String DIRECT_PROCESS_INCOMING_SIGNALS = "direct:processIncomingSignals";
+    private static final String DIRECT_POST_INGESTION = "direct:toKafkaPostIngestion";
     private String kafkaBrokerHost;
     private String postIngestionTopic;
     private String postComputeTopic;
@@ -33,12 +35,12 @@ public class KaizenPipelineRouteBuilder extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        from("direct:processIncomingSignals")
+        from(DIRECT_PROCESS_INCOMING_SIGNALS)
             .transacted()
             .multicast()
             .beanRef("signalService", "updateSignals")
-            .to("direct:toKafka");
-        from("direct:toKafka")
+            .to(DIRECT_POST_INGESTION);
+        from(DIRECT_POST_INGESTION)
             .transacted()
             .convertBodyTo(ListingUpdateMessage.class).to(getUri(kafkaBrokerHost, kafkaBrokerPort, postIngestionTopic));
     }
