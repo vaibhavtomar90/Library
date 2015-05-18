@@ -10,6 +10,7 @@ import javax.inject.Named;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
 
 /**
  * @understands provides Http endpoint for Listing level data
@@ -30,11 +31,11 @@ public class ListingResource {
 
     @POST
     @Path("/listings")
-    public String saveData(@HeaderParam(CLIENT_ID_HEADER_KEY) String clientId,
+    public Response saveData(@HeaderParam(CLIENT_ID_HEADER_KEY) String clientId,
                            SignalSaveDto listingData) {
-        logger.debug("Received {}",listingData);
+        logger.debug("Received {}", listingData);
         persistEndpoint.sendBody(listingData);
-        return "OK";
+        return Response.ok().build();
 
     }
 }
