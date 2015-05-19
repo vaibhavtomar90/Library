@@ -45,9 +45,14 @@ kaizen:
   kafka:
     brokerHost: localhost
     brokerPort: 9092
+    zookeeper: localhost:2181
     dataservice:
       postIngestionTopic: kaizen-post-save
     compute: 
       postComputeTopic: kaizen-post-compute
+      groupId: kaizen-post-compute-consumer-group
     propagate: 
       propagationTopic: price-update-event
+  http:
+    fatak:
+      priceUpdateUrl: localhost:38900/v1/signals

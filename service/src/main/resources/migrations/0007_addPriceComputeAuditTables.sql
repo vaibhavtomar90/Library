@@ -1,4 +1,6 @@
+--liquibase formatted sql
 
+--changeset bhushan:7 runOnChange:true
 
 
 CREATE TABLE `ListingDataVersion` (
