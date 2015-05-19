@@ -8,13 +8,13 @@ Pricing engine which<br>
 ##Setup
 Setup requires Kafka server & MySQL server running on your system.
 
-MySQL setup
-1. If you have a mac, then get the installation from a peer. Make sure you give a blank password for root while installing mysql
-2. Run ./bootstrap.sh to create the bare DB
+MySQL setup<br>
+1. If you have a mac, then get the installation from a peer. Make sure you give a blank password for root while installing mysql.<br>
+2. Run ./bootstrap.sh to create the bare DB.<br>
 
-Kafka Setup
-1. The test suite requires a kafka server running on your system. You can use kafka 2.11-0.8.2.0. See instructions on website on how to start the server
-2. Once the kafka server is up, create all the topics that you see in `config/server_config/dev/pricing_kaizen.yaml` under the heading kaizen -> kafka
+Kafka Setup<br>
+1. The test suite requires a kafka server running on your system. You can use kafka 2.11-0.8.2.0. See instructions on website on how to start the server.<br>
+2. Once the kafka server is up, create all the topics that you see in `config/server_config/dev/pricing_kaizen.yaml` under the heading kaizen -> kafka.<br>
 
 To run the build, enter
 mvn clean install -DskipTests
