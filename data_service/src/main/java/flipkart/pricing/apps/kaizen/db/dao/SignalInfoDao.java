@@ -16,6 +16,8 @@ import java.util.List;
 public class SignalInfoDao extends AbstractDAO<SignalInfo> {
 
     private static final String INSERT_SIGNAL_QUERY = "INSERT INTO SignalInfo (listingId, signalTypeId, value, version, qualifier) VALUES (:listingId, :signalTypeId, :value, :version, :qualifier)";
+    //TODO the less than equal to check will lead to double work considering the recon daemon
+    //However it is needed for clients who will refuse to maintain an incrementing version on their side. Will need to decide what to do
     private static final String UPDATE_SIGNAL_QUERY = "UPDATE SignalInfo SET value = :value, version = :version, qualifier = :qualifier WHERE listingId = :listingId AND signalTypeId = :signalTypeId AND version <= :version";
 
     @Inject
