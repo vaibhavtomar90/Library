@@ -1,5 +1,7 @@
 package flipkart.pricing.apps.kaizen.boot.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -15,6 +17,8 @@ import java.util.Properties;
  */
 public class CustomPropertySourcesPlaceHolderConfigurer extends PropertySourcesPlaceholderConfigurer implements InitializingBean{
 
+    private static final Logger logger = LoggerFactory.getLogger(CustomPropertySourcesPlaceHolderConfigurer.class);
+
     @Override
     protected void loadProperties(Properties props) throws IOException {
         super.loadProperties(props);
@@ -27,7 +31,7 @@ public class CustomPropertySourcesPlaceHolderConfigurer extends PropertySourcesP
     @Override
     public void afterPropertiesSet() throws Exception{
         final Properties properties = this.mergeProperties();
-        System.out.println("Read the following properties : "); // TODO : change to using a real logger
-        properties.entrySet().forEach((entry) -> System.out.println(entry.getKey() + ":" + entry.getValue()));
+        logger.info("Read the following properties : ");
+        properties.entrySet().forEach((entry) -> logger.info(entry.getKey() + ":" + entry.getValue()));
     }
 }
