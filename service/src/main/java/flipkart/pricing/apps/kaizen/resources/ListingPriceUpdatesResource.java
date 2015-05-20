@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @understands Provides REST Http endpoint for serving the listingPriceUpdates Delta API
  */
-@Path("/v1/listings/")
+@Path("/v1/listingPriceUpdate")
 @Component
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)

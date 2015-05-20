@@ -19,8 +19,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-import javax.ws.rs.InternalServerErrorException;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -74,7 +72,7 @@ public class ListingPriceUpdatesResourceIntegrationTest {
         assertTrue(latestPriceVersions.size() == countOfGeneratedListing);
 
         final Response response = resources.client().
-                target("/v1/listings/delta").queryParam("version", 0L).queryParam("count", 10).request().
+                target("/v1/listingPriceUpdate/delta").queryParam("version", 0L).queryParam("count", 10).request().
                 get();
 
         String jsonResponse = IOUtils.toString((InputStream) response.getEntity());
@@ -124,7 +122,7 @@ public class ListingPriceUpdatesResourceIntegrationTest {
         assertTrue(latestPriceVersions.size() == countOfGeneratedListing);
 
         final Response response = resources.client().
-                target("/v1/listings/delta").queryParam("version", 0L).queryParam("count", countRecords).request().
+                target("/v1/listingPriceUpdate/delta").queryParam("version", 0L).queryParam("count", countRecords).request().
                 get();
 
         String jsonResponse = IOUtils.toString((InputStream) response.getEntity());
