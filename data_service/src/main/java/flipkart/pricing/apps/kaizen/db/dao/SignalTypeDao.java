@@ -11,7 +11,6 @@ import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 @Repository
 public class SignalTypeDao extends AbstractDAO<SignalType> {
 

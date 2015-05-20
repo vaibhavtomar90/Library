@@ -36,10 +36,6 @@ public class SignalSaveDto {
         this.version = version;
     }
 
-    public SignalSaveDto(String listing, List<SignalSaveDetail> signals) {
-       this(listing, signals, null);
-    }
-
 
     public String getListing() {
         return listing;
