@@ -2,6 +2,7 @@ package flipkart.pricing.apps.kaizen.boot.config;
 
 
 import flipkart.pricing.apps.kaizen.pipleline.KaizenPipelineRouteBuilder;
+import flipkart.pricing.apps.kaizen.pipleline.PropogationPipelineRouteBuilder;
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.spring.SpringCamelContext;
@@ -39,9 +40,10 @@ public class KaizenContextConfiguration {
     }
 
     @Bean
-    public CamelContext getCamelContext(KaizenPipelineRouteBuilder kaizenPipelineRouteBuilder) throws Exception {
+    public CamelContext getCamelContext(KaizenPipelineRouteBuilder kaizenPipelineRouteBuilder, PropogationPipelineRouteBuilder propogationPipelineRouteBuilder) throws Exception {
         CamelContext camelContext = new SpringCamelContext();
         camelContext.addRoutes(kaizenPipelineRouteBuilder); // TODO : Use spring context to read all routes (not an issue now since we have only one route)
+        camelContext.addRoutes(propogationPipelineRouteBuilder);
         return camelContext;
     }
 }
