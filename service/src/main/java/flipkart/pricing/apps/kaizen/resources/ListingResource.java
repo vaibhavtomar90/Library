@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 /**
  * @understands provides Http endpoint for Listing level data
  */
-@Path("/v1")
+@Path("/v1/listings")
 @Named
 public class ListingResource {
 
@@ -30,7 +30,7 @@ public class ListingResource {
     }
 
     @POST
-    @Path("/listings")
+    @Path("/signals")
     public Response saveData(@HeaderParam(CLIENT_ID_HEADER_KEY) String clientId,
                            SignalSaveDto listingData) {
         logger.debug("Received {}", listingData);

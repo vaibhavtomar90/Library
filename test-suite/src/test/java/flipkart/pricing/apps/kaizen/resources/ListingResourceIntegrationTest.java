@@ -47,7 +47,7 @@ public class ListingResourceIntegrationTest {
     
     @Test
     public void shouldSaveListingDataToDB_ForNewListing() throws Exception {
-        final Response response = resources.client().target("/v1/listings").request().
+        final Response response = resources.client().target("/v1/listings/signals").request().
             header(ListingResource.CLIENT_ID_HEADER_KEY, "fooBar").
             post(Entity.json(SignalDtoTestUtils.getSampleSignalSaveDto()));
         assertThat(response.getStatus(), is(200));
