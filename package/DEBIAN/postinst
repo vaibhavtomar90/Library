@@ -48,6 +48,34 @@ if [ "$CMD" == "configure" ]; then
 		
     chown -R $PRICING_UID:$PRICING_GID /var/log/flipkart/pricing/$PAC
 
+    #restart Log aggregation service if config changed
+
+    FK_LOG_APP_PATH=/etc/fk-log-app
+    RSYSLOG_PATH=/etc/rsyslog.d
+
+    function log_config_changed() {
+        if [ -f $1 ]; then
+                new=`md5sum -b ${1}.new $1 | cut -f1 -d' ' | sort | uniq | wc -l`
+                if [ $new -ne 1 ]; then
+                    mv "${1}.new" "$1"
+                    echo 1
+                else
+                    rm "${1}.new"
+                    echo 0
+                fi
+            else
+                mv "${1}.new" "$1"
+                echo 1
+            fi
+    }
+
+    if [ -f "/etc/init.d/rsyslog" ]; then
+        if [ $(log_config_changed $FK_LOG_APP_PATH) -eq 1 ] | [ $(log_config_changed ${RSYSLOG_PATH}/40-${PAC}.conf) -eq 1 ]; then
+                echo "Log aggregation config changed. Restarting rsyslog."
+                /etc/init.d/rsyslog restart
+        fi
+    fi
+
     case "$PAC" in 
         *) if [ -x "/etc/init.d/$PAC" ]; then
                 /etc/init.d/$PAC migrate
@@ -59,4 +87,9 @@ fi
 echo -e "\033[32m ================================\033[0m"
 echo -e "\033[32m INSTALL Completed on $HOSTNAME\033[0m"
 echo -e "\033[32m ================================\033[0m"
+
+if [ ! -f "/etc/init.d/rsyslog" ]; then
+    echo -e "\033[31m rsyslog was not found on $HOSTNAME . Your logs may get lost! \033[0m"
+fi
+
 exit 0

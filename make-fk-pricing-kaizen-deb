@@ -22,6 +22,7 @@ esac
 DEB_DIR="$LOCAL_DIR/deb"
 [ ! -d "$DEB_DIR/DEBIAN" ] && mkdir -p "$DEB_DIR/DEBIAN"
 [ ! -d "$DEB_DIR/etc/$PACKAGE" ] && mkdir -p "$DEB_DIR/etc/$PACKAGE"
+[ ! -d "$DEB_DIR/etc/rsyslog.d" ] && mkdir -p "$DEB_DIR/etc/rsyslog.d"
 [ ! -d "$DEB_DIR/var/lib/$PACKAGE" ] && mkdir -p "$DEB_DIR/var/lib/$PACKAGE"
 [ ! -d "$DEB_DIR/var/cache/$PACKAGE" ] && mkdir -p "$DEB_DIR/var/cache/$PACKAGE"
 [ ! -d "$DEB_DIR/var/log/flipkart/pricing/$PACKAGE" ] && mkdir -p "$DEB_DIR/var/log/flipkart/pricing/$PACKAGE"
@@ -57,6 +58,10 @@ JAVA_PATH="/usr/lib/jvm/java-8-oracle"
 
 mv ${LOCAL_DIR}/service/target/dependency/*.jar ${DEB_DIR}/usr/share/$PACKAGE/libs
 mv ${LOCAL_DIR}/service/target/service-*.jar  ${DEB_DIR}/usr/share/$PACKAGE/libs
+
+#copy config files for log aggregation and search service
+cp ${LOCAL_DIR}/config/log_agg_config/fk-log-app.new ${DEB_DIR}/etc/fk-log-app.new
+cp ${LOCAL_DIR}/config/log_agg_config/40-${PACKAGE}.conf.new ${DEB_DIR}/etc/rsyslog.d/40-${PACKAGE}.conf.new
 
 PROJECT_DIR="$LOCAL_DIR/package"
 #copy the init script
