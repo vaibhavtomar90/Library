@@ -1,3 +1,0 @@
-MAILTO=pricing-alert@flipkart.com
-
-*/5 * * * * root /usr/lib/nagios/plugins/fk-ops-nsca-wrapper/nsca_wrapper -H `hostname` -N 10.5.1.11:10.5.1.12 -S 'fk-pricing-kaizen-health' -b /usr/sbin/send_nsca -c /etc/send_nsca.cfg -C "/usr/lib/nagios/plugins/check_http -H localhost -p 37301 -u /healthcheck -R Failed --invert-regex  -c5 -t20" >> /var/log/nsca.log 2>&1

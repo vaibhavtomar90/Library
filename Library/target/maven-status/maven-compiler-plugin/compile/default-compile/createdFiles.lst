@@ -1,0 +1,15 @@
+library/DAO/UserDAO.class
+library/Representations/User.class
+library/views/BookView.class
+library/Representations/Author.class
+library/views/HomeView.class
+library/Application/LibraryApplication.class
+library/resource/HomeResource.class
+library/config/LibConfig.class
+library/resource/LibraryResource.class
+library/DAO/mappers/BooksMapper.class
+library/Representations/Book.class
+library/DAO/BooksDAO.class
+library/resource/BookResource.class
+library/views/UserView.class
+library/resource/UserResource.class

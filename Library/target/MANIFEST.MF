@@ -1,0 +1,44 @@
+Manifest-Version: 1.0
+Implementation-Version: 1.0-SNAPSHOT
+Implementation-Vendor-Id: Library
+Class-Path: ./resources/ guava-18.0.jar dropwizard-core-0.8.2.jar drop
+ wizard-util-0.8.2.jar jackson-annotations-2.5.0.jar jsr305-3.0.0.jar 
+ joda-time-2.7.jar dropwizard-jackson-0.8.2.jar jackson-core-2.5.1.jar
+  jackson-databind-2.5.1.jar jackson-datatype-jdk7-2.5.1.jar jackson-d
+ atatype-guava-2.5.1.jar jackson-module-afterburner-2.5.1.jar jackson-
+ datatype-joda-2.5.1.jar slf4j-api-1.7.10.jar logback-classic-1.1.2.ja
+ r dropwizard-validation-0.8.2.jar hibernate-validator-5.1.3.Final.jar
+  validation-api-1.1.0.Final.jar jboss-logging-3.1.3.GA.jar classmate-
+ 1.0.0.jar javax.el-3.0.0.jar dropwizard-configuration-0.8.2.jar jacks
+ on-dataformat-yaml-2.5.1.jar snakeyaml-1.12.jar commons-lang3-3.3.2.j
+ ar dropwizard-logging-0.8.2.jar metrics-logback-3.1.1.jar jul-to-slf4
+ j-1.7.10.jar logback-core-1.1.2.jar log4j-over-slf4j-1.7.10.jar jcl-o
+ ver-slf4j-1.7.10.jar jetty-util-9.2.9.v20150224.jar dropwizard-metric
+ s-0.8.2.jar dropwizard-jersey-0.8.2.jar jersey-server-2.19.jar jersey
+ -common-2.19.jar jersey-guava-2.19.jar osgi-resource-locator-1.0.1.ja
+ r jersey-client-2.19.jar javax.ws.rs-api-2.0.1.jar jersey-media-jaxb-
+ 2.19.jar javax.annotation-api-1.2.jar hk2-api-2.4.0-b25.jar hk2-utils
+ -2.4.0-b25.jar aopalliance-repackaged-2.4.0-b25.jar javax.inject-2.4.
+ 0-b25.jar hk2-locator-2.4.0-b25.jar javassist-3.18.1-GA.jar jersey-me
+ tainf-services-2.19.jar metrics-jersey2-3.1.1.jar jackson-jaxrs-json-
+ provider-2.5.1.jar jackson-jaxrs-base-2.5.1.jar jackson-module-jaxb-a
+ nnotations-2.5.1.jar jersey-container-servlet-2.19.jar jersey-contain
+ er-servlet-core-2.19.jar jetty-server-9.2.9.v20150224.jar javax.servl
+ et-api-3.1.0.jar jetty-io-9.2.9.v20150224.jar jetty-webapp-9.2.9.v201
+ 50224.jar jetty-xml-9.2.9.v20150224.jar jetty-continuation-9.2.9.v201
+ 50224.jar dropwizard-servlets-0.8.2.jar metrics-annotation-3.1.1.jar 
+ dropwizard-jetty-0.8.2.jar metrics-jetty9-3.1.1.jar jetty-servlet-9.2
+ .9.v20150224.jar jetty-security-9.2.9.v20150224.jar jetty-servlets-9.
+ 2.9.v20150224.jar jetty-http-9.2.9.v20150224.jar dropwizard-lifecycle
+ -0.8.2.jar metrics-core-3.1.1.jar metrics-jvm-3.1.1.jar metrics-servl
+ ets-3.1.1.jar metrics-json-3.1.1.jar metrics-healthchecks-3.1.1.jar a
+ rgparse4j-0.4.4.jar jetty-setuid-java-1.0.2.jar dropwizard-redirect-b
+ undle-0.4.0.jar dropwizard-views-0.8.2.jar dropwizard-views-freemarke
+ r-0.8.2.jar freemarker-2.3.21.jar dropwizard-assets-0.8.0.jar mysql-c
+ onnector-java-5.1.22.jar dropwizard-jdbi-0.8.2.jar dropwizard-db-0.8.
+ 2.jar tomcat-jdbc-8.0.18.jar tomcat-juli-8.0.18.jar jdbi-2.59.jar met
+ rics-jdbi-3.1.1.jar
+Build-Jdk: 1.8.0_45
+Built-By: vaibhav.tomar
+Created-By: IntelliJ IDEA
+
