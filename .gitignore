@@ -1,8 +1,0 @@
-*iml
-*ipr
-*iws
-target/*
-service/target/*
-data_service/target*
-test-suite/target*
-.idea/*

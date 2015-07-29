@@ -2,140 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b0aa7606-a3c1-4459-906b-f14dd3672c92" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/library/DAO/AuthorDAO.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/library/DAO/mappers/AuthorMapper.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/library/resource/AuthorResource.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/library/views/AuthorView.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_projectlombok_lombok_1_12_4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/library/Representations/User.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/library/DAO/UserDAO.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/library/resource/UserResource.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/library/views/UserView.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/library/views/authors.ftl" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/library/views/book.ftl" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/library/views/users.ftl" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../README.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../bootstrap.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../config/log_agg_config/40-fk-pricing-kaizen.conf.new" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../config/log_agg_config/fk-log-app.new" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../config/server_config/dev/pricing_kaizen.yaml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../config/server_config/nm/pricing_kaizen.yaml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../config/server_config/qa/pricing_kaizen.yaml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../config/server_config/stage/pricing_kaizen.yaml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/pom.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/main/java/flipkart/pricing/apps/kaizen/api/ListingUpdateMessage.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/main/java/flipkart/pricing/apps/kaizen/api/SignalFetchDetail.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/main/java/flipkart/pricing/apps/kaizen/api/SignalFetchDto.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/main/java/flipkart/pricing/apps/kaizen/api/SignalSaveDetail.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/main/java/flipkart/pricing/apps/kaizen/api/SignalSaveDto.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/main/java/flipkart/pricing/apps/kaizen/converters/SignalSaveDtoToListingUpdateMessageConverter.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/main/java/flipkart/pricing/apps/kaizen/db/Model.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/main/java/flipkart/pricing/apps/kaizen/db/dao/ListingInfoDao.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/main/java/flipkart/pricing/apps/kaizen/db/dao/SignalInfoDao.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/main/java/flipkart/pricing/apps/kaizen/db/dao/SignalTypeDao.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/main/java/flipkart/pricing/apps/kaizen/db/model/ListingInfo.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/main/java/flipkart/pricing/apps/kaizen/db/model/SignalDataType.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/main/java/flipkart/pricing/apps/kaizen/db/model/SignalId.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/main/java/flipkart/pricing/apps/kaizen/db/model/SignalInfo.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/main/java/flipkart/pricing/apps/kaizen/db/model/SignalType.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/main/java/flipkart/pricing/apps/kaizen/db/service/SignalService.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/main/java/flipkart/pricing/apps/kaizen/exceptions/InvalidQualifierException.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/main/java/flipkart/pricing/apps/kaizen/exceptions/ListingNotFoundException.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/main/java/flipkart/pricing/apps/kaizen/exceptions/SignalNameNotFoundException.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/main/java/flipkart/pricing/apps/kaizen/exceptions/SignalValueInvalidException.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/main/java/flipkart/pricing/apps/kaizen/exceptions/UnableToUpdateVersionException.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/main/resources/META-INF/services/org/apache/camel/TypeConverter" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/test/java/flipkart/pricing/apps/kaizen/db/model/SignalDataTypeTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/test/java/flipkart/pricing/apps/kaizen/db/model/SignalIdTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/test/java/flipkart/pricing/apps/kaizen/db/model/SignalInfoTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/test/java/flipkart/pricing/apps/kaizen/testrules/SignalTypesInjectionRule.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/test/java/flipkart/pricing/apps/kaizen/utils/SignalDtoTestUtils.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/test/java/flipkart/pricing/apps/kaizen/utils/SignalFetchDtoMatcher.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data_service/src/test/java/flipkart/pricing/apps/kaizen/utils/SignalInsertHelper.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../force_deploy.lst" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../force_deployment.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../git-promote" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../make-fk-pricing-kaizen-deb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../package/DEBIAN/control" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../package/DEBIAN/postinst" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../package/DEBIAN/prerm" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../package/etc/cron.d/.gitkeep" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../package/etc/cron.d/fk-pricing-health-cron" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../package/etc/init.d/fk-pricing-kaizen" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../package/usr/cleanup.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../package/usr/depvars.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../package/usr/migrate.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../package/usr/prepare_options.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../package/usr/prepare_runtime.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../package/usr/shutdown.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../package/usr/startup.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../package/usr/status.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../package/usr/wait_for_server_start.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../pom.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/config" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/pom.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/api/PricingDeltaUpdateResponseDTO.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/api/PricingUpdate.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/boot/KaizenBooter.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/boot/bundles/SpringBundle.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/boot/config/CustomPropertySourcesPlaceHolderConfigurer.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/boot/config/DataSourceConfiguration.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/boot/config/HibernateConfiguration.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/boot/config/KaizenConfiguration.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/boot/config/KaizenContextConfiguration.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/boot/healthcheck/RotationStatusHealthCheck.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/db/dao/ListingDataVersionDAO.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/db/dao/PriceComputationAuditDAO.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/db/dao/PriceComputationLatestDAO.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/db/model/ListingDataVersion.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/db/model/PriceComputationAudit.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/db/model/PriceComputationLatest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/pipleline/ByteArrayToStringProcessor.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/pipleline/HttpEndpointUriBuilderUtil.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/pipleline/KafkaEndpointUriBuilderUtil.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/pipleline/KaizenPipelineRouteBuilder.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/pipleline/PropogationPipelineRouteBuilder.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/resources/ListingPriceUpdatesResource.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/resources/ListingResource.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/service/PricingAuditDataService.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/service/PricingAuditDataServiceImpl.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/service/ProductComputationRepository.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/service/ProductComputationRepositoryImpl.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/service/datatypes/PriceComputation.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/service/datatypes/PriceComputationResultSet.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/service/datatypes/PriceComputeEvent.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/java/flipkart/pricing/apps/kaizen/service/datatypes/PricingData.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/resources/banner.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/resources/migrations.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/resources/migrations/0001_bootstrap.sql" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/resources/migrations/0002_drop_expiry_column.sql" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/resources/migrations/0003_add_qualifer_column.sql" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/resources/migrations/0004_modify_server_timestamp_column.sql" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/resources/migrations/0005_drop_all_tables.sql" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/resources/migrations/0006_recreate_all_tables.sql" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/resources/migrations/0007_addPriceComputeAuditTables.sql" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/main/resources/migrations/0008_create_signal_types_mrp_ssp.sql" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../service/src/test/resources/pricing_kaizen.yaml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../test-suite/pom.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../test-suite/src/test/java/flipkart/pricing/apps/kaizen/db/dao/ListingDataVersionDAOIntegrationTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../test-suite/src/test/java/flipkart/pricing/apps/kaizen/db/dao/ListingInfoDaoIntegrationTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../test-suite/src/test/java/flipkart/pricing/apps/kaizen/db/dao/SignalInfoDaoIntegrationTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../test-suite/src/test/java/flipkart/pricing/apps/kaizen/db/dao/SignalTypeDaoIntegrationTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../test-suite/src/test/java/flipkart/pricing/apps/kaizen/db/service/PricingAuditDataServiceIntegrationTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../test-suite/src/test/java/flipkart/pricing/apps/kaizen/db/service/SignalServiceIntegrationTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../test-suite/src/test/java/flipkart/pricing/apps/kaizen/pipeline/KaizenPipelineRouteBuilderIntegrationTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../test-suite/src/test/java/flipkart/pricing/apps/kaizen/pipeline/PropogationPipelineRouteBuilderTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../test-suite/src/test/java/flipkart/pricing/apps/kaizen/resources/ListingPriceUpdatesResourceIntegrationTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../test-suite/src/test/java/flipkart/pricing/apps/kaizen/resources/ListingResourceIntegrationTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../test-suite/src/test/java/flipkart/pricing/apps/kaizen/testrules/DbClearRule.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../test-suite/src/test/java/flipkart/pricing/apps/kaizen/testrules/DbSetupRule.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../test-suite/src/test/java/flipkart/pricing/apps/kaizen/testrules/KaizenDBClearRule.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../test-suite/src/test/java/flipkart/pricing/apps/kaizen/testrules/SpringAwareResourceTestRule.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../test-suite/src/test/java/flipkart/pricing/apps/kaizen/utils/HibernateSessionUtil.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../test-suite/src/test/java/flipkart/pricing/apps/kaizen/utils/ListingLatestPriceVersion.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../test-suite/src/test/java/flipkart/pricing/apps/kaizen/utils/PricingAuditEventUtils.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../test-suite/src/test/java/flipkart/pricing/apps/kaizen/utils/SessionBoundFunction.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../test-suite/src/test/resources/pricing_kaizen.yaml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ekl-ironthrone" afterPath="$PROJECT_DIR$/../ekl-ironthrone" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../fk-erp-fklogistics" afterPath="$PROJECT_DIR$/../fk-erp-fklogistics" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../conway/gameoflife" afterPath="$PROJECT_DIR$/../conway/gameoflife" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../pricing-kaizen" afterPath="$PROJECT_DIR$/../pricing-kaizen" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../sample-dropwizard" afterPath="$PROJECT_DIR$/../sample-dropwizard" />
     </list>
     <ignored path="Library.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -879,12 +750,12 @@
       <workItem from="1437808462748" duration="10505000" />
       <workItem from="1437976686888" duration="29406000" />
       <workItem from="1438169307160" duration="1152000" />
-      <workItem from="1438171089876" duration="824000" />
+      <workItem from="1438171089876" duration="871000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="126736000" />
+    <option name="totallyTimeSpent" value="126783000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
